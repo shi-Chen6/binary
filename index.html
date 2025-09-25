@@ -197,6 +197,70 @@
             font-style: italic;
         }
         
+        /* 九宫格数字键盘样式 */
+        .numeric-keypad {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 250px;
+            margin: 20px auto 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .keypad-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        
+        .keypad-btn {
+            flex: 1;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: white;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .keypad-btn:hover {
+            background-color: #3498db;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .keypad-btn:active {
+            transform: scale(0.95);
+        }
+        
+        #clear-btn {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
+            color: white;
+        }
+        
+        #clear-btn:hover {
+            background-color: #c0392b;
+            border-color: #c0392b;
+        }
+        
+        #delete-btn {
+            background-color: #f39c12;
+            border-color: #f39c12;
+            color: white;
+        }
+        
+        #delete-btn:hover {
+            background-color: #e67e22;
+            border-color: #e67e22;
+        }
+        
         .exercise-content {
             display: flex;
             gap: 20px;
@@ -241,7 +305,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>二进制课后作业</h1>
+        <h1>晚自习作业</h1>
         
         <div class="instructions">
             <h3>作业说明</h3>
@@ -475,9 +539,33 @@
         <div class="password-section">
             <h3>查看答案</h3>
             <p>请输入密码查看所有练习题答案：</p>
-            <input type="password" class="password-input" id="password" placeholder="输入密码">
+            <input type="password" class="password-input" id="password" placeholder="输入密码" readonly>
             <button class="btn" id="showAnswers">显示答案</button>
             <div id="message" style="margin-top: 10px; color: #e74c3c;"></div>
+            
+            <!-- 九宫格数字键盘 -->
+            <div id="numeric-keypad" class="numeric-keypad">
+                <div class="keypad-row">
+                    <button class="keypad-btn" data-value="1">1</button>
+                    <button class="keypad-btn" data-value="2">2</button>
+                    <button class="keypad-btn" data-value="3">3</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="keypad-btn" data-value="4">4</button>
+                    <button class="keypad-btn" data-value="5">5</button>
+                    <button class="keypad-btn" data-value="6">6</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="keypad-btn" data-value="7">7</button>
+                    <button class="keypad-btn" data-value="8">8</button>
+                    <button class="keypad-btn" data-value="9">9</button>
+                </div>
+                <div class="keypad-row">
+                    <button class="keypad-btn" id="clear-btn">清除</button>
+                    <button class="keypad-btn" data-value="0">0</button>
+                    <button class="keypad-btn" id="delete-btn">删除</button>
+                </div>
+            </div>
         </div>
         
         <div class="answers" id="answers">
@@ -644,6 +732,43 @@
     </div>
     
     <script>
+        // 九宫格数字键盘功能
+        const passwordInput = document.getElementById('password');
+        const numericKeypad = document.getElementById('numeric-keypad');
+        const keypadButtons = document.querySelectorAll('.keypad-btn[data-value]');
+        const clearButton = document.getElementById('clear-btn');
+        const deleteButton = document.getElementById('delete-btn');
+        
+        // 点击输入框时显示数字键盘
+        passwordInput.addEventListener('click', function() {
+            numericKeypad.style.display = 'block';
+        });
+        
+        // 数字按钮点击事件
+        keypadButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                passwordInput.value += this.getAttribute('data-value');
+            });
+        });
+        
+        // 清除按钮点击事件
+        clearButton.addEventListener('click', function() {
+            passwordInput.value = '';
+        });
+        
+        // 删除按钮点击事件
+        deleteButton.addEventListener('click', function() {
+            passwordInput.value = passwordInput.value.slice(0, -1);
+        });
+        
+        // 点击页面其他地方隐藏数字键盘
+        document.addEventListener('click', function(event) {
+            if (!passwordInput.contains(event.target) && !numericKeypad.contains(event.target)) {
+                numericKeypad.style.display = 'none';
+            }
+        });
+        
+        // 显示答案按钮点击事件
         document.getElementById('showAnswers').addEventListener('click', function() {
             const password = document.getElementById('password').value;
             const answersDiv = document.getElementById('answers');
@@ -729,5 +854,4 @@
         });
     </script>
 </body>
-
 </html>
