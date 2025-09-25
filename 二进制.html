@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二进制课后作业</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin: 25px 0 15px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        h3 {
+            color: #2ecc71;
+            margin: 20px 0 10px;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .example {
+            background-color: #e8f4fc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .exercise {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            border-left: 3px solid #2ecc71;
+        }
+        
+        .password-section {
+            background-color: #f0f7ff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 30px 0;
+            border: 1px dashed #3498db;
+        }
+        
+        .password-input {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 200px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .answers {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            border: 1px solid #c3e6ff;
+        }
+        
+        .answer-item {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .binary {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .decimal {
+            font-weight: bold;
+            color: #2ecc71;
+        }
+        
+        .highlight {
+            background-color: #fff9c4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #f5f5f5;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            color: #777;
+            font-style: italic;
+        }
+        
+        .exercise-content {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .exercise-text {
+            flex: 1;
+        }
+        
+        .exercise-image {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+            }
+            
+            .password-input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .exercise-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>二进制课后作业</h1>
+        
+        <div class="instructions">
+            <h3>作业说明</h3>
+            <p>1. 请独立完成以下题目，注重过程书写，便于核对思路</p>
+            <p>2. 转化过程中若有疑问，可先标记，后续针对性解决</p>
+        </div>
+        
+        <h2>一、填写数字 0-10 的二进制表达式</h2>
+        <table>
+            <tr>
+                <th>十进制数字</th>
+                <th>二进制表达式</th>
+                <th>十进制数字</th>
+                <th>二进制表达式</th>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td class="encrypted">加密内容</td>
+                <td>6</td>
+                <td class="encrypted">加密内容</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td class="encrypted">加密内容</td>
+                <td>7</td>
+                <td class="encrypted">加密内容</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td class="encrypted">加密内容</td>
+                <td>8</td>
+                <td class="encrypted">加密内容</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td class="encrypted">加密内容</td>
+                <td>9</td>
+                <td class="encrypted">加密内容</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td class="encrypted">加密内容</td>
+                <td>10</td>
+                <td class="encrypted">加密内容</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td class="encrypted">加密内容</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        
+        <h2>二、二进制转化为十进制（按 "位权展开法" 计算）</h2>
+        
+        <div class="example">
+            <h3>例题 1：将二进制数 <span class="binary">1011</span> 转化为十进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step">
+                        <p><strong>步骤：</strong></p>
+                        <p>二进制 <span class="binary">1011</span> 从右到左的位权分别是：2⁰, 2¹, 2², 2³</p>
+                        <p>计算：1×2³ + 0×2² + 1×2¹ + 1×2⁰ = 8 + 0 + 2 + 1 = <span class="decimal">11</span></p>
+                        <p><strong>结论：</strong>二进制 <span class="binary">1011</span> 转化为十进制是 <span class="decimal">11</span></p>
+                    </div>
+                </div>
+                <div class="exercise-image">
+                    <img src="1011.png" alt="二进制数1011转十进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                </div>
+            </div>
+        </div>
+        
+        <div class="example">
+            <h3>例题 2：将二进制数 <span class="binary">11001</span> 转化为十进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step">
+                        <p><strong>步骤：</strong></p>
+                        <p>二进制 <span class="binary">11001</span> 从右到左的位权分别是：2⁰, 2¹, 2², 2³, 2⁴</p>
+                        <p>计算：1×2⁴ + 1×2³ + 0×2² + 0×2¹ + 1×2⁰ = 16 + 8 + 0 + 0 + 1 = <span class="decimal">25</span></p>
+                        <p><strong>结论：</strong>二进制 <span class="binary">11001</span> 转化为十进制是 <span class="decimal">25</span></p>
+                    </div>
+                </div>
+                <div class="exercise-image">
+                    <img src="11001.png" alt="二进制数11001转十进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise">
+            <h3>练习题 1：将二进制数 <span class="binary">1010</span> 转化为十进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step encrypted-step">
+                        <p><strong>步骤：</strong> <span class="encrypted">加密内容</span></p>
+                        <p><strong>结论：</strong>二进制 <span class="binary">1010</span> 转化为十进制是 <span class="encrypted">加密内容</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise">
+            <h3>练习题 2：将二进制数 <span class="binary">1111</span> 转化为十进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step encrypted-step">
+                        <p><strong>步骤：</strong> <span class="encrypted">加密内容</span></p>
+                        <p><strong>结论：</strong>二进制 <span class="binary">1111</span> 转化为十进制是 <span class="encrypted">加密内容</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise">
+            <h3>练习题 3：将二进制数 <span class="binary">1001</span> 转化为十进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step encrypted-step">
+                        <p><strong>步骤：</strong> <span class="encrypted">加密内容</span></p>
+                        <p><strong>结论：</strong>二进制 <span class="binary">1001</span> 转化为十进制是 <span class="encrypted">加密内容</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise">
+            <h3>练习题 4：将二进制数 <span class="binary">1100</span> 转化为十进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step encrypted-step">
+                        <p><strong>步骤：</strong> <span class="encrypted">加密内容</span></p>
+                        <p><strong>结论：</strong>二进制 <span class="binary">1100</span> 转化为十进制是 <span class="encrypted">加密内容</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2>三、十进制转化为二进制（整数部分用 "除 2 取余法"，从下往上读余数）</h2>
+        
+        <div class="example">
+            <h3>例题 1：将十进制数 <span class="decimal">23</span> 转化为二进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step">
+                        <p><strong>步骤：</strong></p>
+                        <p>23 ÷ 2 = 11 ... <span class="highlight">1</span> (余数)</p>
+                        <p>11 ÷ 2 = 5 ... <span class="highlight">1</span> (余数)</p>
+                        <p>5 ÷ 2 = 2 ... <span class="highlight">1</span> (余数)</p>
+                        <p>2 ÷ 2 = 1 ... <span class="highlight">0</span> (余数)</p>
+                        <p>1 ÷ 2 = 0 ... <span class="highlight">1</span> (余数)</p>
+                        <p>从下往上读取余数：<span class="binary">10111</span></p>
+                        <p><strong>结论：</strong>十进制 <span class="decimal">23</span> 转化为二进制是 <span class="binary">10111</span></p>
+                    </div>
+                </div>
+                <div class="exercise-image">
+                     <img src="23.png" alt="十进制数23转二进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                </div>
+            </div>
+        </div>
+        
+        <div class="example">
+            <h3>例题 2：将十进制数 <span class="decimal">45</span> 转化为二进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step">
+                        <p><strong>步骤：</strong></p>
+                        <p>45 ÷ 2 = 22 ... <span class="highlight">1</span> (余数)</p>
+                        <p>22 ÷ 2 = 11 ... <span class="highlight">0</span> (余数)</p>
+                        <p>11 ÷ 2 = 5 ... <span class="highlight">1</span> (余数)</p>
+                        <p>5 ÷ 2 = 2 ... <span class="highlight">1</span> (余数)</p>
+                        <p>2 ÷ 2 = 1 ... <span class="highlight">0</span> (余数)</p>
+                        <p>1 ÷ 2 = 0 ... <span class="highlight">1</span> (余数)</p>
+                        <p>从下往上读取余数：<span class="binary">101101</span></p>
+                        <p><strong>结论：</strong>十进制 <span class="decimal">45</span> 转化为二进制是 <span class="binary">101101</span></p>
+                    </div>
+                </div>
+                <div class="exercise-image">
+                     <img src="45.png" alt="十进制数45转二进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise">
+            <h3>练习题 1：将十进制数 <span class="decimal">18</span> 转化为二进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step encrypted-step">
+                        <p><strong>步骤：</strong> <span class="encrypted">加密内容</span></p>
+                        <p><strong>结论：</strong>十进制 <span class="decimal">18</span> 转化为二进制是 <span class="encrypted">加密内容</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise">
+            <h3>练习题 2：将十进制数 <span class="decimal">31</span> 转化为二进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step encrypted-step">
+                        <p><strong>步骤：</strong> <span class="encrypted">加密内容</span></p>
+                        <p><strong>结论：</strong>十进制 <span class="decimal">31</span> 转化为二进制是 <span class="encrypted">加密内容</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise">
+            <h3>练习题 3：将十进制数 <span class="decimal">29</span> 转化为二进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step encrypted-step">
+                        <p><strong>步骤：</strong> <span class="encrypted">加密内容</span></p>
+                        <p><strong>结论：</strong>十进制 <span class="decimal">29</span> 转化为二进制是 <span class="encrypted">加密内容</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="exercise">
+            <h3>练习题 4：将十进制数 <span class="decimal">42</span> 转化为二进制</h3>
+            <div class="exercise-content">
+                <div class="exercise-text">
+                    <div class="step encrypted-step">
+                        <p><strong>步骤：</strong> <span class="encrypted">加密内容</span></p>
+                        <p><strong>结论：</strong>十进制 <span class="decimal">42</span> 转化为二进制是 <span class="encrypted">加密内容</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="password-section">
+            <h3>查看答案</h3>
+            <p>请输入密码查看所有练习题答案：</p>
+            <input type="password" class="password-input" id="password" placeholder="输入密码">
+            <button class="btn" id="showAnswers">显示答案</button>
+            <div id="message" style="margin-top: 10px; color: #e74c3c;"></div>
+        </div>
+        
+        <div class="answers" id="answers">
+            <h3>练习题答案</h3>
+            
+            <div class="answer-item">
+                <h4>一、数字 0-10 的二进制表达式</h4>
+                <table>
+                    <tr>
+                        <th>十进制数字</th>
+                        <th>二进制表达式</th>
+                        <th>十进制数字</th>
+                        <th>二进制表达式</th>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td class="binary">0</td>
+                        <td>6</td>
+                        <td class="binary">110</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="binary">1</td>
+                        <td>7</td>
+                        <td class="binary">111</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="binary">10</td>
+                        <td>8</td>
+                        <td class="binary">1000</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="binary">11</td>
+                        <td>9</td>
+                        <td class="binary">1001</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="binary">100</td>
+                        <td>10</td>
+                        <td class="binary">1010</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="binary">101</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="answer-item">
+                <h4>二、二进制转化为十进制</h4>
+                
+                <div class="step">
+                    <p><strong>练习题 1：二进制 <span class="binary">1010</span> 转化为十进制</strong></p>
+                    <p>二进制 <span class="binary">1010</span> 从右到左的位权分别是：2⁰, 2¹, 2², 2³</p>
+                    <p>计算：1×2³ + 0×2² + 1×2¹ + 0×2⁰ = 8 + 0 + 2 + 0 = <span class="decimal">10</span></p>
+                    <p><strong>结论：</strong>二进制 <span class="binary">1010</span> 转化为十进制是 <span class="decimal">10</span></p>
+                    <div class="exercise-image">
+                       <img src="1010.png" alt="二进制数1010转十进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <p><strong>练习题 2：二进制 <span class="binary">1111</span> 转化为十进制</strong></p>
+                    <p>二进制 <span class="binary">1111</span> 从右到左的位权分别是：2⁰, 2¹, 2², 2³</p>
+                    <p>计算：1×2³ + 1×2² + 1×2¹ + 1×2⁰ = 8 + 4 + 2 + 1 = <span class="decimal">15</span></p>
+                    <p><strong>结论：</strong>二进制 <span class="binary">1111</span> 转化为十进制是 <span class="decimal">15</span></p>
+                    <div class="exercise-image">
+                        <img src="1111.png" alt="二进制数1111转十进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <p><strong>练习题 3：二进制 <span class="binary">1001</span> 转化为十进制</strong></p>
+                    <p>二进制 <span class="binary">1001</span> 从右到左的位权分别是：2⁰, 2¹, 2², 2³</p>
+                    <p>计算：1×2³ + 0×2² + 0×2¹ + 1×2⁰ = 8 + 0 + 0 + 1 = <span class="decimal">9</span></p>
+                    <p><strong>结论：</strong>二进制 <span class="binary">1001</span> 转化为十进制是 <span class="decimal">9</span></p>
+                    <div class="exercise-image">
+                       <img src="1001.png" alt="二进制数1001转十进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <p><strong>练习题 4：二进制 <span class="binary">1100</span> 转化为十进制</strong></p>
+                    <p>二进制 <span class="binary">1100</span> 从右到左的位权分别是：2⁰, 2¹, 2², 2³</p>
+                    <p>计算：1×2³ + 1×2² + 0×2¹ + 0×2⁰ = 8 + 4 + 0 + 0 = <span class="decimal">12</span></p>
+                    <p><strong>结论：</strong>二进制 <span class="binary">1100</span> 转化为十进制是 <span class="decimal">12</span></p>
+                    <div class="exercise-image">
+                        <img src="1100.png" alt="二进制数1100转十进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-item">
+                <h4>三、十进制转化为二进制</h4>
+                
+                <div class="step">
+                    <p><strong>练习题 1：十进制 <span class="decimal">18</span> 转化为二进制</strong></p>
+                    <p>18 ÷ 2 = 9 ... <span class="highlight">0</span> (余数)</p>
+                    <p>9 ÷ 2 = 4 ... <span class="highlight">1</span> (余数)</p>
+                    <p>4 ÷ 2 = 2 ... <span class="highlight">0</span> (余数)</p>
+                    <p>2 ÷ 2 = 1 ... <span class="highlight">0</span> (余数)</p>
+                    <p>1 ÷ 2 = 0 ... <span class="highlight">1</span> (余数)</p>
+                    <p>从下往上读取余数：<span class="binary">10010</span></p>
+                    <p><strong>结论：</strong>十进制 <span class="decimal">18</span> 转化为二进制是 <span class="binary">10010</span></p>
+                    <div class="exercise-image">
+                        <img src="18.png" alt="十进制数18转二进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <p><strong>练习题 2：十进制 <span class="decimal">31</span> 转化为二进制</strong></p>
+                    <p>31 ÷ 2 = 15 ... <span class="highlight">1</span> (余数)</p>
+                    <p>15 ÷ 2 = 7 ... <span class="highlight">1</span> (余数)</p>
+                    <p>7 ÷ 2 = 3 ... <span class="highlight">1</span> (余数)</p>
+                    <p>3 ÷ 2 = 1 ... <span class="highlight">1</span> (余数)</p>
+                    <p>1 ÷ 2 = 0 ... <span class="highlight">1</span> (余数)</p>
+                    <p>从下往上读取余数：<span class="binary">11111</span></p>
+                    <p><strong>结论：</strong>十进制 <span class="decimal">31</span> 转化为二进制是 <span class="binary">11111</span></p>
+                    <div class="exercise-image">
+                        <img src="31.png" alt="十进制数31转二进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <p><strong>练习题 3：十进制 <span class="decimal">29</span> 转化为二进制</strong></p>
+                    <p>29 ÷ 2 = 14 ... <span class="highlight">1</span> (余数)</p>
+                    <p>14 ÷ 2 = 7 ... <span class="highlight">0</span> (余数)</p>
+                    <p>7 ÷ 2 = 3 ... <span class="highlight">1</span> (余数)</p>
+                    <p>3 ÷ 2 = 1 ... <span class="highlight">1</span> (余数)</p>
+                    <p>1 ÷ 2 = 0 ... <span class="highlight">1</span> (余数)</p>
+                    <p>从下往上读取余数：<span class="binary">11101</span></p>
+                    <p><strong>结论：</strong>十进制 <span class="decimal">29</span> 转化为二进制是 <span class="binary">11101</span></p>
+                    <div class="exercise-image">
+                        <img src="29.png" alt="十进制数29转二进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <p><strong>练习题 4：十进制 <span class="decimal">42</span> 转化为二进制</strong></p>
+                    <p>42 ÷ 2 = 21 ... <span class="highlight">0</span> (余数)</p>
+                    <p>21 ÷ 2 = 10 ... <span class="highlight">1</span> (余数)</p>
+                    <p>10 ÷ 2 = 5 ... <span class="highlight">0</span> (余数)</p>
+                    <p>5 ÷ 2 = 2 ... <span class="highlight">1</span> (余数)</p>
+                    <p>2 ÷ 2 = 1 ... <span class="highlight">0</span> (余数)</p>
+                    <p>1 ÷ 2 = 0 ... <span class="highlight">1</span> (余数)</p>
+                    <p>从下往上读取余数：<span class="binary">101010</span></p>
+                    <p><strong>结论：</strong>十进制 <span class="decimal">42</span> 转化为二进制是 <span class="binary">101010</span></p>
+                    <div class="exercise-image">
+                        <img src="42.png" alt="十进制数42转二进制解法图解" style="max-width: 100%; height: auto; border-radius: 8px;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>二进制课后作业 &copy; 2025</p>
+            <p>华南司法职业学校</p>
+        </footer>
+    </div>
+    
+    <script>
+        document.getElementById('showAnswers').addEventListener('click', function() {
+            const password = document.getElementById('password').value;
+            const answersDiv = document.getElementById('answers');
+            const messageDiv = document.getElementById('message');
+            
+            if (password === '123') {
+                answersDiv.style.display = 'block';
+                messageDiv.textContent = '';
+                
+                // 显示所有加密内容
+                const encryptedElements = document.querySelectorAll('.encrypted');
+                encryptedElements.forEach(el => {
+                    if (el.textContent === '加密内容') {
+                        // 根据上下文设置不同的答案
+                        const parentText = el.parentElement.textContent;
+                        if (parentText.includes('0-10')) {
+                            // 处理0-10的二进制表格
+                            const row = el.closest('tr');
+                            const cells = row.querySelectorAll('td');
+                            const decimalValue = parseInt(cells[0].textContent);
+                            if (!isNaN(decimalValue)) {
+                                el.textContent = decimalValue.toString(2);
+                            }
+                        } else if (parentText.includes('二进制')) {
+                            // 处理二进制转十进制的题目
+                            const binary = el.closest('.exercise').querySelector('.binary').textContent;
+                            const decimal = parseInt(binary, 2);
+                            el.textContent = decimal;
+                        } else if (parentText.includes('十进制')) {
+                            // 处理十进制转二进制的题目
+                            const decimal = parseInt(el.closest('.exercise').querySelector('.decimal').textContent);
+                            const binary = decimal.toString(2);
+                            el.textContent = binary;
+                        }
+                    }
+                });
+                
+                // 显示加密步骤
+                const encryptedSteps = document.querySelectorAll('.encrypted-step');
+                encryptedSteps.forEach(step => {
+                    const exercise = step.closest('.exercise');
+                    const title = exercise.querySelector('h3').textContent;
+                    
+                    if (title.includes('二进制')) {
+                        // 二进制转十进制
+                        const binary = exercise.querySelector('.binary').textContent;
+                        const decimal = parseInt(binary, 2);
+                        
+                        step.innerHTML = `
+                            <p><strong>步骤：</strong></p>
+                            <p>二进制 <span class="binary">${binary}</span> 从右到左的位权分别是：2⁰, 2¹, 2², 2³</p>
+                            <p>计算：${binary.split('').map((bit, i) => `${bit}×2<sup>${binary.length-1-i}</sup>`).join(' + ')} = ${decimal}</p>
+                            <p><strong>结论：</strong>二进制 <span class="binary">${binary}</span> 转化为十进制是 <span class="decimal">${decimal}</span></p>
+                        `;
+                    } else if (title.includes('十进制')) {
+                        // 十进制转二进制
+                        const decimal = parseInt(exercise.querySelector('.decimal').textContent);
+                        let num = decimal;
+                        const steps = [];
+                        
+                        while (num > 0) {
+                            const quotient = Math.floor(num / 2);
+                            const remainder = num % 2;
+                            steps.push(`${num} ÷ 2 = ${quotient} ... <span class="highlight">${remainder}</span> (余数)`);
+                            num = quotient;
+                        }
+                        
+                        const binary = decimal.toString(2);
+                        
+                        step.innerHTML = `
+                            <p><strong>步骤：</strong></p>
+                            ${steps.map(s => `<p>${s}</p>`).join('')}
+                            <p>从下往上读取余数：<span class="binary">${binary}</span></p>
+                            <p><strong>结论：</strong>十进制 <span class="decimal">${decimal}</span> 转化为二进制是 <span class="binary">${binary}</span></p>
+                        `;
+                    }
+                });
+                
+            } else {
+                answersDiv.style.display = 'none';
+                messageDiv.textContent = '密码错误，请重新输入！';
+            }
+        });
+    </script>
+</body>
+</html>
