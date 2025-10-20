@@ -12,8 +12,27 @@
         }
         body {
             background-color: #f5f7fa;
-            padding: 40px 60px;
+            padding: 0 60px; /* 顶部padding移至导航栏和内容区 */
             line-height: 1.8;
+        }
+
+        /* 新增导航栏样式 */
+        .navbar {
+            background-color: #2c3e50;
+            padding: 15px 60px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .nav-link {
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #34495e;
         }
 
         /* 作业内容区 - 顶部展示 */
@@ -206,16 +225,23 @@
     </style>
 </head>
 <body>
+    <!-- 顶部导航栏 -->
+    <div class="navbar">
+<a href="index.html" class="nav-link">周一晚自习作业</a>
+        <a href="index2.html" class="nav-link">周二晚自习作业</a>
+ <a href="tranf.html" class="nav-link">进制转换器</a>
+    </div>
+
     <!-- 作业内容区（顶部） -->
     <div class="homework-section">
         <h2 class="homework-title">进制转换作业</h2>
         <div class="homework-content">
             <p>1. 请将下列十进制数分别转换为二进制、八进制、十六进制：</p>
-         <h1>   <p class="numbers">   18、31、29、42</p> </h1>
+            <p class="numbers">   18、31、29、42</p>
             <p>2. 转换方法：<span class="method">除R取余法</span></p>
             <p>   （说明：R=2时转二进制，R=8时转八进制，R=16时转十六进制；每次除法取余数，直到商为0，最终结果为余数"从后往前"排列）</p>
             
-            <!-- 新增例题 -->
+            <!-- 例题 -->
             <div class="example-title">3. 例题：将十进制数10转换为二进制、八进制、十六进制（示范除R取余法）</div>
             
             <!-- 二进制转换示范 -->
@@ -250,7 +276,7 @@
 
     <!-- 查看答案区（下滑可见） -->
     <div class="verify-section">
-        <h3 class="verify-title">查看答案</h3>
+        <h3 class="verify-title">输入密码查看答案（密码：123）</h3>
         <input type="password" id="passwordInput" placeholder="点击数字键盘输入" readonly>
         
         <!-- 数字键盘 -->
