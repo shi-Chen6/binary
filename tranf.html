@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>多进制 → 十进制（按权展开法）计算器</title>
+  <style>
+    :root{--accent:#0ea5a4;--muted:#64748b}
+    body{font-family: 'Segoe UI', 'Noto Sans SC', system-ui, -apple-system, Arial; background:#f3f7f8; margin:0; padding:30px}
+    .card{max-width:900px;margin:0 auto;background:#fff;border-radius:12px;padding:34px;box-shadow:0 10px 30px rgba(2,6,23,0.06)}
+    h1{text-align:center;margin:0 0 10px;font-size:28px}
+    p.lead{color:#334155}
+    
+    /* 进制选择器样式 */
+    .base-selector {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .base-option {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 2px solid #e6eef8;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .base-option.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    
+    input#numInput{width:100%;padding:12px;border-radius:8px;border:1px solid #e6eef8;font-size:16px}
+    .controls{margin-top:12px;display:flex;gap:10px}
+    button{padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+    button.secondary{background:var(--muted)}
+    .steps{margin-top:28px;text-align:center;font-size:18px}
+
+    /* 对齐用表格，保证指数和位值竖直对齐 */
+    .num-table{display:inline-table;border-collapse:collapse;margin:0 auto}
+    .num-table td{padding:2px 10px;text-align:center;vertical-align:bottom}
+    .num-table .exp{color:#ef4444;font-size:14px}
+    .num-table .digit{font-size:36px;letter-spacing:6px}
+
+    .formula{margin-top:18px;font-size:20px}
+    .formula .line{margin-top:10px}
+    .result{margin-top:14px;font-weight:800;font-size:26px}
+    .error{background:#fff0f0;color:#8b1d1d;padding:8px;border-radius:6px;display:inline-block}
+    
+    /* 颜色定义 */
+    .color-0 { color: #FF5252; }
+    .color-1 { color: #FF9800; }
+    .color-2 { color: #4CAF50; }
+    .color-3 { color: #2196F3; }
+    .color-4 { color: #9C27B0; }
+    .color-5 { color: #795548; }
+    .color-6 { color: #607D8B; }
+    .color-7 { color: #E91E63; }
+    .color-8 { color: #00BCD4; }
+    .color-9 { color: #8BC34A; }
+    .color-10 { color: #FFC107; }
+    .color-11 { color: #3F51B5; }
+    .color-12 { color: #FF5722; }
+    .color-13 { color: #009688; }
+    .color-14 { color: #673AB7; }
+    .color-15 { color: #F44336; }
+    
+    /* 说明区域样式 */
+    .explanation {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      border-left: 4px solid var(--accent);
+    }
+    .explanation h3 {
+      margin-top: 0;
+      color: var(--accent);
+    }
+    .explanation ol {
+      padding-left: 20px;
+    }
+    .explanation li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    
+    /* 数字键盘样式 */
+    .keypad {
+      display: none;
+      margin-top: 15px;
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+    }
+    .keypad.active {
+      display: block;
+    }
+    .keypad-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .keypad-btn {
+      width: 70px;
+      height: 50px;
+      font-size: 20px;
+      border: none;
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .keypad-btn:hover {
+      background: #f1f5f9;
+      transform: translateY(-2px);
+    }
+    .keypad-btn:active {
+      transform: translateY(0);
+    }
+    .keypad-btn.zero {
+      background: #0ea5a4;
+      color: white;
+    }
+    .keypad-btn.one {
+      background: #3b82f6;
+      color: white;
+    }
+    .keypad-btn.backspace {
+      background: #ef4444;
+      color: white;
+    }
+    .keypad-btn.close {
+      background: #64748b;
+      color: white;
+    }
+    
+    /* 进制特定键盘按钮 */
+    .keypad-btn.hex {
+      background: #9C27B0;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>多进制 → 十进制（按权展开法）计算器</h1>
+    <p class="lead">选择进制并输入数字，查看按权展开的完整教学式计算过程。</p>
+    
+    <!-- 进制选择器 -->
+    <div class="base-selector">
+      <div class="base-option active" data-base="2">二进制</div>
+      <div class="base-option" data-base="8">八进制</div>
+      <div class="base-option" data-base="16">十六进制</div>
+    </div>
+
+    <input id="numInput" placeholder="例如：1011" />
+    
+    <!-- 数字键盘 -->
+    <div class="keypad" id="keypad">
+      <div class="keypad-row" id="keypadRow1">
+        <!-- 动态生成键盘按钮 -->
+      </div>
+      <div class="keypad-row" id="keypadRow2">
+        <!-- 动态生成键盘按钮 -->
+      </div>
+      <div class="keypad-row">
+        <button class="keypad-btn backspace" id="backspace">⌫</button>
+        <button class="keypad-btn close" id="closeKeypad">关闭</button>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <button id="calc">计算</button>
+      <button class="secondary" id="clear">清空</button>
+      <button class="secondary" id="example">示例</button>
+    </div>
+
+    <div id="output" class="steps" aria-live="polite"></div>
+    
+    <div class="explanation">
+      <h3>按权展开法说明：</h3>
+      <ol>
+        <li>从数字的最右侧一位开始，确定每一位的权值：基数的 n 次方，n 从 0 开始。</li>
+        <li>每一位的数字乘以对应的权值，得到该位的贡献值（乘积）。</li>
+        <li>把所有乘积相加，得到十进制结果。</li>
+      </ol>
+      <p><strong>注意：</strong>十六进制中，A=10, B=11, C=12, D=13, E=14, F=15</p>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('numInput');
+    const out = document.getElementById('output');
+    const keypad = document.getElementById('keypad');
+    const keypadRow1 = document.getElementById('keypadRow1');
+    const keypadRow2 = document.getElementById('keypadRow2');
+    const backspaceBtn = document.getElementById('backspace');
+    const closeKeypadBtn = document.getElementById('closeKeypad');
+    const baseOptions = document.querySelectorAll('.base-option');
+    
+    // 当前选择的进制
+    let currentBase = 2;
+    
+    // 进制选择器事件
+    baseOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        // 移除所有active类
+        baseOptions.forEach(opt => opt.classList.remove('active'));
+        // 添加active类到当前选项
+        option.classList.add('active');
+        // 更新当前进制
+        currentBase = parseInt(option.getAttribute('data-base'));
+        // 清空输入和输出
+        input.value = '';
+        out.innerHTML = '';
+        // 更新输入框占位符
+        updatePlaceholder();
+        // 更新键盘
+        updateKeypad();
+      });
+    });
+    
+    // 更新输入框占位符
+    function updatePlaceholder() {
+      const examples = {
+        2: '1011',
+        8: '753',
+        16: 'A3F'
+      };
+      input.placeholder = `例如：${examples[currentBase]}`;
+    }
+    
+    // 更新键盘布局
+    function updateKeypad() {
+      // 清空现有按钮
+      keypadRow1.innerHTML = '';
+      keypadRow2.innerHTML = '';
+      
+      // 根据进制添加按钮
+      if (currentBase === 2) {
+        // 二进制键盘：0, 1
+        addKeypadButton('0', 'zero', keypadRow1);
+        addKeypadButton('1', 'one', keypadRow1);
+      } else if (currentBase === 8) {
+        // 八进制键盘：0-7
+        for (let i = 0; i < 4; i++) {
+          addKeypadButton(i.toString(), 'hex', keypadRow1);
+        }
+        for (let i = 4; i < 8; i++) {
+          addKeypadButton(i.toString(), 'hex', keypadRow2);
+        }
+      } else if (currentBase === 16) {
+        // 十六进制键盘：0-9, A-F
+        for (let i = 0; i < 8; i++) {
+          addKeypadButton(i.toString(), 'hex', keypadRow1);
+        }
+        for (let i = 8; i < 10; i++) {
+          addKeypadButton(i.toString(), 'hex', keypadRow2);
+        }
+        ['A', 'B', 'C', 'D', 'E', 'F'].forEach(char => {
+          addKeypadButton(char, 'hex', keypadRow2);
+        });
+      }
+    }
+    
+    // 添加键盘按钮的辅助函数
+    function addKeypadButton(value, className, row) {
+      const button = document.createElement('button');
+      button.className = `keypad-btn ${className}`;
+      button.textContent = value;
+      button.setAttribute('data-value', value);
+      row.appendChild(button);
+    }
+    
+    // 当输入框获得焦点时显示数字键盘
+    input.addEventListener('focus', () => {
+      keypad.classList.add('active');
+    });
+    
+    // 当点击关闭按钮时隐藏数字键盘
+    closeKeypadBtn.addEventListener('click', () => {
+      keypad.classList.remove('active');
+    });
+    
+    // 数字键盘按钮点击事件（使用事件委托）
+    keypad.addEventListener('click', (e) => {
+      if (e.target.classList.contains('keypad-btn') && e.target.hasAttribute('data-value')) {
+        const value = e.target.getAttribute('data-value');
+        input.value += value;
+        // 保持输入框焦点
+        input.focus();
+      }
+    });
+    
+    // 退格按钮点击事件
+    backspaceBtn.addEventListener('click', () => {
+      input.value = input.value.slice(0, -1);
+      // 保持输入框焦点
+      input.focus();
+    });
+    
+    // 点击页面其他地方时隐藏数字键盘
+    document.addEventListener('click', (e) => {
+      if (!input.contains(e.target) && !keypad.contains(e.target)) {
+        keypad.classList.remove('active');
+      }
+    });
+    
+    // 计算按钮事件
+    document.getElementById('calc').addEventListener('click', () => compute(input.value));
+    
+    // 清空按钮事件
+    document.getElementById('clear').addEventListener('click', () => {
+      input.value = '';
+      out.innerHTML = '';
+    });
+    
+    // 示例按钮事件
+    document.getElementById('example').addEventListener('click', () => {
+      const examples = {
+        2: '1011',
+        8: '753',
+        16: 'A3F'
+      };
+      input.value = examples[currentBase];
+      compute(examples[currentBase]);
+    });
+
+    // 主计算函数
+    function compute(raw) {
+      const numStr = String(raw).trim().toUpperCase();
+      if (!numStr) { 
+        out.innerHTML = '<div class="error">请输入数字。</div>'; 
+        return; 
+      }
+      
+      // 验证输入
+      let validChars;
+      switch(currentBase) {
+        case 2:
+          validChars = /^[01]+$/;
+          break;
+        case 8:
+          validChars = /^[0-7]+$/;
+          break;
+        case 16:
+          validChars = /^[0-9A-F]+$/;
+          break;
+      }
+      
+      if (!validChars.test(numStr)) { 
+        out.innerHTML = `<div class="error">输入包含无效字符，请只输入${currentBase}进制有效字符。</div>`; 
+        return; 
+      }
+
+      const digits = numStr.split('');
+      const n = digits.length;
+      const base = currentBase;
+
+      // 1) 用表格生成：第一行显示 base^n 指数，第二行显示每一位的数字
+      let tableHtml = `<table class="num-table"><tr>`;
+      for(let i = 0; i < n; i++){
+        const exp = n - 1 - i;
+        tableHtml += `<td class="exp">${base}<sup>${exp}</sup></td>`;
+      }
+      tableHtml += `</tr><tr>`;
+      for(let i = 0; i < n; i++){
+        tableHtml += `<td class="digit color-${i}">${digits[i]}</td>`;
+      }
+      tableHtml += `</tr></table> <span style="font-size:18px">(${base})</span>`;
+
+      // 2) 按权展开式（展示为 base^n × digit）
+      const expandedParts = digits.map((d, i) => {
+        const exp = n - 1 - i;
+        return `<span class="color-${i}">${base}<sup>${exp}</sup>×${d}</span>`;
+      });
+      const expandedLine = expandedParts.join(' + ');
+
+      // 3) 各项乘积
+      const productParts = digits.map((d, i) => { 
+        // 将十六进制字符转换为数字
+        let digitValue;
+        if (base === 16) {
+          digitValue = parseInt(d, 16);
+        } else {
+          digitValue = parseInt(d, 10);
+        }
+        
+        const value = digitValue * Math.pow(base, n - 1 - i);
+        return `<span class="color-${i}">${value}</span>`; 
+      });
+      const productLine = productParts.join(' + ');
+
+      // 4) 求和
+      const sum = digits.reduce((acc, d, i) => {
+        let digitValue;
+        if (base === 16) {
+          digitValue = parseInt(d, 16);
+        } else {
+          digitValue = parseInt(d, 10);
+        }
+        return acc + (digitValue * Math.pow(base, n - 1 - i));
+      }, 0);
+
+      // 组合输出
+      let html = '';
+      html += `<div>${tableHtml}</div>`;
+      html += `<div class="formula"><div class="line">= ${expandedLine}</div>`;
+      html += `<div class="line">= ${productLine}</div>`;
+      html += `<div class="line result">= ${sum} (₁₀)</div></div>`;
+
+      out.innerHTML = html;
+    }
+
+    // 回车触发
+    input.addEventListener('keydown', e => { 
+      if(e.key === 'Enter'){ 
+        compute(input.value); 
+        // 计算后隐藏键盘
+        keypad.classList.remove('active');
+      } 
+    });
+    
+    // 初始化
+    updatePlaceholder();
+    updateKeypad();
+  </script>
+</body>
+</html>
