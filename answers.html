@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进制转换练习题答案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        .header {
+            background-color: #3498db;
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+        }
+        .card h2 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .card h2 svg {
+            margin-right: 0.5rem;
+        }
+        .card ol {
+            padding-left: 1.5rem;
+        }
+        .card li {
+            margin-bottom: 1.8rem;
+            line-height: 2;
+        }
+        .answer {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        /* 二进制转十进制 专用样式 */
+        .bin-power-5, .bin-power-4 { color: #e74c3c; } /* 2⁵、2⁴ → 红色 */
+        .bin-power-3 { color: #f39c12; }           /* 2³ → 橙色 */
+        .bin-power-2 { color: #2ecc71; }           /* 2² → 绿色 */
+        .bin-power-1 { color: #3498db; }           /* 2¹ → 蓝色 */
+        .bin-power-0 { color: #9b59b6; }           /* 2⁰ → 紫色 */
+        .bin-digit { font-size: 1.5em; font-weight: bold; } /* 二进制位 放大加粗 */
+
+        /* 八进制转十进制 专用样式 */
+        .oct-power-2 { color: #e74c3c; } /* 8² → 红色 */
+        .oct-power-1 { color: #f39c12; } /* 8¹ → 橙色 */
+        .oct-power-0 { color: #2ecc71; } /* 8⁰ → 绿色 */
+        .oct-digit { font-size: 1.5em; font-weight: bold; }
+
+        /* 十六进制转十进制 专用样式 */
+        .hex-power-2 { color: #e74c3c; } /* 16² → 红色 */
+        .hex-power-1 { color: #f39c12; } /* 16¹ → 橙色 */
+        .hex-power-0 { color: #2ecc71; } /* 16⁰ → 绿色 */
+        .hex-digit { font-size: 1.5em; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>进制转换练习题答案</h1>
+    </div>
+    <div class="container">
+        <!-- 二进制转十进制 -->
+        <div class="card">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                二进制转十进制
+            </h2>
+            <ol>
+                <!-- 第1题：10110 → 22 -->
+                <li>请将二进制数 10110 转化为十进制数。<br>
+                    <span class="bin-power-4">2⁴</span> <span class="bin-power-3">2³</span> <span class="bin-power-2">2²</span> <span class="bin-power-1">2¹</span> <span class="bin-power-0">2⁰</span>  (2)<br>
+                    <span class="bin-digit bin-power-4">1</span> <span class="bin-digit bin-power-3">0</span> <span class="bin-digit bin-power-2">1</span> <span class="bin-digit bin-power-1">1</span> <span class="bin-digit bin-power-0">0</span><br>
+                    = <span class="bin-power-4">2⁴×1</span> + <span class="bin-power-3">2³×0</span> + <span class="bin-power-2">2²×1</span> + <span class="bin-power-1">2¹×1</span> + <span class="bin-power-0">2⁰×0</span><br>
+                    = <span class="bin-power-4">16</span> + <span class="bin-power-3">0</span> + <span class="bin-power-2">4</span> + <span class="bin-power-1">2</span> + <span class="bin-power-0">0</span><br>
+                    = <span class="answer">22</span> (10)
+                </li>
+
+                <!-- 第2题：111011 → 59 -->
+                <li>请将二进制数 111011 转化为十进制数。<br>
+                    <span class="bin-power-5">2⁵</span> <span class="bin-power-4">2⁴</span> <span class="bin-power-3">2³</span> <span class="bin-power-2">2²</span> <span class="bin-power-1">2¹</span> <span class="bin-power-0">2⁰</span>  (2)<br>
+                    <span class="bin-digit bin-power-5">1</span> <span class="bin-digit bin-power-4">1</span> <span class="bin-digit bin-power-3">1</span> <span class="bin-digit bin-power-2">0</span> <span class="bin-digit bin-power-1">1</span> <span class="bin-digit bin-power-0">1</span><br>
+                    = <span class="bin-power-5">2⁵×1</span> + <span class="bin-power-4">2⁴×1</span> + <span class="bin-power-3">2³×1</span> + <span class="bin-power-2">2²×0</span> + <span class="bin-power-1">2¹×1</span> + <span class="bin-power-0">2⁰×1</span><br>
+                    = <span class="bin-power-5">32</span> + <span class="bin-power-4">16</span> + <span class="bin-power-3">8</span> + <span class="bin-power-2">0</span> + <span class="bin-power-1">2</span> + <span class="bin-power-0">1</span><br>
+                    = <span class="answer">59</span> (10)
+                </li>
+
+                <!-- 第3题：100001 → 33 -->
+                <li>请将二进制数 100001 转化为十进制数。<br>
+                    <span class="bin-power-5">2⁵</span> <span class="bin-power-4">2⁴</span> <span class="bin-power-3">2³</span> <span class="bin-power-2">2²</span> <span class="bin-power-1">2¹</span> <span class="bin-power-0">2⁰</span>  (2)<br>
+                    <span class="bin-digit bin-power-5">1</span> <span class="bin-digit bin-power-4">0</span> <span class="bin-digit bin-power-3">0</span> <span class="bin-digit bin-power-2">0</span> <span class="bin-digit bin-power-1">0</span> <span class="bin-digit bin-power-0">1</span><br>
+                    = <span class="bin-power-5">2⁵×1</span> + <span class="bin-power-4">2⁴×0</span> + <span class="bin-power-3">2³×0</span> + <span class="bin-power-2">2²×0</span> + <span class="bin-power-1">2¹×0</span> + <span class="bin-power-0">2⁰×1</span><br>
+                    = <span class="bin-power-5">32</span> + <span class="bin-power-4">0</span> + <span class="bin-power-3">0</span> + <span class="bin-power-2">0</span> + <span class="bin-power-1">0</span> + <span class="bin-power-0">1</span><br>
+                    = <span class="answer">33</span> (10)
+                </li>
+            </ol>
+        </div>
+
+        <!-- 八进制转十进制 -->
+        <div class="card">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+                    <line x1="6" y1="12" x2="6" y2="16"></line>
+                    <line x1="10" y1="12" x2="10" y2="16"></line>
+                    <line x1="14" y1="12" x2="14" y2="16"></line>
+                </svg>
+                八进制转十进制
+            </h2>
+            <ol>
+                <!-- 示例：753 → 491 -->
+                <li>请将八进制数 753 转化为十进制数。<br>
+                    <span class="oct-power-2">8²</span> <span class="oct-power-1">8¹</span> <span class="oct-power-0">8⁰</span>  (8)<br>
+                    <span class="oct-digit oct-power-2">7</span> <span class="oct-digit oct-power-1">5</span> <span class="oct-digit oct-power-0">3</span><br>
+                    = <span class="oct-power-2">8²×7</span> + <span class="oct-power-1">8¹×5</span> + <span class="oct-power-0">8⁰×3</span><br>
+                    = <span class="oct-power-2">448</span> + <span class="oct-power-1">40</span> + <span class="oct-power-0">3</span><br>
+                    = <span class="answer">491</span> (10)
+                </li>
+
+                <!-- 原题第1题：342 → 226 -->
+                <li>请将八进制数 342 转化为十进制数。<br>
+                    <span class="oct-power-2">8²</span> <span class="oct-power-1">8¹</span> <span class="oct-power-0">8⁰</span>  (8)<br>
+                    <span class="oct-digit oct-power-2">3</span> <span class="oct-digit oct-power-1">4</span> <span class="oct-digit oct-power-0">2</span><br>
+                    = <span class="oct-power-2">8²×3</span> + <span class="oct-power-1">8¹×4</span> + <span class="oct-power-0">8⁰×2</span><br>
+                    = <span class="oct-power-2">192</span> + <span class="oct-power-1">32</span> + <span class="oct-power-0">2</span><br>
+                    = <span class="answer">226</span> (10)
+                </li>
+
+                <!-- 原题第2题：170 → 120 -->
+                <li>请将八进制数 170 转化为十进制数。<br>
+                    <span class="oct-power-2">8²</span> <span class="oct-power-1">8¹</span> <span class="oct-power-0">8⁰</span>  (8)<br>
+                    <span class="oct-digit oct-power-2">1</span> <span class="oct-digit oct-power-1">7</span> <span class="oct-digit oct-power-0">0</span><br>
+                    = <span class="oct-power-2">8²×1</span> + <span class="oct-power-1">8¹×7</span> + <span class="oct-power-0">8⁰×0</span><br>
+                    = <span class="oct-power-2">64</span> + <span class="oct-power-1">56</span> + <span class="oct-power-0">0</span><br>
+                    = <span class="answer">120</span> (10)
+                </li>
+
+                <!-- 原题第3题：56 → 46 -->
+                <li>请将八进制数 56 转化为十进制数。<br>
+                    <span class="oct-power-1">8¹</span> <span class="oct-power-0">8⁰</span>  (8)<br>
+                    <span class="oct-digit oct-power-1">5</span> <span class="oct-digit oct-power-0">6</span><br>
+                    = <span class="oct-power-1">8¹×5</span> + <span class="oct-power-0">8⁰×6</span><br>
+                    = <span class="oct-power-1">40</span> + <span class="oct-power-0">6</span><br>
+                    = <span class="answer">46</span> (10)
+                </li>
+            </ol>
+        </div>
+
+        <!-- 十六进制转十进制 -->
+        <div class="card">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="3" x2="16" y2="7"></line>
+                    <line x1="10" y1="3" x2="10" y2="7"></line>
+                    <line x1="3" y1="16" x2="7" y2="16"></line>
+                    <line x1="3" y1="10" x2="7" y2="10"></line>
+                    <line x1="16" y1="16" x2="20" y2="16"></line>
+                    <line x1="10" y1="16" x2="14" y2="16"></line>
+                </svg>
+                十六进制转十进制
+            </h2>
+            <ol>
+                <!-- 示例：A3F → 2623 -->
+                <li>请将十六进制数 A3F 转化为十进制数（A代表10，F代表15）。<br>
+                    <span class="hex-power-2">16²</span> <span class="hex-power-1">16¹</span> <span class="hex-power-0">16⁰</span>  (16)<br>
+                    <span class="hex-digit hex-power-2">A</span> <span class="hex-digit hex-power-1">3</span> <span class="hex-digit hex-power-0">F</span><br>
+                    = <span class="hex-power-2">16²×A</span> + <span class="hex-power-1">16¹×3</span> + <span class="hex-power-0">16⁰×F</span><br>
+                    = <span class="hex-power-2">2560</span> + <span class="hex-power-1">48</span> + <span class="hex-power-0">15</span><br>
+                    = <span class="answer">2623</span> (10)
+                </li>
+
+                <!-- 原题第1题：4B → 75 -->
+                <li>请将十六进制数 4B 转化为十进制数（B代表11）。<br>
+                    <span class="hex-power-1">16¹</span> <span class="hex-power-0">16⁰</span>  (16)<br>
+                    <span class="hex-digit hex-power-1">4</span> <span class="hex-digit hex-power-0">B</span><br>
+                    = <span class="hex-power-1">16¹×4</span> + <span class="hex-power-0">16⁰×11</span><br>
+                    = <span class="hex-power-1">64</span> + <span class="hex-power-0">11</span><br>
+                    = <span class="answer">75</span> (10)
+                </li>
+
+                <!-- 原题第2题：D8 → 216 -->
+                <li>请将十六进制数 D8 转化为十进制数（D代表13）。<br>
+                    <span class="hex-power-1">16¹</span> <span class="hex-power-0">16⁰</span>  (16)<br>
+                    <span class="hex-digit hex-power-1">D</span> <span class="hex-digit hex-power-0">8</span><br>
+                    = <span class="hex-power-1">16¹×13</span> + <span class="hex-power-0">16⁰×8</span><br>
+                    = <span class="hex-power-1">208</span> + <span class="hex-power-0">8</span><br>
+                    = <span class="answer">216</span> (10)
+                </li>
+
+                <!-- 原题第3题：2F5 → 757 -->
+                <li>请将十六进制数 2F5 转化为十进制数（F代表15）。<br>
+                    <span class="hex-power-2">16²</span> <span class="hex-power-1">16¹</span> <span class="hex-power-0">16⁰</span>  (16)<br>
+                    <span class="hex-digit hex-power-2">2</span> <span class="hex-digit hex-power-1">F</span> <span class="hex-digit hex-power-0">5</span><br>
+                    = <span class="hex-power-2">16²×2</span> + <span class="hex-power-1">16¹×15</span> + <span class="hex-power-0">16⁰×5</span><br>
+                    = <span class="hex-power-2">512</span> + <span class="hex-power-1">240</span> + <span class="hex-power-0">5</span><br>
+                    = <span class="answer">757</span> (10)
+                </li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
