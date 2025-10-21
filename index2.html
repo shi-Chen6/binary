@@ -4,444 +4,307 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>进制转换练习题</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4299E1', // 主色调（蓝色）
-                        binary: '#4299E1',   // 二进制主题色
-                        octal: '#ED8936',    // 八进制主题色
-                        hex: '#9F7AEA',      // 十六进制主题色
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                }
-            }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
         }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .card-shadow {
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            }
-            .modal-shadow {
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            }
-            /* 调整卡片高度和字体的自定义类 */
-            .custom-card {
-                min-height: 400px; /* 三栏卡片最小高度 */
-                padding: 2rem; /* 增加内边距提升高度 */
-            }
-            .custom-title {
-                font-size: 1.8rem; /* 卡片标题字体大小 */
-            }
-            .custom-question {
-                font-size: 1.25rem; /* 题目文字大小 */
-                line-height: 1.8; /* 行高增加可读性 */
-            }
-            .custom-number {
-                width: 1.8rem;
-                height: 1.8rem;
-                font-size: 1.2rem; /* 题号字体大小 */
-            }
+        .header {
+            background-color: #3498db;
+            color: white;
+            padding: 2.5rem 1rem; /* 增加头部内边距 */
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5rem; /* 增大标题字体 */
+            margin-bottom: 0.8rem;
+        }
+        .header p {
+            font-size: 1.2rem; /* 增大副标题字体 */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem; /* 增加卡片内边距 */
+            min-height: 450px; /* 设置卡片最小高度 */
+        }
+        .card h2 {
+            font-size: 1.8rem; /* 增大卡片标题字体 */
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .card h2 svg {
+            margin-right: 0.8rem;
+            width: 28px; /* 增大图标 */
+            height: 28px;
+        }
+        .card ol {
+            padding-left: 1.8rem;
+        }
+        .card li {
+            font-size: 1.2rem; /* 增大列表项字体 */
+            margin-bottom: 1.5rem; /* 增加列表项间距 */
+            line-height: 1.8; /* 增大行高 */
+        }
+        .btn-container {
+            text-align: center;
+            margin: 2.5rem 0;
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem; /* 增大按钮尺寸 */
+            font-size: 1.1rem; /* 增大按钮字体 */
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .modal-content h3 {
+            font-size: 1.5rem; /* 增大模态框标题字体 */
+            margin-bottom: 1.5rem;
+        }
+        .password-display {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1.4rem; /* 增大密码显示字体 */
+            min-height: 2.5rem;
+        }
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .keypad-btn {
+            padding: 1.2rem;
+            font-size: 1.4rem; /* 增大键盘按钮字体 */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .keypad-btn:hover {
+            background-color: #f5f5f5;
+        }
+        .control-btns {
+            display: flex;
+            justify-content: space-around;
+            gap: 1rem;
+        }
+        .control-btn {
+            flex: 1;
+            padding: 1rem;
+            font-size: 1.1rem; /* 增大控制按钮字体 */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .clear {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .clear:hover {
+            background-color: #c0392b;
+        }
+        .confirm {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .confirm:hover {
+            background-color: #27ae60;
+        }
+        .error {
+            color: red;
+            font-size: 1.1rem; /* 增大错误提示字体 */
+            margin-top: 1.5rem;
+            display: none;
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <!-- 头部区域 -->
-    <header class="bg-primary text-white py-10"> <!-- 增加头部高度 -->
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold">进制转换练习题</h1> <!-- 标题放大 -->
-            <p class="mt-3 text-gray-100 text-xl">全国计算机等级考试难度</p> <!-- 副标题放大 -->
+<body>
+    <div class="header">
+        <h1>进制转换练习题</h1>
+        <p>作业要求：每种题型至少完成2道</p>
+    </div>
+    <div class="container">
+        <div class="card">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                </svg>
+                二进制转十进制
+            </h2>
+            <ol>
+                <li>请将二进制数 <span style="color: #1a73e8;">10110</span> 转化为十进制数。</li>
+                <li>请将二进制数 <span style="color: #1a73e8;">111011</span> 转化为十进制数。</li>
+                <li>请将二进制数 <span style="color: #1a73e8;">100001</span> 转化为十进制数。</li>
+            </ol>
         </div>
-    </header>
-
-    <!-- 题目区域 -->
-    <main class="container mx-auto px-4 py-12"> <!-- 增加主区域间距 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8"> <!-- 增加列间距 -->
-            <!-- 二进制转十进制卡片 -->
-            <div class="bg-white rounded-lg custom-card card-shadow"> <!-- 使用自定义卡片类 -->
-                <div class="flex items-center mb-6"> <!-- 增加标题间距 -->
-                    <div class="w-12 h-12 rounded-full bg-binary/10 flex items-center justify-center mr-4"> <!-- 图标放大 -->
-                        <i class="fa fa-code text-binary text-2xl"></i> <!-- 图标放大 -->
-                    </div>
-                    <h2 class="custom-title font-bold text-gray-800">二进制转十进制</h2>
-                </div>
-                <ol class="space-y-6"> <!-- 增加题目间距 -->
-                    <li class="flex items-start">
-                        <span class="bg-binary/10 text-binary font-bold rounded-full custom-number flex items-center justify-center mr-4 mt-0.5">1</span>
-                        <p class="custom-question">请将二进制数 <span class="font-bold text-binary">10110</span> 转化为十进制数。</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="bg-binary/10 text-binary font-bold rounded-full custom-number flex items-center justify-center mr-4 mt-0.5">2</span>
-                        <p class="custom-question">请将二进制数 <span class="font-bold text-binary">111011</span> 转化为十进制数。</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="bg-binary/10 text-binary font-bold rounded-full custom-number flex items-center justify-center mr-4 mt-0.5">3</span>
-                        <p class="custom-question">请将二进制数 <span class="font-bold text-binary">100001</span> 转化为十进制数。</p>
-                    </li>
-                </ol>
-            </div>
-
-            <!-- 八进制转十进制卡片 -->
-            <div class="bg-white rounded-lg custom-card card-shadow">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 rounded-full bg-octal/10 flex items-center justify-center mr-4">
-                        <i class="fa fa-calculator text-octal text-2xl"></i>
-                    </div>
-                    <h2 class="custom-title font-bold text-gray-800">八进制转十进制</h2>
-                </div>
-                <ol class="space-y-6">
-                    <li class="flex items-start">
-                        <span class="bg-octal/10 text-octal font-bold rounded-full custom-number flex items-center justify-center mr-4 mt-0.5">1</span>
-                        <p class="custom-question">请将八进制数 <span class="font-bold text-octal">342</span> 转化为十进制数。</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="bg-octal/10 text-octal font-bold rounded-full custom-number flex items-center justify-center mr-4 mt-0.5">2</span>
-                        <p class="custom-question">请将八进制数 <span class="font-bold text-octal">170</span> 转化为十进制数。</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="bg-octal/10 text-octal font-bold rounded-full custom-number flex items-center justify-center mr-4 mt-0.5">3</span>
-                        <p class="custom-question">请将八进制数 <span class="font-bold text-octal">56</span> 转化为十进制数。</p>
-                    </li>
-                </ol>
-            </div>
-
-            <!-- 十六进制转十进制卡片 -->
-            <div class="bg-white rounded-lg custom-card card-shadow">
-                <div class="flex items-center mb-6">
-                    <div class="w-12 h-12 rounded-full bg-hex/10 flex items-center justify-center mr-4">
-                        <i class="fa fa-keyboard-o text-hex text-2xl"></i>
-                    </div>
-                    <h2 class="custom-title font-bold text-gray-800">十六进制转十进制</h2>
-                </div>
-                <ol class="space-y-6">
-                    <li class="flex items-start">
-                        <span class="bg-hex/10 text-hex font-bold rounded-full custom-number flex items-center justify-center mr-4 mt-0.5">1</span>
-                        <p class="custom-question">请将十六进制数 <span class="font-bold text-hex">4B</span> 转化为十进制数（B代表11）。</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="bg-hex/10 text-hex font-bold rounded-full custom-number flex items-center justify-center mr-4 mt-0.5">2</span>
-                        <p class="custom-question">请将十六进制数 <span class="font-bold text-hex">D8</span> 转化为十进制数（D代表13）。</p>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="bg-hex/10 text-hex font-bold rounded-full custom-number flex items-center justify-center mr-4 mt-0.5">3</span>
-                        <p class="custom-question">请将十六进制数 <span class="font-bold text-hex">2F5</span> 转化为十进制数（F代表15）。</p>
-                    </li>
-                </ol>
-            </div>
+        <div class="card">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+                    <line x1="6" y1="12" x2="6" y2="16"></line>
+                    <line x1="10" y1="12" x2="10" y2="16"></line>
+                    <line x1="14" y1="12" x2="14" y2="16"></line>
+                </svg>
+                八进制转十进制
+            </h2>
+            <ol>
+                <li>请将八进制数 <span style="color: #f39c12;">342</span> 转化为十进制数。</li>
+                <li>请将八进制数 <span style="color: #f39c12;">170</span> 转化为十进制数。</li>
+                <li>请将八进制数 <span style="color: #f39c12;">56</span> 转化为十进制数。</li>
+            </ol>
         </div>
-
-        <!-- 查看答案按钮（放大按钮） -->
-        <div class="mt-12 text-center">
-            <button id="view-answer-btn" class="bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-lg font-medium transition duration-300 shadow-md hover:shadow-lg text-xl">
-                <i class="fa fa-eye mr-2"></i> 查看答案
-            </button>
-        </div>
-    </main>
-
-    <!-- 密码输入模态框（保持之前的功能，仅调整按钮字体） -->
-    <div id="password-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg p-8 w-full max-w-md modal-shadow">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">验证密码</h3>
-            <p class="text-gray-600 mb-6 text-center text-lg">请输入密码以查看答案（密码：1234）</p>
-            
-            <div class="mb-6">
-                <input type="password" id="password-input" class="w-full text-center text-3xl p-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="输入密码" maxlength="4">
-            </div>
-            
-            <div class="grid grid-cols-3 gap-3 mb-6">
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200" data-digit="1">1</button>
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200" data-digit="2">2</button>
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200" data-digit="3">3</button>
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200" data-digit="4">4</button>
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200" data-digit="5">5</button>
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200" data-digit="6">6</button>
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200" data-digit="7">7</button>
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200" data-digit="8">8</button>
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200" data-digit="9">9</button>
-                <button class="digit-btn bg-gray-100 hover:bg-gray-200 text-gray-800 text-2xl py-4 rounded-lg transition duration-200 col-start-2" data-digit="0">0</button>
-            </div>
-            
-            <div class="flex justify-between">
-                <button id="clear-password" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg transition duration-200 text-lg">
-                    <i class="fa fa-refresh mr-1"></i> 清除
-                </button>
-                <button id="submit-password" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg transition duration-200 text-lg">
-                    <i class="fa fa-unlock mr-1"></i> 提交
-                </button>
-            </div>
-            
-            <p id="password-error" class="text-center text-red-500 mt-4 hidden text-lg">密码错误，请重试</p>
+        <div class="card">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="3" x2="16" y2="7"></line>
+                    <line x1="10" y1="3" x2="10" y2="7"></line>
+                    <line x1="3" y1="16" x2="7" y2="16"></line>
+                    <line x1="3" y1="10" x2="7" y2="10"></line>
+                    <line x1="16" y1="16" x2="20" y2="16"></line>
+                    <line x1="10" y1="16" x2="14" y2="16"></line>
+                </svg>
+                十六进制转十进制
+            </h2>
+            <ol>
+                <li>请将十六进制数 <span style="color: #9b59b6;">4B</span> 转化为十进制数（B代表11）。</li>
+                <li>请将十六进制数 <span style="color: #9b59b6;">D8</span> 转化为十进制数（D代表13）。</li>
+                <li>请将十六进制数 <span style="color: #9b59b6;">2F5</span> 转化为十进制数（F代表15）。</li>
+            </ol>
         </div>
     </div>
+    <div class="btn-container">
+        <button id="viewAnswerBtn" class="btn">查看答案</button>
+    </div>
 
-    <!-- 答案区域（保持详细步骤，字体同步放大） -->
-    <div id="answers-section" class="container mx-auto px-4 py-12 hidden">
-        <!-- 二进制转十进制详细步骤 -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-bold text-binary mb-8">一、二进制转十进制</h2>
-            
-            <!-- 第1题：10110 → 22 -->
-            <div class="bg-white rounded-lg p-8 mb-8 card-shadow">
-                <h3 class="text-2xl font-bold mb-6">1. 二进制数 10110 转十进制</h3>
-                <div class="flex flex-wrap justify-center mb-4 gap-x-8 gap-y-2">
-                    <span class="text-binary text-xl">2<sup>4</sup></span>
-                    <span class="text-binary text-xl">2<sup>3</sup></span>
-                    <span class="text-binary text-xl">2<sup>2</sup></span>
-                    <span class="text-binary text-xl">2<sup>1</sup></span>
-                    <span class="text-binary text-xl">2<sup>0</sup></span>
-                    <span class="text-gray-600 text-xl">(2)</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-6 gap-x-8 gap-y-2">
-                    <span class="font-bold text-binary text-2xl">1</span>
-                    <span class="font-bold text-binary text-2xl">0</span>
-                    <span class="font-bold text-binary text-2xl">1</span>
-                    <span class="font-bold text-binary text-2xl">1</span>
-                    <span class="font-bold text-binary text-2xl">0</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-4 gap-x-2 gap-y-4">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="text-binary text-xl">2<sup>4</sup>×1</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>3</sup>×0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>2</sup>×1</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>1</sup>×1</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>0</sup>×0</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-4 gap-x-2 gap-y-4">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="text-orange-500 text-xl">16</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">4</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">2</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">0</span>
-                </div>
-                <div class="flex justify-center">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="font-bold text-orange-500 text-2xl mx-3">22</span>
-                    <span class="text-gray-600 text-xl">(10)</span>
-                </div>
+    <!-- 密码输入模态框 -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <h3>请输入密码</h3>
+            <div id="passwordDisplay" class="password-display"></div>
+            <div class="keypad">
+                <button class="keypad-btn" data-num="1">1</button>
+                <button class="keypad-btn" data-num="2">2</button>
+                <button class="keypad-btn" data-num="3">3</button>
+                <button class="keypad-btn" data-num="4">4</button>
+                <button class="keypad-btn" data-num="5">5</button>
+                <button class="keypad-btn" data-num="6">6</button>
+                <button class="keypad-btn" data-num="7">7</button>
+                <button class="keypad-btn" data-num="8">8</button>
+                <button class="keypad-btn" data-num="9">9</button>
+                <button class="keypad-btn" style="visibility: hidden;"></button>
+                <button class="keypad-btn" data-num="0">0</button>
+                <button class="keypad-btn" data-num="0">0</button>
             </div>
-
-            <!-- 第2题：111011 → 59 -->
-            <div class="bg-white rounded-lg p-8 mb-8 card-shadow">
-                <h3 class="text-2xl font-bold mb-6">2. 二进制数 111011 转十进制</h3>
-                <div class="flex flex-wrap justify-center mb-4 gap-x-8 gap-y-2">
-                    <span class="text-binary text-xl">2<sup>5</sup></span>
-                    <span class="text-binary text-xl">2<sup>4</sup></span>
-                    <span class="text-binary text-xl">2<sup>3</sup></span>
-                    <span class="text-binary text-xl">2<sup>2</sup></span>
-                    <span class="text-binary text-xl">2<sup>1</sup></span>
-                    <span class="text-binary text-xl">2<sup>0</sup></span>
-                    <span class="text-gray-600 text-xl">(2)</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-6 gap-x-8 gap-y-2">
-                    <span class="font-bold text-binary text-2xl">1</span>
-                    <span class="font-bold text-binary text-2xl">1</span>
-                    <span class="font-bold text-binary text-2xl">1</span>
-                    <span class="font-bold text-binary text-2xl">0</span>
-                    <span class="font-bold text-binary text-2xl">1</span>
-                    <span class="font-bold text-binary text-2xl">1</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-4 gap-x-2 gap-y-4">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="text-binary text-xl">2<sup>5</sup>×1</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>4</sup>×1</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>3</sup>×1</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>2</sup>×0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>1</sup>×1</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>0</sup>×1</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-4 gap-x-2 gap-y-4">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="text-orange-500 text-xl">32</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">16</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">8</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">2</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">1</span>
-                </div>
-                <div class="flex justify-center">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="font-bold text-orange-500 text-2xl mx-3">59</span>
-                    <span class="text-gray-600 text-xl">(10)</span>
-                </div>
+            <div class="control-btns">
+                <button id="clearBtn" class="control-btn clear">清除</button>
+                <button id="confirmBtn" class="control-btn confirm">确认</button>
             </div>
-
-            <!-- 第3题：100001 → 33 -->
-            <div class="bg-white rounded-lg p-8 card-shadow">
-                <h3 class="text-2xl font-bold mb-6">3. 二进制数 100001 转十进制</h3>
-                <div class="flex flex-wrap justify-center mb-4 gap-x-8 gap-y-2">
-                    <span class="text-binary text-xl">2<sup>5</sup></span>
-                    <span class="text-binary text-xl">2<sup>4</sup></span>
-                    <span class="text-binary text-xl">2<sup>3</sup></span>
-                    <span class="text-binary text-xl">2<sup>2</sup></span>
-                    <span class="text-binary text-xl">2<sup>1</sup></span>
-                    <span class="text-binary text-xl">2<sup>0</sup></span>
-                    <span class="text-gray-600 text-xl">(2)</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-6 gap-x-8 gap-y-2">
-                    <span class="font-bold text-binary text-2xl">1</span>
-                    <span class="font-bold text-binary text-2xl">0</span>
-                    <span class="font-bold text-binary text-2xl">0</span>
-                    <span class="font-bold text-binary text-2xl">0</span>
-                    <span class="font-bold text-binary text-2xl">0</span>
-                    <span class="font-bold text-binary text-2xl">1</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-4 gap-x-2 gap-y-4">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="text-binary text-xl">2<sup>5</sup>×1</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>4</sup>×0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>3</sup>×0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>2</sup>×0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>1</sup>×0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-binary text-xl">2<sup>0</sup>×1</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-4 gap-x-2 gap-y-4">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="text-orange-500 text-xl">32</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">0</span>
-                    <span class="text-gray-600 text-xl">+</span>
-                    <span class="text-orange-500 text-xl">1</span>
-                </div>
-                <div class="flex justify-center">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="font-bold text-orange-500 text-2xl mx-3">33</span>
-                    <span class="text-gray-600 text-xl">(10)</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 八进制转十进制详细步骤（省略部分重复代码，保持结构一致） -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-bold text-octal mb-8">二、八进制转十进制</h2>
-            <!-- 第1题：342 → 226 -->
-            <div class="bg-white rounded-lg p-8 mb-8 card-shadow">
-                <h3 class="text-2xl font-bold mb-6">1. 八进制数 342 转十进制</h3>
-                <!-- 内容结构与二进制类似，字体同步放大 -->
-                <div class="flex flex-wrap justify-center mb-4 gap-x-8 gap-y-2">
-                    <span class="text-octal text-xl">8<sup>2</sup></span>
-                    <span class="text-octal text-xl">8<sup>1</sup></span>
-                    <span class="text-octal text-xl">8<sup>0</sup></span>
-                    <span class="text-gray-600 text-xl">(8)</span>
-                </div>
-                <div class="flex flex-wrap justify-center mb-6 gap-x-8 gap-y-2">
-                    <span class="font-bold text-octal text-2xl">3</span>
-                    <span class="font-bold text-octal text-2xl">4</span>
-                    <span class="font-bold text-octal text-2xl">2</span>
-                </div>
-                <!-- 省略后续计算步骤（与之前逻辑一致，仅字体放大） -->
-                <div class="flex justify-center">
-                    <span class="text-gray-600 text-xl">=</span>
-                    <span class="font-bold text-orange-500 text-2xl mx-3">226</span>
-                    <span class="text-gray-600 text-xl">(10)</span>
-                </div>
-            </div>
-
-            <!-- 第2题和第3题结构相同，省略 -->
-        </div>
-
-        <!-- 十六进制转十进制详细步骤（结构相同，省略） -->
-        <div>
-            <h2 class="text-3xl font-bold text-hex mb-8">三、十六进制转十进制</h2>
-            <!-- 题目内容与之前一致，字体同步放大 -->
+            <p id="errorMsg" class="error">密码错误，请重新输入！</p>
         </div>
     </div>
 
     <script>
-        // 密码验证逻辑保持不变
-        const viewAnswerBtn = document.getElementById('view-answer-btn');
-        const passwordModal = document.getElementById('password-modal');
-        const passwordInput = document.getElementById('password-input');
-        const digitBtns = document.querySelectorAll('.digit-btn');
-        const clearPasswordBtn = document.getElementById('clear-password');
-        const submitPasswordBtn = document.getElementById('submit-password');
-        const passwordError = document.getElementById('password-error');
-        const answersSection = document.getElementById('answers-section');
-        const CORRECT_PASSWORD = '1234';
+        // 获取DOM元素
+        const viewAnswerBtn = document.getElementById('viewAnswerBtn');
+        const passwordModal = document.getElementById('passwordModal');
+        const passwordDisplay = document.getElementById('passwordDisplay');
+        const keypadBtns = document.querySelectorAll('.keypad-btn[data-num]');
+        const clearBtn = document.getElementById('clearBtn');
+        const confirmBtn = document.getElementById('confirmBtn');
+        const errorMsg = document.getElementById('errorMsg');
 
+        let passwordInput = '';
+        const correctPassword = '1234'; // 设定正确密码（可自行修改）
+
+        // 点击“查看答案”显示密码框
         viewAnswerBtn.addEventListener('click', () => {
-            passwordModal.classList.remove('hidden');
-            passwordInput.focus();
+            passwordModal.style.display = 'flex';
+            passwordInput = '';
+            updatePasswordDisplay();
+            errorMsg.style.display = 'none';
         });
 
-        digitBtns.forEach(btn => {
+        // 数字键盘按钮点击事件：输入数字
+        keypadBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                if (passwordInput.value.length < 4) {
-                    passwordInput.value += btn.getAttribute('data-digit');
-                }
-                if (passwordInput.value.length === 4) {
-                    submitPasswordBtn.click();
+                if (passwordInput.length < 4) { // 限制密码长度为4位
+                    passwordInput += btn.dataset.num;
+                    updatePasswordDisplay();
                 }
             });
         });
 
-        clearPasswordBtn.addEventListener('click', () => {
-            passwordInput.value = '';
-            passwordError.classList.add('hidden');
+        // 清除按钮：清空输入
+        clearBtn.addEventListener('click', () => {
+            passwordInput = '';
+            updatePasswordDisplay();
+            errorMsg.style.display = 'none';
         });
 
-        submitPasswordBtn.addEventListener('click', () => {
-            if (passwordInput.value === CORRECT_PASSWORD) {
-                passwordModal.classList.add('hidden');
-                answersSection.classList.remove('hidden');
+        // 确认按钮：验证密码
+        confirmBtn.addEventListener('click', () => {
+            if (passwordInput === correctPassword) {
+                window.location.href = 'answers.html'; // 密码正确，跳转到答案页
             } else {
-                passwordError.classList.remove('hidden');
-                passwordInput.classList.add('animate-shake');
-                setTimeout(() => passwordInput.classList.remove('animate-shake'), 500);
-                passwordInput.value = '';
+                errorMsg.style.display = 'block'; // 密码错误，显示提示
             }
         });
 
-        const shakeStyle = document.createElement('style');
-        shakeStyle.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                20%, 40%, 60%, 80% { transform: translateX(5px); }
+        // 更新密码显示（用*隐藏实际输入）
+        function updatePasswordDisplay() {
+            passwordDisplay.textContent = '*'.repeat(passwordInput.length);
+        }
+
+        // 点击模态框外部关闭（可选）
+        passwordModal.addEventListener('click', (e) => {
+            if (e.target === passwordModal) {
+                passwordModal.style.display = 'none';
             }
-            .animate-shake {
-                animation: shake 0.5s ease-in-out;
-            }
-        `;
-        document.head.appendChild(shakeStyle);
+        });
     </script>
 </body>
 </html>
