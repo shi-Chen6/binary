@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进制转换练习作业</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'SimHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .question-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .question-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            flex-shrink: 0;
+        }
+
+        .question-content {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .question-content .label {
+            color: #764ba2;
+            font-weight: bold;
+        }
+
+        .binary-number {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            letter-spacing: 2px;
+        }
+
+        .answer-section {
+            background: #e8eaf6;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 0.95em;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .answer-section.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .answer-label {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .answer-content {
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .password-section {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .password-section h3 {
+            color: #e65100;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .password-input-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .password-input-group input {
+            padding: 12px 20px;
+            font-size: 1.2em;
+            border: 2px solid #ff9800;
+            border-radius: 5px;
+            width: 200px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .password-input-group button {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            background: #ff9800;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .password-input-group button:hover {
+            background: #f57c00;
+        }
+
+        .password-input-group button:active {
+            transform: scale(0.98);
+        }
+
+        /* 虚拟数字键盘 */
+        .keyboard-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .virtual-keyboard {
+            display: grid;
+            grid-template-columns: repeat(3, 50px);
+            gap: 8px;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+        }
+
+        .virtual-keyboard.show {
+            max-height: 300px;
+            opacity: 1;
+            padding: 15px;
+        }
+
+        .keyboard-btn {
+            width: 50px;
+            height: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border: none;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .keyboard-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .keyboard-btn:active {
+            transform: translateY(0);
+        }
+
+        .keyboard-btn.backspace {
+            grid-column: span 3;
+            font-size: 1em;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+        }
+
+        .keyboard-btn.backspace:hover {
+            background: #ee5a52;
+        }
+
+        .message {
+            margin-top: 15px;
+            font-size: 1em;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .message.error {
+            display: block;
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        .message.success {
+            display: block;
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .table-container {
+            margin-top: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #764ba2;
+        }
+
+        .table-container h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f5f5f5;
+        }
+
+        tr:hover {
+            background: #e8eaf6;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .questions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .password-input-group input {
+                width: 100%;
+            }
+
+            .question-num {
+                width: 35px;
+                height: 35px;
+                font-size: 1.2em;
+                margin-right: 10px;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .virtual-keyboard {
+                grid-template-columns: repeat(3, 45px);
+                gap: 6px;
+                padding: 10px;
+            }
+
+            .virtual-keyboard.show {
+                padding: 10px;
+            }
+
+            .keyboard-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1em;
+            }
+
+            .binary-number {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 进制转换练习作业</h1>
+            <p>二进制、八进制、十六进制转换练习</p>
+        </div>
+
+        <div class="password-section">
+            <h3>🔐 查看答案需要输入密码</h3>
+            <div class="password-input-group">
+                <input type="number" id="passwordInput" placeholder="输入密码" min="0" onkeypress="if(event.key==='Enter') verifyPassword()" onfocus="showKeyboard()" onblur="hideKeyboardDelay()">
+                <button onclick="verifyPassword()">查看答案</button>
+            </div>
+            <div class="keyboard-container">
+                <div class="virtual-keyboard" id="virtualKeyboard">
+                    <button class="keyboard-btn" onclick="addDigit('1')">1</button>
+                    <button class="keyboard-btn" onclick="addDigit('2')">2</button>
+                    <button class="keyboard-btn" onclick="addDigit('3')">3</button>
+                    <button class="keyboard-btn" onclick="addDigit('4')">4</button>
+                    <button class="keyboard-btn" onclick="addDigit('5')">5</button>
+                    <button class="keyboard-btn" onclick="addDigit('6')">6</button>
+                    <button class="keyboard-btn" onclick="addDigit('7')">7</button>
+                    <button class="keyboard-btn" onclick="addDigit('8')">8</button>
+                    <button class="keyboard-btn" onclick="addDigit('9')">9</button>
+                    <button class="keyboard-btn" onclick="addDigit('0')">0</button>
+                    <button class="keyboard-btn backspace" onclick="deleteDigit()">← 删除</button>
+                </div>
+            </div>
+            <div class="message" id="message"></div>
+        </div>
+
+        <div class="questions-grid">
+            <!-- 二进制转八进制 -->
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">1</span>
+                    二进制转八进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将二进制数 <code class="binary-number">11010101</code> 转换为八进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        分组：<code>011 010 101</code><br>
+                        转换：<code>3 2 5</code><br>
+                        <strong>答案：325₈</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">2</span>
+                    二进制转八进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将二进制数 <code class="binary-number">10110011</code> 转换为八进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        分组：<code>010 110 011</code><br>
+                        转换：<code>2 6 3</code><br>
+                        <strong>答案：263₈</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">3</span>
+                    二进制转八进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将二进制数 <code class="binary-number">111001110</code> 转换为八进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        分组：<code>111 001 110</code><br>
+                        转换：<code>7 1 6</code><br>
+                        <strong>答案：716₈</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 八进制转二进制 -->
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">4</span>
+                    八进制转二进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将八进制数 <code class="binary-number">562₈</code> 转换为二进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        转换：<code>5 → 101</code>，<code>6 → 110</code>，<code>2 → 010</code><br>
+                        <strong>答案：101110010₂</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">5</span>
+                    八进制转二进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将八进制数 <code class="binary-number">743₈</code> 转换为二进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        转换：<code>7 → 111</code>，<code>4 → 100</code>，<code>3 → 011</code><br>
+                        <strong>答案：111100011₂</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">6</span>
+                    八进制转二进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将八进制数 <code class="binary-number">1256₈</code> 转换为二进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        转换：<code>1 → 001</code>，<code>2 → 010</code>，<code>5 → 101</code>，<code>6 → 110</code><br>
+                        <strong>答案：1010101110₂</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 二进制转十六进制 -->
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">7</span>
+                    二进制转十六进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将二进制数 <code class="binary-number">11010110</code> 转换为十六进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        分组：<code>1101 0110</code><br>
+                        转换：<code>D 6</code>（D = 13）<br>
+                        <strong>答案：D6₁₆</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">8</span>
+                    二进制转十六进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将二进制数 <code class="binary-number">101111001010</code> 转换为十六进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        分组：<code>1011 1100 1010</code><br>
+                        转换：<code>B C A</code>（B = 11，C = 12，A = 10）<br>
+                        <strong>答案：BCA₁₆</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">9</span>
+                    二进制转十六进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将二进制数 <code class="binary-number">11111111</code> 转换为十六进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        分组：<code>1111 1111</code><br>
+                        转换：<code>F F</code>（F = 15）<br>
+                        <strong>答案：FF₁₆</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 十六进制转二进制 -->
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">10</span>
+                    十六进制转二进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将十六进制数 <code class="binary-number">A5₁₆</code> 转换为二进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        转换：<code>A → 1010</code>，<code>5 → 0101</code><br>
+                        <strong>答案：10100101₂</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">11</span>
+                    十六进制转二进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将十六进制数 <code class="binary-number">2F3₁₆</code> 转换为二进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        转换：<code>2 → 0010</code>，<code>F → 1111</code>，<code>3 → 0011</code><br>
+                        <strong>答案：1011110011₂</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-title">
+                    <span class="question-num">12</span>
+                    十六进制转二进制
+                </div>
+                <div class="question-content">
+                    <span class="label">题目：</span>将十六进制数 <code class="binary-number">E8C₁₆</code> 转换为二进制
+                </div>
+                <div class="answer-section">
+                    <div class="answer-label">✓ 答案：</div>
+                    <div class="answer-content">
+                        转换：<code>E → 1110</code>，<code>8 → 1000</code>，<code>C → 1100</code><br>
+                        <strong>答案：111010001100₂</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container answer-section">
+            <h3>📊 进制转换参考表</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>二进制</th>
+                        <th>八进制</th>
+                        <th>十进制</th>
+                        <th>十六进制</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0000</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>0001</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>0010</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>0011</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>0100</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>0101</td>
+                        <td>5</td>
+                        <td>5</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>0110</td>
+                        <td>6</td>
+                        <td>6</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>0111</td>
+                        <td>7</td>
+                        <td>7</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td>1000</td>
+                        <td>10</td>
+                        <td>8</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>1001</td>
+                        <td>11</td>
+                        <td>9</td>
+                        <td>9</td>
+                    </tr>
+                    <tr>
+                        <td>1010</td>
+                        <td>12</td>
+                        <td>10</td>
+                        <td>A</td>
+                    </tr>
+                    <tr>
+                        <td>1011</td>
+                        <td>13</td>
+                        <td>11</td>
+                        <td>B</td>
+                    </tr>
+                    <tr>
+                        <td>1100</td>
+                        <td>14</td>
+                        <td>12</td>
+                        <td>C</td>
+                    </tr>
+                    <tr>
+                        <td>1101</td>
+                        <td>15</td>
+                        <td>13</td>
+                        <td>D</td>
+                    </tr>
+                    <tr>
+                        <td>1110</td>
+                        <td>16</td>
+                        <td>14</td>
+                        <td>E</td>
+                    </tr>
+                    <tr>
+                        <td>1111</td>
+                        <td>17</td>
+                        <td>15</td>
+                        <td>F</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>💡 提示：密码正确后，所有答案和参考表都会显示</p>
+        </div>
+    </div>
+
+    <script>
+        let keyboardVisible = false;
+
+        function showKeyboard() {
+            const keyboard = document.getElementById('virtualKeyboard');
+            keyboard.classList.add('show');
+            keyboardVisible = true;
+        }
+
+        function hideKeyboardDelay() {
+            setTimeout(() => {
+                const keyboard = document.getElementById('virtualKeyboard');
+                keyboard.classList.remove('show');
+                keyboardVisible = false;
+            }, 200);
+        }
+
+        function addDigit(digit) {
+            const passwordInput = document.getElementById('passwordInput');
+            passwordInput.value += digit;
+        }
+
+        function deleteDigit() {
+            const passwordInput = document.getElementById('passwordInput');
+            passwordInput.value = passwordInput.value.slice(0, -1);
+        }
+
+        function verifyPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const password = passwordInput.value;
+            const messageDiv = document.getElementById('message');
+            const correctPassword = '123';
+
+            if (password === correctPassword) {
+                // 显示所有答案
+                const answerSections = document.querySelectorAll('.answer-section');
+                answerSections.forEach(section => {
+                    section.classList.add('show');
+                });
+
+                // 显示成功消息
+                messageDiv.className = 'message success';
+                messageDiv.textContent = '✓ 密码正确！答案已显示';
+
+                // 清空密码输入框并禁用
+                passwordInput.value = '';
+                passwordInput.disabled = true;
+                document.querySelector('button').disabled = true;
+
+                // 禁用虚拟键盘
+                const keyboardBtns = document.querySelectorAll('.keyboard-btn');
+                keyboardBtns.forEach(btn => {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.5';
+                    btn.style.cursor = 'not-allowed';
+                });
+
+                // 隐藏虚拟键盘
+                const keyboard = document.getElementById('virtualKeyboard');
+                keyboard.classList.remove('show');
+
+                // 3秒后清除消息
+                setTimeout(() => {
+                    messageDiv.textContent = '';
+                    messageDiv.className = 'message';
+                }, 3000);
+            } else if (password === '') {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '✗ 请输入密码';
+                setTimeout(() => {
+                    messageDiv.textContent = '';
+                    messageDiv.className = 'message';
+                }, 2000);
+            } else {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '✗ 密码错误，请重试';
+                passwordInput.value = '';
+                setTimeout(() => {
+                    messageDiv.textContent = '';
+                    messageDiv.className = 'message';
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
