@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二进制转换计算器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        octal: '#F97316',
+                        hexadecimal: '#10B981',
+                        neutral: '#1F2937',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .digit-container {
+                @apply flex flex-col items-center mx-0.5;
+            }
+            .digit-box {
+                @apply w-10 h-10 flex items-center justify-center rounded-b-md text-lg font-bold border-2 border-t-0;
+            }
+            .weight-box {
+                @apply w-10 h-6 flex items-center justify-center text-xs font-medium rounded-t-md;
+            }
+            .binary-group {
+                @apply flex bg-gray-50 p-2 rounded-md border border-gray-200 mb-2 inline-flex;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <header class="text-center mb-10">
+            <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-primary mb-3">二进制转换计算器</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">将二进制数转换为八进制和十六进制，直观展示421法和8421法的转换过程</p>
+        </header>
+        
+        <main class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-10">
+            <div class="mb-8">
+                <label for="binaryInput" class="block text-gray-700 font-medium mb-2">输入二进制数:</label>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input 
+                        type="tel"
+                        id="binaryInput" 
+                        placeholder="例如: 101101101" 
+                        inputmode="numeric"
+                        pattern="[01]*"
+                        class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all duration-300"
+                    >
+                    <button 
+                        id="convertBtn" 
+                        class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2"
+                    >
+                        <i class="fa fa-exchange"></i>
+                        <span>转换</span>
+                    </button>
+                </div>
+                <p id="errorMessage" class="text-red-500 text-sm mt-2 hidden">请输入有效的二进制数（仅包含0和1）</p>
+            </div>
+            
+            <div id="results" class="grid grid-cols-1 md:grid-cols-2 gap-8 opacity-0 transition-all duration-300">
+                <!-- 八进制转换结果 -->
+                <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                    <h2 class="text-xl font-bold text-octal mb-4 flex items-center">
+                        <i class="fa fa-calculator mr-2"></i>二进制转八进制 (421法)
+                    </h2>
+                    
+                    <div class="mb-4">
+                        <p class="text-gray-600 mb-2">分组结果（上方为权重值）:</p>
+                        <div id="octalGroups" class="flex flex-wrap gap-3 my-3 min-h-[80px]"></div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-gray-600 mb-2">转换过程:</p>
+                        <div id="octalProcess" class="space-y-2 my-3 min-h-[80px]"></div>
+                    </div>
+                    
+                    <div class="p-3 bg-octal/10 rounded-lg border border-octal/20">
+                        <p class="text-gray-600">八进制结果:</p>
+                        <p id="octalResult" class="text-2xl font-bold text-octal">0</p>
+                    </div>
+                </div>
+                
+                <!-- 十六进制转换结果 -->
+                <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                    <h2 class="text-xl font-bold text-hexadecimal mb-4 flex items-center">
+                        <i class="fa fa-calculator mr-2"></i>二进制转十六进制 (8421法)
+                    </h2>
+                    
+                    <div class="mb-4">
+                        <p class="text-gray-600 mb-2">分组结果（上方为权重值）:</p>
+                        <div id="hexGroups" class="flex flex-wrap gap-3 my-3 min-h-[80px]"></div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <p class="text-gray-600 mb-2">转换过程:</p>
+                        <div id="hexProcess" class="space-y-2 my-3 min-h-[80px]"></div>
+                    </div>
+                    
+                    <div class="p-3 bg-hexadecimal/10 rounded-lg border border-hexadecimal/20">
+                        <p class="text-gray-600">十六进制结果:</p>
+                        <p id="hexResult" class="text-2xl font-bold text-hexadecimal">0</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            <div class="bg-white rounded-xl p-5 shadow-md border border-gray-100">
+                <h3 class="text-lg font-bold text-octal mb-3">什么是421法？</h3>
+                <p class="text-gray-600">421法是二进制转八进制的简便方法。因为8是2的3次方，所以将二进制数从右向左每3位分为一组，每组对应一个八进制数字。每组的3位分别代表4、2、1的权重，将各组中1对应的权重相加，即可得到相应的八进制数字。</p>
+            </div>
+            
+            <div class="bg-white rounded-xl p-5 shadow-md border border-gray-100">
+                <h3 class="text-lg font-bold text-hexadecimal mb-3">什么是8421法？</h3>
+                <p class="text-gray-600">8421法是二进制转十六进制的简便方法。因为16是2的4次方，所以将二进制数从右向左每4位分为一组，每组对应一个十六进制数字。每组的4位分别代表8、4、2、1的权重，将各组中1对应的权重相加，即可得到相应的十六进制数字（10-15分别用A-F表示）。</p>
+            </div>
+        </section>
+        
+        <footer class="text-center text-gray-500 text-sm py-4">
+            <p>二进制转换计算器 | 帮助学生理解数制转换原理</p>
+        </footer>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const binaryInput = document.getElementById('binaryInput');
+        const convertBtn = document.getElementById('convertBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const results = document.getElementById('results');
+        
+        // 八进制相关元素
+        const octalGroups = document.getElementById('octalGroups');
+        const octalProcess = document.getElementById('octalProcess');
+        const octalResult = document.getElementById('octalResult');
+        
+        // 十六进制相关元素
+        const hexGroups = document.getElementById('hexGroups');
+        const hexProcess = document.getElementById('hexProcess');
+        const hexResult = document.getElementById('hexResult');
+        
+        // 十六进制字符映射
+        const hexMap = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+        
+        // 事件监听
+        convertBtn.addEventListener('click', convertBinary);
+        binaryInput.addEventListener('keypress', handleKeyPress);
+        binaryInput.addEventListener('input', filterInput);
+        
+        // 按键处理
+        function handleKeyPress(e) {
+            if (!['0', '1', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'].includes(e.key) && !e.ctrlKey) {
+                e.preventDefault();
+                showError();
+            }
+            
+            if (e.key === 'Enter') {
+                convertBinary();
+            }
+        }
+        
+        // 输入过滤
+        function filterInput() {
+            binaryInput.value = binaryInput.value.replace(/[^01]/g, '');
+        }
+        
+        // 显示错误信息
+        function showError() {
+            errorMessage.classList.remove('hidden');
+            setTimeout(() => errorMessage.classList.add('hidden'), 2000);
+        }
+        
+        // 验证二进制输入
+        function validateBinary(input) {
+            const binaryRegex = /^[01]+$/;
+            return binaryRegex.test(input) && input.length > 0;
+        }
+        
+        // 二进制转换主函数
+        function convertBinary() {
+            const binary = binaryInput.value.trim();
+            
+            if (!validateBinary(binary)) {
+                errorMessage.classList.remove('hidden');
+                results.style.opacity = '0';
+                return;
+            }
+            
+            errorMessage.classList.add('hidden');
+            convertToOctal(binary);
+            convertToHexadecimal(binary);
+            results.style.opacity = '1';
+        }
+        
+        // 二进制转八进制（421法）
+        function convertToOctal(binary) {
+            octalGroups.innerHTML = '';
+            octalProcess.innerHTML = '';
+            
+            // 分组处理
+            let paddedBinary = binary;
+            const remainder = paddedBinary.length % 3;
+            if (remainder !== 0) {
+                paddedBinary = '0'.repeat(3 - remainder) + paddedBinary;
+            }
+            
+            const groups = [];
+            for (let i = 0; i < paddedBinary.length; i += 3) {
+                groups.push(paddedBinary.substr(i, 3));
+            }
+            
+            // 显示分组 - 权重在数字正上方
+            groups.forEach(group => {
+                const groupContainer = document.createElement('div');
+                groupContainer.className = 'binary-group';
+                
+                // 权重和数字组合
+                const weights = [4, 2, 1];
+                group.split('').forEach((digit, index) => {
+                    const digitContainer = document.createElement('div');
+                    digitContainer.className = 'digit-container';
+                    
+                    // 权重盒子（在上方）
+                    const weightBox = document.createElement('div');
+                    weightBox.className = 'weight-box bg-octal/20 text-octal border border-octal/30';
+                    weightBox.textContent = weights[index];
+                    
+                    // 数字盒子（在下方）
+                    const digitBox = document.createElement('div');
+                    digitBox.className = `digit-box ${digit === '1' ? 'bg-octal/10 border-octal text-octal' : 'bg-gray-100 border-gray-200 text-gray-500'}`;
+                    digitBox.textContent = digit;
+                    
+                    digitContainer.appendChild(weightBox);
+                    digitContainer.appendChild(digitBox);
+                    groupContainer.appendChild(digitContainer);
+                });
+                
+                octalGroups.appendChild(groupContainer);
+            });
+            
+            // 计算过程
+            let octal = '';
+            groups.forEach(group => {
+                let sum = 0;
+                const contributingWeights = [];
+                
+                group.split('').forEach((digit, index) => {
+                    if (digit === '1') {
+                        const weight = [4, 2, 1][index];
+                        sum += weight;
+                        contributingWeights.push(weight);
+                    }
+                });
+                
+                const processItem = document.createElement('div');
+                processItem.className = 'flex items-center gap-2';
+                processItem.innerHTML = `
+                    <span class="font-medium min-w-[60px]">${group}</span>
+                    <span>=</span>
+                    <span class="text-octal">${contributingWeights.length === 0 ? '0' : contributingWeights.join(' + ') + ' = ' + sum}</span>
+                `;
+                octalProcess.appendChild(processItem);
+                octal += sum.toString();
+            });
+            
+            octalResult.textContent = octal;
+        }
+        
+        // 二进制转十六进制（8421法）
+        function convertToHexadecimal(binary) {
+            hexGroups.innerHTML = '';
+            hexProcess.innerHTML = '';
+            
+            // 分组处理
+            let paddedBinary = binary;
+            const remainder = paddedBinary.length % 4;
+            if (remainder !== 0) {
+                paddedBinary = '0'.repeat(4 - remainder) + paddedBinary;
+            }
+            
+            const groups = [];
+            for (let i = 0; i < paddedBinary.length; i += 4) {
+                groups.push(paddedBinary.substr(i, 4));
+            }
+            
+            // 显示分组 - 权重在数字正上方
+            groups.forEach(group => {
+                const groupContainer = document.createElement('div');
+                groupContainer.className = 'binary-group';
+                
+                // 权重和数字组合
+                const weights = [8, 4, 2, 1];
+                group.split('').forEach((digit, index) => {
+                    const digitContainer = document.createElement('div');
+                    digitContainer.className = 'digit-container';
+                    
+                    // 权重盒子（在上方）
+                    const weightBox = document.createElement('div');
+                    weightBox.className = 'weight-box bg-hexadecimal/20 text-hexadecimal border border-hexadecimal/30';
+                    weightBox.textContent = weights[index];
+                    
+                    // 数字盒子（在下方）
+                    const digitBox = document.createElement('div');
+                    digitBox.className = `digit-box ${digit === '1' ? 'bg-hexadecimal/10 border-hexadecimal text-hexadecimal' : 'bg-gray-100 border-gray-200 text-gray-500'}`;
+                    digitBox.textContent = digit;
+                    
+                    digitContainer.appendChild(weightBox);
+                    digitContainer.appendChild(digitBox);
+                    groupContainer.appendChild(digitContainer);
+                });
+                
+                hexGroups.appendChild(groupContainer);
+            });
+            
+            // 计算过程
+            let hex = '';
+            groups.forEach(group => {
+                let sum = 0;
+                const contributingWeights = [];
+                
+                group.split('').forEach((digit, index) => {
+                    if (digit === '1') {
+                        const weight = [8, 4, 2, 1][index];
+                        sum += weight;
+                        contributingWeights.push(weight);
+                    }
+                });
+                
+                const processItem = document.createElement('div');
+                processItem.className = 'flex items-center gap-2';
+                processItem.innerHTML = `
+                    <span class="font-medium min-w-[80px]">${group}</span>
+                    <span>=</span>
+                    <span class="text-hexadecimal">${contributingWeights.length === 0 ? '0 = 0' : contributingWeights.join(' + ') + ' = ' + sum + ' = ' + hexMap[sum]}</span>
+                `;
+                hexProcess.appendChild(processItem);
+                hex += hexMap[sum];
+            });
+            
+            hexResult.textContent = hex;
+        }
+        
+        // 初始化示例
+        window.addEventListener('load', () => {
+            binaryInput.value = '101101101';
+            convertBinary();
+        });
+    </script>
+</body>
+</html>
