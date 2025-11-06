@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算机基础练习题</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        neutral: '#F8F9FA',
+                        dark: '#2D3748',
+                        light: '#EDF2F7'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'Microsoft YaHei', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .column-layout {
+                column-count: 3;
+                column-gap: 2rem;
+            }
+            @media (max-width: 1200px) {
+                .column-layout {
+                    column-count: 2;
+                }
+            }
+            @media (max-width: 768px) {
+                .column-layout {
+                    column-count: 1;
+                }
+            }
+            .question-block {
+                break-inside: avoid;
+                margin-bottom: 1.5rem;
+                padding: 1rem 1.2rem;
+            }
+            .section-divider {
+                height: 2px;
+                background: linear-gradient(90deg, transparent, theme('colors.primary'), transparent);
+                margin: 1.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen p-6 md:p-10">
+    <!-- 页面标题 -->
+    <header class="text-center mb-8 md:mb-12">
+        <h1 class="text-[clamp(1.8rem,5vw,2.8rem)] font-bold text-dark mb-2">计算机基础练习题</h1>
+        <div class="w-40 h-1.5 bg-primary mx-auto rounded-full"></div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="max-w-7xl mx-auto">
+        <!-- 单项选择题部分 -->
+        <section class="mb-10 md:mb-14">
+            <h2 class="text-[clamp(1.5rem,4vw,2.2rem)] font-bold text-primary mb-6 flex items-center">
+                <i class="fa fa-list-ol mr-3"></i>（一）单项选择题
+            </h2>
+            
+            <div class="column-layout">
+                <!-- 题目1 -->
+                <div class="question-block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-primary">
+                    <p class="text-[clamp(1.2rem,3vw,1.5rem)] text-dark mb-3 font-medium">1. 下列属于第三代计算机核心元件的是（ ）</p>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-[clamp(1.1rem,2.5vw,1.3rem)] text-gray-700">
+                        <div class="pl-2"><span class="font-semibold text-primary">A.</span> 电子管</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">B.</span> 晶体管</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">C.</span> 集成电路</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">D.</span> 超大规模集成电路</div>
+                    </div>
+                </div>
+
+                <!-- 题目2 -->
+                <div class="question-block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-primary">
+                    <p class="text-[clamp(1.2rem,3vw,1.5rem)] text-dark mb-3 font-medium">2. CPU 不能直接读取下列哪种设备中的数据（ ）</p>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-[clamp(1.1rem,2.5vw,1.3rem)] text-gray-700">
+                        <div class="pl-2"><span class="font-semibold text-primary">A.</span> 内存</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">B.</span> ROM</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">C.</span> 硬盘</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">D.</span> 高速内部缓存</div>
+                    </div>
+                </div>
+
+                <!-- 题目3 -->
+                <div class="question-block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-primary">
+                    <p class="text-[clamp(1.2rem,3vw,1.5rem)] text-dark mb-3 font-medium">3. 下列存储单位换算正确的是<br>（ ）</p>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-[clamp(1.1rem,2.5vw,1.3rem)] text-gray-700">
+                        <div class="pl-2"><span class="font-semibold text-primary">A.</span> 1MB=1000KB</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">B.</span> 1GB=1024MB</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">C.</span> 1KB=1024GB</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">D.</span> 1TB=1000GB</div>
+                    </div>
+                </div>
+
+                <!-- 题目4 -->
+                <div class="question-block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-primary">
+                    <p class="text-[clamp(1.2rem,3vw,1.5rem)] text-dark mb-3 font-medium">4. 标准 ASCII 码能表示的不同字符数量是（ ）</p>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-[clamp(1.1rem,2.5vw,1.3rem)] text-gray-700">
+                        <div class="pl-2"><span class="font-semibold text-primary">A.</span> 64 个</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">B.</span> 128 个</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">C.</span> 256 个</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">D.</span> 512 个</div>
+                    </div>
+                </div>
+
+                <!-- 题目5 -->
+                <div class="question-block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-primary">
+                    <p class="text-[clamp(1.2rem,3vw,1.5rem)] text-dark mb-3 font-medium">5. 以.mp3 为扩展名的文件通常是（ ）</p>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-[clamp(1.1rem,2.5vw,1.3rem)] text-gray-700">
+                        <div class="pl-2"><span class="font-semibold text-primary">A.</span> 文本文件</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">B.</span> 音频文件</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">C.</span> 图像文件</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">D.</span> 视频文件</div>
+                    </div>
+                </div>
+
+                <!-- 题目6 -->
+                <div class="question-block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-primary">
+                    <p class="text-[clamp(1.2rem,3vw,1.5rem)] text-dark mb-3 font-medium">6. 关于 RAM 的描述，正确的是<br>（ ）</p>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-[clamp(1.1rem,2.5vw,1.3rem)] text-gray-700">
+                        <div class="pl-2"><span class="font-semibold text-primary">A.</span> 断电后数据不丢失</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">B.</span> 又称只读存储器</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">C.</span> 可随时读写数据</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">D.</span> 存储容量固定不变</div>
+                    </div>
+                </div>
+
+                <!-- 题目7 -->
+                <div class="question-block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-primary">
+                    <p class="text-[clamp(1.2rem,3vw,1.5rem)] text-dark mb-3 font-medium">7. 下列不属于输入设备的是（ ）</p>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-[clamp(1.1rem,2.5vw,1.3rem)] text-gray-700">
+                        <div class="pl-2"><span class="font-semibold text-primary">A.</span> 键盘</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">B.</span> 鼠标</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">C.</span> 打印机</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">D.</span> 扫描仪</div>
+                    </div>
+                </div>
+
+                <!-- 题目8 -->
+                <div class="question-block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-primary">
+                    <p class="text-[clamp(1.2rem,3vw,1.5rem)] text-dark mb-3 font-medium">8. 下列关于计算机病毒的说法，错误的是（ ）</p>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-[clamp(1.1rem,2.5vw,1.3rem)] text-gray-700">
+                        <div class="pl-2"><span class="font-semibold text-primary">A.</span> 由人为编制</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">B.</span> 可破坏计算机数据</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">C.</span> 能传染给操作人员</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">D.</span> 属于特殊程序</div>
+                    </div>
+                </div>
+
+                <!-- 题目9 -->
+                <div class="question-block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-l-4 border-primary">
+                    <p class="text-[clamp(1.2rem,3vw,1.5rem)] text-dark mb-3 font-medium">9. 第四次信息技术革命的标志是<br>（ ）</p>
+                    <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-[clamp(1.1rem,2.5vw,1.3rem)] text-gray-700">
+                        <div class="pl-2"><span class="font-semibold text-primary">A.</span> 语言的产生</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">B.</span> 文字的发明</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">C.</span> 印刷术的发明</div>
+                        <div class="pl-2"><span class="font-semibold text-primary">D.</span> 计算机与互联网的使用</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- 进制转换题部分 -->
+        <section class="mb-10 md:mb-14">
+            <h2 class="text-[clamp(1.5rem,4vw,2.2rem)] font-bold text-primary mb-6 flex items-center">
+                <i class="fa fa-calculator mr-3"></i>（二）进制转换题
+            </h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- 转换题1 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-t-4 border-secondary flex items-center justify-center">
+                    <p class="text-[clamp(1.3rem,3.5vw,1.8rem)] text-dark text-center">（32）₁₀ =（ ）₂</p>
+                </div>
+
+                <!-- 转换题2 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-t-4 border-secondary flex items-center justify-center">
+                    <p class="text-[clamp(1.3rem,3.5vw,1.8rem)] text-dark text-center">（32）₁₀ =（ ）₈</p>
+                </div>
+  <!-- 转换题4 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-t-4 border-secondary flex items-center justify-center">
+                    <p class="text-[clamp(1.3rem,3.5vw,1.8rem)] text-dark text-center">（32）₁₀ =（ ）₁₆</p>
+                </div>
+                <!-- 转换题3 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-t-4 border-secondary flex items-center justify-center">
+                    <p class="text-[clamp(1.3rem,3.5vw,1.8rem)] text-dark text-center">（45）₁₀ =（ ）₂</p>
+                </div>
+
+                <!-- 转换题4 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-t-4 border-secondary flex items-center justify-center">
+                    <p class="text-[clamp(1.3rem,3.5vw,1.8rem)] text-dark text-center">（73）₁₀ =（ ）₈</p>
+                </div>
+<!-- 转换题4 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-t-4 border-secondary flex items-center justify-center">
+                    <p class="text-[clamp(1.3rem,3.5vw,1.8rem)] text-dark text-center">（73）₁₀ =（ ）₁₆</p>
+                </div>
+                <!-- 转换题5 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-t-4 border-secondary flex items-center justify-center lg:col-span-3">
+                    <p class="text-[clamp(1.3rem,3.5vw,1.8rem)] text-dark text-center">（92）₁₀ =（ ）₁₆</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- 简答题部分 -->
+        <section>
+            <h2 class="text-[clamp(1.5rem,4vw,2.2rem)] font-bold text-primary mb-6 flex items-center">
+                <i class="fa fa-pencil mr-3"></i>（三）简答题
+            </h2>
+            
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 border-r-4 border-primary">
+                <p class="text-[clamp(1.2rem,3vw,1.6rem)] text-dark mb-5 font-medium">1. 简述计算机硬件系统的主要组成部分及各部分作用。</p>
+                <!-- 预留答题区域 -->
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-5 min-h-[150px] bg-gray-50">
+                    <p class="text-gray-400 text-[clamp(1.1rem,2.5vw,1.3rem)] italic">（请在此处作答）</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 交互脚本 -->
+    <script>
+        // 点击题目高亮效果
+        document.querySelectorAll('.question-block, section > div > div').forEach(block => {
+            block.addEventListener('click', () => {
+                // 移除所有高亮
+                document.querySelectorAll('.question-block, section > div > div').forEach(el => {
+                    el.classList.remove('ring-3', 'ring-secondary', 'shadow-md');
+                });
+                // 当前题目高亮
+                block.classList.add('ring-3', 'ring-secondary', 'shadow-md');
+            });
+        });
+
+        // 页面加载动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const blocks = document.querySelectorAll('.question-block, section > div > div');
+            blocks.forEach((block, index) => {
+                block.style.opacity = '0';
+                block.style.transform = 'translateY(15px)';
+                block.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                
+                setTimeout(() => {
+                    block.style.opacity = '1';
+                    block.style.transform = 'translateY(0)';
+                }, 80 * index);
+            });
+        });
+    </script>
+</body>
+</html>
