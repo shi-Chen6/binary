@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信息技术 - 期中考试讲解</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+            margin: 5px 0;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .exam-info {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef7 100%);
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin-bottom: 35px;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .exam-info-item {
+            font-size: 14px;
+        }
+        
+        .exam-info-item strong {
+            color: #667eea;
+        }
+        
+        .section-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            margin: 40px 0 25px 0;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+        
+        .section-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+        
+        .question-group {
+            margin-bottom: 35px;
+        }
+        
+        .question {
+            background: #fafafa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .question:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            background: #fff;
+        }
+        
+        .q-number {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        
+        .q-content {
+            margin: 10px 0 12px 0;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .options {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        
+        .option {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        
+        .option-letter {
+            font-weight: 700;
+            color: #764ba2;
+            margin-right: 8px;
+        }
+        
+        .answer-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+            border-left: 4px solid #4caf50;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        .answer-box h4 {
+            color: #2e7d32;
+            font-size: 13px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .answer-box h4::before {
+            content: '✓';
+            color: #4caf50;
+            font-weight: bold;
+            margin-right: 6px;
+            font-size: 16px;
+        }
+        
+        .answer-text {
+            color: #1b5e20;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .analysis-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 4px solid #ff9800;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        .analysis-box h4 {
+            color: #e65100;
+            font-size: 13px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .analysis-box h4::before {
+            content: '📖';
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .analysis-box p {
+            color: #e65100;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        .extend-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left: 4px solid #2196f3;
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        .extend-box h4 {
+            color: #1565c0;
+            font-size: 13px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .extend-box h4::before {
+            content: '💡';
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .extend-box p {
+            color: #1565c0;
+            line-height: 1.6;
+            font-size: 14px;
+            margin: 6px 0;
+        }
+        
+        .extend-box ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+        
+        .extend-box li {
+            color: #1565c0;
+            margin: 4px 0;
+            font-size: 13px;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+            font-size: 13px;
+        }
+        
+        .table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-weight: 700;
+        }
+        
+        .table td {
+            padding: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .badge-correct {
+            background: #4caf50;
+        }
+        
+        .badge-wrong {
+            background: #f44336;
+        }
+        
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #667eea, transparent);
+            margin: 35px 0;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .tip {
+            background: #fff8dc;
+            border-left: 4px solid #ffd700;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 4px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #b8860b;
+        }
+        
+        .keyword {
+            color: #d32f2f;
+            font-weight: 700;
+        }
+        
+        .highlight {
+            background: #fff9c4;
+            padding: 2px 6px;
+            border-radius: 2px;
+            font-weight: 500;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #f3e5f5 0%, #ede7f6 100%);
+            border-left: 4px solid #9c27b0;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+        
+        .summary-box h3 {
+            color: #6a1b9a;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        
+        .summary-box ul {
+            list-style-position: inside;
+            color: #6a1b9a;
+            margin-left: 20px;
+        }
+        
+        .summary-box li {
+            margin: 8px 0;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        .calculation-step {
+            background: #f5f5f5;
+            border-left: 3px solid #2196f3;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .true-false {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        
+        .true-false.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .true-false.wrong {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .exam-info {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 页眉 -->
+        <div class="header">
+            <h1>信息技术</h1>
+            <p>期中考试试卷讲解与答案解析</p>
+            <p style="font-size: 12px; margin-top: 15px;">揭阳市华南司法职业学校 2025-2026学年第一学期</p>
+        </div>
+        
+        <!-- 主要内容 -->
+        <div class="content">
+            <!-- 考试信息 -->
+            <div class="exam-info">
+                <div class="exam-info-item">
+                    <strong>📋 学校：</strong>揭阳市华南司法职业学校
+                </div>
+                <div class="exam-info-item">
+                    <strong>📅 学年：</strong>2025-2026学年第一学期
+                </div>
+                <div class="exam-info-item">
+                    <strong>⏱️ 考试时间：</strong>60分钟
+                </div>
+                <div class="exam-info-item">
+                    <strong>📊 满分：</strong>100分
+                </div>
+                <div class="exam-info-item">
+                    <strong>✏️ 考试形式：</strong>闭卷笔试
+                </div>
+                <div class="exam-info-item">
+                    <strong>📝 总题数：</strong>5大类，共35小题
+                </div>
+            </div>
+            
+            <div class="tip">
+                <strong>💡 试卷成绩构成：</strong> 单项选择题20分 + 判断题10分 + 填空题10分 + 简答题10分 + 计算题50分 = 100分
+            </div>
+            
+            <!-- 第一部分：单项选择题 -->
+            <div class="section-title">
+                第一部分：单项选择题（共10题，每题2分，共20分）
+            </div>
+            
+            <div class="question-group">
+                <div class="question">
+                    <div class="q-number">题目1：计算机发展史</div>
+                    <div class="q-content">世界上第一台计算机是1946年美国研制成功的，该计算机的英文缩写名为（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span>MARK-II</div>
+                        <div class="option"><span class="option-letter">B.</span>EDSAC</div>
+                        <div class="option"><span class="option-letter">C.</span><span class="highlight">ENIAC</span></div>
+                        <div class="option"><span class="option-letter">D.</span>EDVAC</div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">C</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>ENIAC（Electronic Numerical Integrator and Computer，电子数值积分计算机）是世界上第一台<span class="keyword">通用数字电子计算机</span>，由美国宾夕法尼亚大学在1946年研制成功。</p>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - 计算机发展史</h4>
+                        <p><strong>计算机四代发展：</strong></p>
+                        <ul>
+                            <li><strong>第一代（1946-1957）</strong>：电子管计算机，体积大，功耗高</li>
+                            <li><strong>第二代（1958-1964）</strong>：晶体管计算机，体积小，功耗低</li>
+                            <li><strong>第三代（1965-1971）</strong>：集成电路计算机，处理能力强</li>
+                            <li><strong>第四代（1972-至今）</strong>：超大规模集成电路计算机</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>ENIAC的主要特点：</strong> 重量30吨、占地170平方米、功耗150千瓦、每秒运算5000次、需要手工编程。</p>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目2：CPU的组成</div>
+                    <div class="q-content">CPU中不包含（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span>运算器</div>
+                        <div class="option"><span class="option-letter">B.</span>控制器</div>
+                        <div class="option"><span class="option-letter">C.</span><span class="highlight">存储器</span></div>
+                        <div class="option"><span class="option-letter">D.</span>高速内部缓存</div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">C</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>CPU主要由两部分组成：<span class="keyword">运算器</span>和<span class="keyword">控制器</span>。高速内部缓存（Cache）也集成在CPU内部。<span class="keyword">存储器是独立的部件</span>，包括内存和外存，不属于CPU。</p>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - 计算机硬件体系</h4>
+                        <table class="table">
+                            <tr>
+                                <th>部件</th>
+                                <th>功能</th>
+                                <th>说明</th>
+                            </tr>
+                            <tr>
+                                <td><strong>CPU</strong></td>
+                                <td>运算和控制</td>
+                                <td>包含运算器、控制器、缓存</td>
+                            </tr>
+                            <tr>
+                                <td><strong>内存</strong></td>
+                                <td>临时存储</td>
+                                <td>RAM：断电丢失；ROM：断电保留</td>
+                            </tr>
+                            <tr>
+                                <td><strong>外存</strong></td>
+                                <td>永久存储</td>
+                                <td>硬盘、SSD、光盘等</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目3：CPU主频的含义</div>
+                    <div class="q-content">微型计算机中，关于CPU的"P4 2.4G"配置中，"2.4G"表示CPU的（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span>字长</div>
+                        <div class="option"><span class="option-letter">B.</span><span class="highlight">主频率</span></div>
+                        <div class="option"><span class="option-letter">C.</span>核心数</div>
+                        <div class="option"><span class="option-letter">D.</span>型号</div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">B</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>"2.4G"表示主频为<span class="keyword">2.4GHz</span>，即CPU的时钟频率为每秒24亿次。主频越高，CPU在单位时间内执行的指令越多，计算机性能相对越好。</p>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - CPU性能指标</h4>
+                        <p><strong>影响CPU性能的主要指标：</strong></p>
+                        <ul>
+                            <li><strong>主频（Clock Speed）</strong>：通常以GHz为单位，表示每秒钟的周期数</li>
+                            <li><strong>字长（Word Length）</strong>：CPU一次能处理的数据位数（32位、64位等）</li>
+                            <li><strong>核心数（Cores）</strong>：多核处理器能并行处理更多任务</li>
+                            <li><strong>缓存容量</strong>：L1/L2/L3缓存影响数据访问速度</li>
+                            <li><strong>工艺制程</strong>：7nm、5nm等制程越小，集成度越高</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目4：存储容量换算</div>
+                    <div class="q-content">1GB的准确值是（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span><span class="highlight">1024×1024 Bytes</span></div>
+                        <div class="option"><span class="option-letter">B.</span>1024 KB</div>
+                        <div class="option"><span class="option-letter">C.</span>1024 MB</div>
+                        <div class="option"><span class="option-letter">D.</span>1000×1000 KB</div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">A 或 C</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>计算机存储单位采用<span class="keyword">二进制</span>进制换算：</p>
+                        <ul style="margin-top: 10px;">
+                            <li>1 Byte = 8 bits</li>
+                            <li>1 KB = 1024 Bytes</li>
+                            <li>1 MB = 1024 KB</li>
+                            <li>1 GB = 1024 MB = 1024×1024 KB = 1024×1024×1024 Bytes</li>
+                        </ul>
+                        <p style="margin-top: 10px;">所以A项1024×1024 Bytes = 1MB，应该是1024×1024×1024 Bytes；但C项1024 MB正确等于1GB。</p>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - 存储容量换算</h4>
+                        <p><strong>常用换算公式：</strong></p>
+                        <div class="calculation-step">
+1 GB = 1024 MB
+1 MB = 1024 KB  
+1 KB = 1024 Bytes
+1 Byte = 8 bits
+
+例：256 MB = ? GB
+    256 MB ÷ 1024 = 0.25 GB
+                        </div>
+                        <p style="margin-top: 10px;"><strong>注意：</strong> 不同行业的定义不同。IT行业通常用1024进制，但国际标准（IEC）中1GB=1000MB。购买硬盘时经常出现"缺容"现象，就是因为厂商用1000进制标注，而操作系统用1024进制显示。</p>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目5：ASCII编码</div>
+                    <div class="q-content">下列关于ASCII编码的叙述中，正确的是（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span>一个字符的标准ASCII码占一个字节，其最高二进制位总为1</div>
+                        <div class="option"><span class="option-letter">B.</span>所有大写英文字母的ASCII码值都小于小写英文字母'a'的ASCII码值</div>
+                        <div class="option"><span class="option-letter">C.</span><span class="highlight">所有大写英文字母的ASCII码值都大于小写英文字母'a'的ASCII码值</span></div>
+                        <div class="option"><span class="option-letter">D.</span>标准ASCII码表有256个不同的字符编码</div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">C</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>ASCII编码是美国信息交换标准代码。标准ASCII码用7位表示，共128个字符。</p>
+                        <ul style="margin-top: 10px;">
+                            <li>✗ A项：标准ASCII只用7位，最高位为0；扩展ASCII才用8位，最高位为1</li>
+                            <li>✗ B项：大写字母A-Z的ASCII值为65-90，小写a的ASCII值为97，所以大于a</li>
+                            <li>✓ C项：所有大写英文字母（65-90）的ASCII值都小于97（a的值）</li>
+                            <li>✗ D项：标准ASCII只有128个，扩展ASCII有256个</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - ASCII编码表</h4>
+                        <table class="table">
+                            <tr>
+                                <th>字符类别</th>
+                                <th>范围</th>
+                                <th>示例</th>
+                            </tr>
+                            <tr>
+                                <td>控制字符</td>
+                                <td>0-31</td>
+                                <td>回车('\r')=13, 换行('\n')=10</td>
+                            </tr>
+                            <tr>
+                                <td>空格和符号</td>
+                                <td>32-47</td>
+                                <td>空格=32, '!'=33</td>
+                            </tr>
+                            <tr>
+                                <td>数字</td>
+                                <td>48-57</td>
+                                <td>'0'=48, '9'=57</td>
+                            </tr>
+                            <tr>
+                                <td>大写字母</td>
+                                <td>65-90</td>
+                                <td>'A'=65, 'Z'=90</td>
+                            </tr>
+                            <tr>
+                                <td>小写字母</td>
+                                <td>97-122</td>
+                                <td>'a'=97, 'z'=122</td>
+                            </tr>
+                        </table>
+                        <p style="margin-top: 10px;"><strong>记忆技巧：</strong> 32是空格，48是'0'，65是'A'，97是'a'。</p>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目6：文件扩展名</div>
+                    <div class="q-content">以.txt为扩展名的文件通常是（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span><span class="highlight">文本文件</span></div>
+                        <div class="option"><span class="option-letter">B.</span>音频信号文件</div>
+                        <div class="option"><span class="option-letter">C.</span>图像文件</div>
+                        <div class="option"><span class="option-letter">D.</span>视频信号文件</div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">A</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>.txt是纯文本文件（Text）的标准扩展名。</p>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - 常见文件扩展名</h4>
+                        <table class="table">
+                            <tr>
+                                <th>文件类型</th>
+                                <th>扩展名</th>
+                                <th>说明</th>
+                            </tr>
+                            <tr>
+                                <td><strong>文本</strong></td>
+                                <td>.txt, .doc, .docx</td>
+                                <td>纯文本或文档</td>
+                            </tr>
+                            <tr>
+                                <td><strong>电子表格</strong></td>
+                                <td>.xls, .xlsx</td>
+                                <td>Excel表格</td>
+                            </tr>
+                            <tr>
+                                <td><strong>演示文稿</strong></td>
+                                <td>.ppt, .pptx</td>
+                                <td>PowerPoint幻灯片</td>
+                            </tr>
+                            <tr>
+                                <td><strong>图像</strong></td>
+                                <td>.jpg, .png, .bmp, .gif</td>
+                                <td>图像文件</td>
+                            </tr>
+                            <tr>
+                                <td><strong>音频</strong></td>
+                                <td>.mp3, .wav, .flac</td>
+                                <td>音频文件</td>
+                            </tr>
+                            <tr>
+                                <td><strong>视频</strong></td>
+                                <td>.mp4, .avi, .mkv</td>
+                                <td>视频文件</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目7：计算机病毒的定义</div>
+                    <div class="q-content">计算机病毒（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span>不会对计算机操作人员造成身体损害</div>
+                        <div class="option"><span class="option-letter">B.</span>会导致所有计算机操作人员感染致病</div>
+                        <div class="option"><span class="option-letter">C.</span><span class="highlight">会导致部分计算机操作人员感染致病</span></div>
+                        <div class="option"><span class="option-letter">D.</span>会导致部分计算机操作人员感染病毒，但不会致病</div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">A</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>这是一道考查<span class="keyword">对计算机病毒本质的理解</span>的题目。计算机病毒是指编制者在计算机程序中插入的破坏性代码。它的定义特点：</p>
+                        <ul style="margin-top: 10px;">
+                            <li>✓ 不会对操作人员造成身体损害（这是与生物病毒的区别）</li>
+                            <li>✗ 不是对"人"的感染，而是对"计算机"的感染</li>
+                            <li>✗ 影响的是计算机系统和数据，不是人的身体</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - 计算机病毒与恶意软件</h4>
+                        <p><strong>计算机病毒的特点：</strong></p>
+                        <ul>
+                            <li>具有传播性：能通过网络、移动存储设备等渠道传播</li>
+                            <li>具有破坏性：能修改、删除、暴露数据，破坏系统</li>
+                            <li>具有隐蔽性：通常隐藏在其他程序中</li>
+                        </ul>
+                        <p style="margin-top: 10px;"><strong>常见类型：</strong></p>
+                        <ul>
+                            <li>引导区病毒：感染硬盘引导区</li>
+                            <li>文件病毒：附加于可执行文件</li>
+                            <li>宏病毒：在Office文档中传播</li>
+                            <li>蠕虫病毒：能自我复制传播</li>
+                            <li>特洛伊木马：伪装成正常程序</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目8：CPU与内存的关系</div>
+                    <div class="q-content">下列关于CPU的叙述中，正确的是（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span>CPU能直接读取硬盘上的数据</div>
+                        <div class="option"><span class="option-letter">B.</span><span class="highlight">CPU能直接与内存储器交换数据</span></div>
+                        <div class="option"><span class="option-letter">C.</span>CPU主要组成部分是存储器和控制器</div>
+                        <div class="option"><span class="option-letter">D.</span>CPU主要用来执行算术运算</div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">B</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>CPU与内存之间通过总线直接连接，能进行高速的数据交换。硬盘是外存，数据必须先加载到内存中，CPU才能读取。</p>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - 计算机数据流向</h4>
+                        <div class="calculation-step">
+硬盘(外存) → 内存(RAM) → CPU → 内存 → 硬盘
+
+执行过程：
+1. 程序从硬盘加载到内存
+2. CPU从内存读取指令和数据
+3. CPU执行运算
+4. 结果写回内存
+5. 结果保存到硬盘
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目9：I/O设备的定义</div>
+                    <div class="q-content">在微型计算机中，I/O设备是指（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span>控制设备</div>
+                        <div class="option"><span class="option-letter">B.</span><span class="highlight">输入输出设备</span></div>
+                        <div class="option"><span class="option-letter">C.</span>输入设备</div>
+                        <div class="option"><span class="option-letter">D.</span>输出设备</div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">B</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>I/O（Input/Output）设备是指<span class="keyword">输入/输出设备</span>的总称。包括键盘、鼠标、显示器、打印机等既能输入又能输出，或专门用于输入或输出的所有外部设备。</p>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - 常见外部设备分类</h4>
+                        <table class="table">
+                            <tr>
+                                <th>类别</th>
+                                <th>示例</th>
+                            </tr>
+                            <tr>
+                                <td><strong>输入设备</strong></td>
+                                <td>键盘、鼠标、扫描仪、摄像头、麦克风</td>
+                            </tr>
+                            <tr>
+                                <td><strong>输出设备</strong></td>
+                                <td>显示器、打印机、扬声器、投影仪</td>
+                            </tr>
+                            <tr>
+                                <td><strong>存储设备</strong></td>
+                                <td>硬盘、U盘、光盘、移动硬盘</td>
+                            </tr>
+                            <tr>
+                                <td><strong>输入输出设备</strong></td>
+                                <td>触摸屏、游戏手柄、打印复合机</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目10：网络文明建设</div>
+                    <div class="q-content">在网络信息时代，青少年要学会合理利用网络信息资源，自觉抵制网络的不良诱惑，下列做法中不可取的是（ ）</div>
+                    <div class="options">
+                        <div class="option"><span class="option-letter">A.</span>遵守道德和法律，文明上网</div>
+                        <div class="option"><span class="option-letter">B.</span>不浏览内容不健康的网站</div>
+                        <div class="option"><span class="option-letter">C.</span>不随意答应网友的见面要求</div>
+                        <div class="option"><span class="option-letter">D.</span><span class="highlight">为避免不良诱惑，拒绝上网</span></div>
+                    </div>
+                    
+                    <div class="answer-box">
+                        <h4>标准答案</h4>
+                        <p class="answer-text">D</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>这是一道考查<span class="keyword">辩证思维</span>的题目。正确的态度应该是"合理利用"而不是"拒绝"，应该学会<span class="keyword">辨别和防护</span>，而不是因噎废食。</p>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - 网络安全与文明上网</h4>
+                        <p><strong>青少年网络安全建议：</strong></p>
+                        <ul>
+                            <li>不要在公开场合透露个人隐私信息</li>
+                            <li>不要随意点击陌生链接或下载未知文件</li>
+                            <li>定期修改密码，使用强密码</li>
+                            <li>安装杀毒软件并定期更新</li>
+                            <li>不要将重要信息保存在公共计算机上</li>
+                            <li>谨慎识别网络诈骗和不良内容</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <!-- 第二部分：判断题 -->
+            <div class="section-title">
+                第二部分：判断题（共10题，每题1分，共10分）
+            </div>
+            
+            <div class="question-group">
+                <table class="table">
+                    <tr>
+                        <th style="width: 10%;">题号</th>
+                        <th style="width: 50%;">题目</th>
+                        <th style="width: 20%;">答案</th>
+                        <th style="width: 20%;">简析</th>
+                    </tr>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>计算机的软件系统包括操作系统和应用软件。</td>
+                        <td><span class="true-false correct">✓ 正确</span></td>
+                        <td>定义准确，完整。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>CPU的主频越高，计算机性能一定越好。</td>
+                        <td><span class="true-false wrong">✗ 错误</span></td>
+                        <td>性能由多因素决定，不仅是主频。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>计算机中，所有的信息都用二进制数表示。</td>
+                        <td><span class="true-false correct">✓ 正确</span></td>
+                        <td>计算机内部统一用二进制存储和处理。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>硬盘的容量越大，计算机的运行速度一定越快。</td>
+                        <td><span class="true-false wrong">✗ 错误</span></td>
+                        <td>硬盘大小影响存储量，不影响运算速度。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>信息不需要载体也可以传播。</td>
+                        <td><span class="true-false wrong">✗ 错误</span></td>
+                        <td>信息必须依附于某种载体（如电磁波、纸张等）。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td>ROM的中文名为随机存储器，断电后信息会丢失。</td>
+                        <td><span class="true-false wrong">✗ 错误</span></td>
+                        <td>随机存储器是RAM，ROM是只读存储器，断电后信息保留。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>7</strong></td>
+                        <td>显卡的显存容量越大，图形处理能力一定越强。</td>
+                        <td><span class="true-false wrong">✗ 错误</span></td>
+                        <td>显卡性能受芯片架构、频率等多种因素影响。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>8</strong></td>
+                        <td>在ASCII编码表中，空格键的代码值比所有英文字母的代码值都小。</td>
+                        <td><span class="true-false correct">✓ 正确</span></td>
+                        <td>空格ASCII值为32，英文字母最小为65，所以空格最小。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>9</strong></td>
+                        <td>如果文件或文件夹被设置为"隐藏"，用户将无法直接查看。</td>
+                        <td><span class="true-false correct">✓ 正确</span></td>
+                        <td>隐藏文件需要在文件管理器中启用"显示隐藏文件"才能看到。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10</strong></td>
+                        <td>上网消费者不得利用互联网散布谣言，扰乱社会秩序，破坏社会稳定。</td>
+                        <td><span class="true-false correct">✓ 正确</span></td>
+                        <td>这是法律规定的强制要求。</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <!-- 第三部分：填空题 -->
+            <div class="section-title">
+                第三部分：填空题（共3题，每题若干小空，共10分）
+            </div>
+            
+            <div class="question-group">
+                <div class="question">
+                    <div class="q-number">题目1：社会主义核心价值观</div>
+                    <div class="q-content">社会主义核心价值观的基本内容包括富强、民主、文明、和谐，自由、平等、公正、法治，爱国、敬业、诚信、友善。请填写：</div>
+                    
+                    <div class="analysis-box">
+                        <h4>答案填写</h4>
+                        <p><strong>国家层面（4个）：</strong> 富强、<span class="highlight">民主</span>、<span class="highlight">文明</span>、和谐</p>
+                        <p style="margin-top: 8px;"><strong>社会层面（4个）：</strong> 自由、平等、<span class="highlight">公正</span>、<span class="highlight">法治</span></p>
+                        <p style="margin-top: 8px;"><strong>个人层面（4个）：</strong> <span class="highlight">爱国</span>、<span class="highlight">敬业</span>、<span class="highlight">诚信</span>、<span class="highlight">友善</span></p>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目2：社会发展形态</div>
+                    <div class="q-content">[　　　　]是继农业社会、工业社会、信息社会之后一种更为高级的社会形态。</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案</h4>
+                        <p class="answer-text">智能社会（或人工智能社会、知识社会等）</p>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展 - 社会发展阶段</h4>
+                        <ul>
+                            <li><strong>农业社会</strong>：人类学会使用农具，从狩猎采集转为农业种植</li>
+                            <li><strong>工业社会</strong>：机器取代手工，生产力大幅提升</li>
+                            <li><strong>信息社会</strong>：互联网普及，信息成为重要资源</li>
+                            <li><strong>智能社会</strong>：人工智能、物联网、大数据等新技术融合应用</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目3：ASCII编码排序</div>
+                    <div class="q-content">字符：a、Z和8，按它们的ASCII码值从小到大排序，结果是[　　　　]。</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案</h4>
+                        <p class="answer-text">8 < Z < a（或 '8'、'Z'、'a'）</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>解析</h4>
+                        <p>根据ASCII编码表：</p>
+                        <ul style="margin-top: 10px;">
+                            <li>'8'（数字8）= 56</li>
+                            <li>'Z'（大写字母）= 90</li>
+                            <li>'a'（小写字母）= 97</li>
+                        </ul>
+                        <p style="margin-top: 10px;">因此排序为：<span class="keyword">8 < Z < a</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <!-- 第四部分：简答题 -->
+            <div class="section-title">
+                第四部分：简答题（共2题，每题5分，共10分）
+            </div>
+            
+            <div class="question-group">
+                <div class="question">
+                    <div class="q-number">题目1：计算机的特点</div>
+                    <div class="q-content">简述计算机的特点。</div>
+                    
+                    <div class="answer-box">
+                        <h4>参考答案</h4>
+                        <p class="answer-text">计算机具有以下主要特点：</p>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细解析</h4>
+                        <ul>
+                            <li><strong>运算速度快：</strong> 现代计算机每秒可执行数十亿次运算</li>
+                            <li><strong>精度高：</strong> 能进行精确的数值计算和逻辑运算</li>
+                            <li><strong>存储容量大：</strong> 能存储大量的数据和程序</li>
+                            <li><strong>可靠性高：</strong> 故障率低，能长时间稳定运行</li>
+                            <li><strong>易于使用：</strong> 提供友好的人机界面</li>
+                            <li><strong>功能强大：</strong> 既能进行逻辑运算，也能进行数值计算</li>
+                            <li><strong>自动化程度高：</strong> 能自动按程序执行，无需人工干预</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="extend-box">
+                        <h4>知识拓展</h4>
+                        <p><strong>计算机与人脑的对比：</strong></p>
+                        <table class="table" style="font-size: 12px;">
+                            <tr>
+                                <th>特性</th>
+                                <th>计算机</th>
+                                <th>人脑</th>
+                            </tr>
+                            <tr>
+                                <td>运算速度</td>
+                                <td>极快（纳秒级）</td>
+                                <td>较慢（毫秒级）</td>
+                            </tr>
+                            <tr>
+                                <td>记忆精度</td>
+                                <td>100%准确</td>
+                                <td>容易遗忘、遗漏</td>
+                            </tr>
+                            <tr>
+                                <td>学习能力</td>
+                                <td>按既定程序</td>
+                                <td>灵活学习、创新</td>
+                            </tr>
+                            <tr>
+                                <td>维持时间</td>
+                                <td>容易疲劳</td>
+                                <td>能持久运作</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目2：常用设备列举</div>
+                    <div class="q-content">请分别列举出常用的输入设备、输出设备、存储设备（不少于5个）。</div>
+                    
+                    <div class="answer-box">
+                        <h4>参考答案</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细解析</h4>
+                        <p><strong>输入设备（至少列举5个）：</strong></p>
+                        <p style="margin-top: 8px; padding: 8px; background: #f5f5f5; border-radius: 4px;">键盘、鼠标、扫描仪、摄像头、麦克风、触摸屏、手写笔、游戏手柄、光笔、条形码阅读器</p>
+                        
+                        <p style="margin-top: 12px;"><strong>输出设备（至少列举5个）：</strong></p>
+                        <p style="margin-top: 8px; padding: 8px; background: #f5f5f5; border-radius: 4px;">显示器、打印机、扬声器、投影仪、绘图仪、耳机、LED屏幕、触觉反馈设备</p>
+                        
+                        <p style="margin-top: 12px;"><strong>存储设备（至少列举5个）：</strong></p>
+                        <p style="margin-top: 8px; padding: 8px; background: #f5f5f5; border-radius: 4px;">硬盘、固态硬盘(SSD)、U盘、光盘(CD/DVD)、移动硬盘、记忆卡(SD卡)、磁带、云存储</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <!-- 第五部分：进制转换 -->
+            <div class="section-title">
+                第五部分：进制转换题（共10题，每题5分，共50分）
+            </div>
+            
+            <div class="question-group">
+                <div class="question">
+                    <div class="q-number">题目1：十进制转二进制</div>
+                    <div class="q-content">（15）₁₀ = （  ）₂</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(1111)₂</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+方法：短除法（除以2取余数）
+
+15 ÷ 2 = 7 ... 1
+7 ÷ 2 = 3 ... 1
+3 ÷ 2 = 1 ... 1
+1 ÷ 2 = 0 ... 1
+
+从下往上读：(1111)₂
+
+验证：1×2³ + 1×2² + 1×2¹ + 1×2⁰ = 8+4+2+1 = 15 ✓
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目2：十进制转二进制</div>
+                    <div class="q-content">（36）₁₀ = （  ）₂</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(100100)₂</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+36 ÷ 2 = 18 ... 0
+18 ÷ 2 = 9 ... 0
+9 ÷ 2 = 4 ... 1
+4 ÷ 2 = 2 ... 0
+2 ÷ 2 = 1 ... 0
+1 ÷ 2 = 0 ... 1
+
+从下往上读：(100100)₂
+
+验证：1×2⁵ + 0×2⁴ + 0×2³ + 1×2² + 0×2¹ + 0×2⁰ 
+      = 32+0+0+4+0+0 = 36 ✓
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目3：二进制转十进制</div>
+                    <div class="q-content">（1011）₂ = （  ）₁₀</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(11)₁₀</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+方法：按权展开求和
+
+(1011)₂ = 1×2³ + 0×2² + 1×2¹ + 1×2⁰
+        = 1×8 + 0×4 + 1×2 + 1×1
+        = 8 + 0 + 2 + 1
+        = 11
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目4：二进制转十进制</div>
+                    <div class="q-content">（10101）₂ = （  ）₁₀</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(21)₁₀</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+(10101)₂ = 1×2⁴ + 0×2³ + 1×2² + 0×2¹ + 1×2⁰
+         = 1×16 + 0 + 1×4 + 0 + 1
+         = 16 + 4 + 1
+         = 21
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目5：十进制转八进制</div>
+                    <div class="q-content">（64）₁₀ = （  ）₈</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(100)₈</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+方法：短除法（除以8取余数）
+
+64 ÷ 8 = 8 ... 0
+8 ÷ 8 = 1 ... 0
+1 ÷ 8 = 0 ... 1
+
+从下往上读：(100)₈
+
+验证：1×8² + 0×8¹ + 0×8⁰ = 64 + 0 + 0 = 64 ✓
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目6：十进制转十六进制</div>
+                    <div class="q-content">（61）₁₀ = （  ）₁₆</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(3D)₁₆</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+方法：短除法（除以16取余数）
+
+61 ÷ 16 = 3 ... 13(用D表示)
+3 ÷ 16 = 0 ... 3
+
+从下往上读：(3D)₁₆
+
+验证：3×16¹ + 13×16⁰ = 48 + 13 = 61 ✓
+
+注：16进制中，10=A, 11=B, 12=C, 13=D, 14=E, 15=F
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目7：八进制转十进制</div>
+                    <div class="q-content">（67）₈ = （  ）₁₀</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(55)₁₀</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+(67)₈ = 6×8¹ + 7×8⁰
+      = 6×8 + 7×1
+      = 48 + 7
+      = 55
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目8：十六进制转十进制</div>
+                    <div class="q-content">（9E）₁₆ = （  ）₁₀</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(158)₁₀</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+(9E)₁₆ = 9×16¹ + 14×16⁰
+       = 9×16 + 14×1
+       = 144 + 14
+       = 158
+
+注：E在16进制中表示14
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目9：二进制转八进制</div>
+                    <div class="q-content">（1000001）₂ = （  ）₈</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(101)₈</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+方法：直接转换（8进制每位对应3个二进制位）
+
+将(1000001)₂从右往左每3位分组：
+001 000 001
+ 1   0   1
+
+得到：(101)₈
+
+验证：(1000001)₂ = 1×2⁶ + 0 + 0 + 0 + 0 + 0 + 1×2⁰ = 64+1 = 65
+     (101)₈ = 1×8² + 0×8¹ + 1×8⁰ = 64+0+1 = 65 ✓
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="q-number">题目10：十六进制转二进制</div>
+                    <div class="q-content">（20D）₁₆ = （  ）₂</div>
+                    
+                    <div class="answer-box">
+                        <h4>答案：(1000001101)₂</h4>
+                    </div>
+                    
+                    <div class="analysis-box">
+                        <h4>详细计算过程</h4>
+                        <div class="calculation-step">
+方法1：先转十进制再转二进制
+(20D)₁₆ = 2×16² + 0×16¹ + 13×16⁰
+        = 512 + 0 + 13
+        = 525
+
+525 ÷ 2 = 262 ... 1
+262 ÷ 2 = 131 ... 0
+131 ÷ 2 = 65 ... 1
+65 ÷ 2 = 32 ... 1
+32 ÷ 2 = 16 ... 0
+16 ÷ 2 = 8 ... 0
+8 ÷ 2 = 4 ... 0
+4 ÷ 2 = 2 ... 0
+2 ÷ 2 = 1 ... 0
+1 ÷ 2 = 0 ... 1
+
+从下往上：(1000001101)₂
+
+方法2：直接转换（16进制每位对应4个二进制位）
+2 → 0010
+0 → 0000
+D(13) → 1101
+
+结果：0010 0000 1101 = 1000001101
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <!-- 总结与学习建议 -->
+            <div class="summary-box">
+                <h3>📚 试卷总体分析与学习建议</h3>
+                <p style="margin-bottom: 15px;"><strong>考试重点覆盖：</strong></p>
+                <ul>
+                    <li>计算机硬件基础（CPU、内存、存储等）</li>
+                    <li>数据编码与表示（二进制、ASCII、进制转换）</li>
+                    <li>计算机软件系统（操作系统、应用软件）</li>
+                    <li>外部设备与I/O系统</li>
+                    <li>计算机发展史与基础概念</li>
+                    <li>网络安全与信息素养</li>
+                    <li>社会主义核心价值观（思政融合）</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>学习建议：</strong></p>
+                <ul>
+                    <li>🎯 <strong>理论掌握</strong>：深入理解计算机的内部工作原理，而不仅仅记住名词</li>
+                    <li>📊 <strong>进制转换</strong>：这是计算机原理的基础，需要反复练习直至熟能生巧</li>
+                    <li>💻 <strong>实践操作</strong>：在电脑上查看硬件信息、进制转换工具等，加深印象</li>
+                    <li>🔍 <strong>区分概念</strong>：注意相似概念的区别，如RAM vs ROM、CPU vs 计算机等</li>
+                    <li>⚖️ <strong>伦理素养</strong>：培养网络安全意识和信息素养，是信息时代必备技能</li>
+                </ul>
+                
+                <p style="margin-top: 15px;"><strong>易错点提示：</strong></p>
+                <ul>
+                    <li>• CPU由运算器和控制器组成，<span class="keyword">不包含存储器</span></li>
+                    <li>• 主频高不一定性能就好，还要考虑架构、缓存等因素</li>
+                    <li>• 存储容量大不等于运算速度快</li>
+                    <li>• 标准ASCII只有128个字符（不是256个）</li>
+                    <li>• ROM是只读存储器，ROM断电后数据不丢失</li>
+                    <li>• 进制转换要注意16进制的字母表示（A-F）</li>
+                </ul>
+            </div>
+            
+            <div class="tip">
+                <strong>💡 考试技巧：</strong> 遇到"一定""绝对"等绝对化词汇的判断题时，往往需要反向思考。对于单选题，先排除明显错误的选项，再在剩余选项中比较。进制转换题要养成检验答案的习惯，用转换后的结果反推验证。
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="footer">
+            <p>信息技术 期中考试试卷讲解</p>
+            <p>揭阳市华南司法职业学校 | 2025-2026学年第一学期</p>
+            <p style="margin-top: 10px; color: #999;">本资料仅供教学和学习使用</p>
+        </div>
+    </div>
+</body>
+</html>
