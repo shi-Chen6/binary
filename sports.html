@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>揭阳华南司法职业学校第一届田径运动会</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        header h1 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        header p {
+            font-size: 13px;
+            opacity: 0.95;
+        }
+        
+        .motto {
+            font-size: 14px;
+            color: #ffd700;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+        
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            background: #f5f5f5;
+            border-bottom: 2px solid #667eea;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav button {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 4px;
+            border: none;
+            background: #f5f5f5;
+            color: #333;
+            font-size: 9px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        nav button:hover, nav button.active {
+            background: #e8e8ff;
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+        
+        .content {
+            padding: 0;
+            display: none;
+        }
+        
+        .content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .card {
+            margin: 12px;
+            padding: 15px;
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .card h3 {
+            color: #667eea;
+            font-size: 14px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+            padding-left: 10px;
+        }
+        
+        .card p, .card li {
+            font-size: 12px;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        .card ul {
+            margin-left: 20px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 12px;
+        }
+        
+        .grid-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .grid-item strong {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .grid-item span {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 10px;
+        }
+        
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 6px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        table td {
+            padding: 6px;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+        
+        table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .filter-controls {
+            background: #f9f9f9;
+            padding: 12px;
+            margin: 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        .filter-controls label {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .filter-controls select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            font-size: 11px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .result-count {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .event-box {
+            margin: 12px;
+            padding: 12px;
+            background: linear-gradient(135deg, #f0f4ff 0%, #f5f0ff 100%);
+            border: 2px solid #667eea;
+            border-radius: 8px;
+        }
+        
+        .event-box.female {
+            background: linear-gradient(135deg, #ffe6f0 0%, #fff0f5 100%);
+            border-color: #e91e63;
+        }
+        
+        .event-title {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .event-box.female .event-title {
+            color: #e91e63;
+        }
+        
+        .field-event {
+            margin: 12px;
+            padding: 12px;
+            background: linear-gradient(135deg, #f0fff4 0%, #f5ffe8 100%);
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #f5f5f5;
+            font-size: 10px;
+            color: #999;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🏃 田径运动会</h1>
+            <p>揭阳市华南司法职业学校</p>
+            <p class="motto">青春飞扬 燃情淀放</p>
+            <p style="font-size: 11px; margin-top: 8px;">📅 2025年11月20-21日</p>
+        </header>
+        
+        <!-- Navigation -->
+        <nav>
+            <button class="nav-btn active" data-section="overview">赛事总览</button>
+            <!-- 径赛详情按钮：点击后展示所有径赛项目分组名单
+            <button class="nav-btn" data-section="track">径赛详情</button>
+           田赛详情按钮：点击后展示所有田赛项目参赛名单 
+            <button class="nav-btn" data-section="field">田赛详情</button> -->
+            <button class="nav-btn" data-section="staff">人员分工</button>
+            <button class="nav-btn" data-section="judges">裁判岗位</button>
+            <button class="nav-btn" data-section="rules">规则说明</button>
+        </nav>
+        
+        <!-- SECTION 1: Overview -->
+        <div id="overview" class="content active">
+            <div class="card">
+                <h3>🎯 赛事信息</h3>
+                <p><strong>时间：</strong>2025年11月20-21日</p>
+                <p><strong>地点：</strong>揭阳市华南司法职业学校田径场</p>
+                <p><strong>参赛班级：</strong>38个班级</p>
+                <p><strong>参赛人数：</strong>500+人</p>
+                <p><strong>工作人员：</strong>80+人</p>
+            </div>
+            
+            <div class="grid">
+                <div class="grid-item">
+                    <strong>竞赛项目</strong>
+                    <span>19</span>
+                </div>
+                <div class="grid-item">
+                    <strong>参赛班级</strong>
+                    <span>38</span>
+                </div>
+                <div class="grid-item">
+                    <strong>运动员</strong>
+                    <span>500+</span>
+                </div>
+                <div class="grid-item">
+                    <strong>工作人员</strong>
+                    <span>80+</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3>🎊 开幕式流程</h3>
+                <ol style="margin-left: 20px; font-size: 12px;">
+                    <li>国旗、校旗、彩旗方队入场</li>
+                    <li>裁判员代表队入场</li>
+                    <li>学生会、督查队代表队入场</li>
+                    <li>特勤方队表演（射击队、防暴队）</li>
+                    <li>各班运动员方队入场</li>
+                    <li>升国旗仪式</li>
+                    <li>校领导致开幕词</li>
+                    <li>运动员宣誓（姚旭东）</li>
+                    <li>裁判员宣誓（郭良华）</li>
+                    <li>开幕式节目表演</li>
+                    <li>董事长宣布运动会开幕</li>
+                </ol>
+            </div>
+            
+            <div class="card">
+                <h3>📋 比赛项目</h3>
+                <p><strong>径赛项目：</strong></p>
+                <ul>
+                    <li>男子：100M、200M、400M、800M、1500M、4×100M</li>
+                    <li>女子：100M、200M、400M、800M、4×100M</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>田赛项目：</strong></p>
+                <ul>
+                    <li>男女跳高、跳远、三级跳远、铅球</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>⏰ 作息时间</h3>
+                <table>
+                    <tr>
+                        <th>时间</th>
+                        <th>安排</th>
+                    </tr>
+                    <tr>
+                        <td>6:30</td>
+                        <td>起床</td>
+                    </tr>
+                    <tr>
+                        <td>7:00</td>
+                        <td>早餐</td>
+                    </tr>
+                    <tr>
+                        <td>7:40</td>
+                        <td>集合点名</td>
+                    </tr>
+                    <tr>
+                        <td>8:00-11:30</td>
+                        <td>上午比赛</td>
+                    </tr>
+                    <tr>
+                        <td>12:00-14:00</td>
+                        <td>中午休息</td>
+                    </tr>
+                    <tr>
+                        <td>14:30-17:30</td>
+                        <td>下午比赛</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="card">
+                <h3>🏆 奖励规则</h3>
+                <p><strong>团体奖：</strong>前8名奖状，前3名加奖牌</p>
+                <p><strong>单项奖：</strong>前8名证书，前3名加奖牌</p>
+                <p><strong>计分方式：</strong>前8名分别为 8、7、6、5、4、3、2、1分</p>
+                <p><strong>特殊规则：</strong>4×100M接力按双倍计分</p>
+                <p><strong>道德风尚奖：</strong>5个</p>
+            </div>
+        </div>
+        
+        <!-- SECTION 2: Track Events -->
+        <div id="track" class="content">
+            <div class="filter-controls">
+                <label>🏃 筛选径赛项目：</label>
+                <select id="trackFilter" onchange="filterTrackEvents()">
+                    <option value="">-- 选择项目查看详情 --</option>
+                    <option value="男子100M">男子100M预赛</option>
+                    <option value="女子100M">女子100M预赛</option>
+                </select>
+                <div class="result-count" id="trackCount"></div>
+            </div>
+            
+            <div id="trackContainer"></div>
+        </div>
+        
+        <!-- SECTION 3: Field Events -->
+        <div id="field" class="content">
+            <div class="filter-controls">
+                <label>🎯 筛选田赛项目：</label>
+                <select id="fieldFilter" onchange="filterFieldEvents()">
+                    <option value="">-- 选择项目查看详情 --</option>
+                    <option value="男子跳远">男子跳远</option>
+                    <option value="女子跳远">女子跳远</option>
+                    <option value="男子跳高">男子跳高</option>
+                    <option value="男子铅球">男子铅球</option>
+                    <option value="女子铅球">女子铅球</option>
+                </select>
+                <div class="result-count" id="fieldCount"></div>
+            </div>
+            
+            <div id="fieldContainer"></div>
+        </div>
+        
+        <!-- SECTION 4: Staff -->
+        <div id="staff" class="content">
+            <div class="card">
+                <h3>📋 综合组（组长：胡磊）</h3>
+                <p><strong>职责：</strong>赛场秩序、考勤、纪检</p>
+                <p><strong>组员：</strong>全体班主任队长</p>
+            </div>
+            
+            <div class="card">
+                <h3>📋 竞赛（仲裁）组（组长：余佛君）</h3>
+                <p><strong>职责：</strong>编排秩序册、安排培训裁判、准备器材</p>
+            </div>
+            
+            <div class="card">
+                <h3>📋 成绩公示组（组长：黄玉纯）</h3>
+                <p><strong>组员：</strong>林宇、黄沛东、周思睿、陈梓涛、林金蓉、李晓冰</p>
+            </div>
+            
+            <div class="card">
+                <h3>📋 会务组（组长：雷建平）</h3>
+                <p><strong>组员：</strong>姚贵强、黄玉彬、卓瑞娇、李纯、李奕双</p>
+            </div>
+            
+            <div class="card">
+                <h3>📋 宣传组（组长：罗春明）</h3>
+                <p><strong>组员：</strong>林思晓、袁金媚、赵焱、校园广播站、学生会</p>
+            </div>
+            
+            <div class="card">
+                <h3>📋 后勤组（组长：薛柏晗）</h3>
+                <p><strong>组员：</strong>刘子琪、杨裕福、张怀斌、方胜填、颜庚胜</p>
+            </div>
+            
+            <div class="card">
+                <h3>📋 保卫组（组长：余佛君）</h3>
+                <p><strong>组员：</strong>方全、李彩鑫、吴洋、校督查队</p>
+            </div>
+            
+            <div class="card">
+                <h3>📋 救护保障组（组长：吴凯森）</h3>
+                <p><strong>组员：</strong>邬嫔、张亚珍、曾佳丽、校医务室</p>
+            </div>
+        </div>
+        
+        <!-- SECTION 5: Judges -->
+        <div id="judges" class="content">
+            <div class="card">
+                <h3>🏁 核心裁判岗位</h3>
+                <p><strong>总裁判长：</strong>胡磊、余佛君</p>
+                <p><strong>径赛裁判长：</strong>郭良华、郑成</p>
+                <p><strong>田赛裁判长：</strong>黄海帆</p>
+            </div>
+            
+            <div class="card">
+                <h3>⏱️ 计时裁判员（30人）</h3>
+                <p style="font-size: 10px; line-height: 1.8; color: #666;">
+                    1.詹培波 2.陈妙芬 3.程晓慧 4.肖宇渊 5.何琦琪<br/>
+                    6.林嘉伟 7.刘燕煌 8.陈妍帆 9.江苗 10.王亮胜<br/>
+                    11.杜佳 12.钟仪 13.陈秋燕 14.梁欣越 15.王智灿<br/>
+                    16.廖楚灵 17.郑丽丽 18.陈楚词 19.金少清 20.陈敏慧<br/>
+                    21.韦萌珊 22.蔡梓然 23.杨佳敏 24.万佳欣 25.谭颖茵<br/>
+                    26.肖世珍 27.曾萍 28.余静 29.何坤青 30.艾睿慧
+                </p>
+            </div>
+            
+            <div class="card">
+                <h3>👥 其他岗位</h3>
+                <p><strong>终点裁判长：</strong>郑成</p>
+                <p><strong>检录裁判长：</strong>张珩</p>
+                <p><strong>检录裁判：</strong>陈妙芬、朱晓萍、杨玉倩、吴佳钰</p>
+                <p><strong>跳部裁判：</strong>吴家佳、莫清妮</p>
+                <p><strong>成绩统计：</strong>郑春兰、叶家宝、胡凤玲</p>
+                <p><strong>发令组长：</strong>郭良华、余佛君</p>
+            </div>
+        </div>
+        
+        <!-- SECTION 6: Rules -->
+        <div id="rules" class="content">
+            <div class="card">
+                <h3>📜 参赛规则</h3>
+                <p><strong>报名要求：</strong></p>
+                <ul>
+                    <li>每班每项限报3人</li>
+                    <li>每人限报2项（接力除外）</li>
+                    <li>项目少于5人或接力少于3队取消</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3>📊 计分规则</h3>
+                <p><strong>标准：</strong>前8名分别为 8、7、6、5、4、3、2、1分</p>
+                <p><strong>人数不足：</strong>8人以下取前6名，按 8、7、6、5、4、3 计分</p>
+                <p><strong>接力特殊：</strong>4×100M按双倍计分</p>
+            </div>
+            
+            <div class="card">
+                <h3>🏆 奖励设置</h3>
+                <p><strong>团体奖：</strong>前8名奖状，前3名加奖牌</p>
+                <p><strong>单项奖：</strong>前8名证书，前3名加奖牌</p>
+                <p><strong>道德风尚奖：</strong>5个锦旗</p>
+            </div>
+            
+            <div class="card">
+                <h3>⚠️ 纪律规定</h3>
+                <ul>
+                    <li><strong>冒名顶替：</strong>取消成绩，扣班级总分10分</li>
+                    <li><strong>缺席检录：</strong>自动放弃，取消资格</li>
+                    <li><strong>违反纪律：</strong>扣班级总分10分</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <p>📱 校运会数字手册 Final Version</p>
+            <p>简洁浏览，详细具体查看秩序册</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 完整的径赛数据
+        const trackData = {
+            '男子100M': {
+                '第1组': [
+                    {lane: 2, name: '梁彦辉', class: '25计算机4班'},
+                    {lane: 3, name: '陈炳旭', class: '特勤防暴1班'},
+                    {lane: 4, name: '黄颖柯', class: '特勤2班'},
+                    {lane: 5, name: '黄建伟', class: '特勤4班'},
+                    {lane: 6, name: '朱荣科', class: '25计算机4班'},
+                    {lane: 7, name: '刘乔彬', class: '特勤3班'},
+                    {lane: 8, name: '李逸炬', class: '24法律事务2班'},
+                    {lane: 9, name: '吕泽辉', class: '电子商务跨境2班'}
+                ],
+                '第2组': [
+                    {lane: 2, name: '杨绍喆', class: '商务跨境2班'},
+                    {lane: 3, name: '陈奕彬', class: '25计算机2班'},
+                    {lane: 4, name: '陈杰鑫', class: '特勤2班'},
+                    {lane: 5, name: '吴振聪', class: '25计算机4班'},
+                    {lane: 6, name: '彭信凯', class: '特勤3班'},
+                    {lane: 7, name: '蓝执政', class: '特勤防暴1班'},
+                    {lane: 8, name: '吴庆楠', class: '特勤4班'},
+                    {lane: 9, name: '张梓预', class: '电子商务直播3班'}
+                ]
+            },
+            '女子100M': {
+                '第1组': [
+                    {lane: 2, name: '李嘉倩', class: '25计算机2班'},
+                    {lane: 3, name: '韩思琪', class: '特勤防暴1班'},
+                    {lane: 4, name: '彭柯', class: '25计算机4班'},
+                    {lane: 5, name: '陈梓璇', class: '24法律事务2班'},
+                    {lane: 6, name: '陈楚欣', class: '25电子商务高考班'},
+                    {lane: 7, name: '赖金花', class: '社区公共事务'},
+                    {lane: 8, name: '吴梓荣', class: '24法律事务2班'}
+                ]
+            }
+        };
+        
+        // 完整的田赛数据
+        const fieldData = {
+            '男子跳远': [
+                {no: 1, name: '郑震樾', class: '25计算机4班'},
+                {no: 2, name: '张文銮', class: '25法律事务文秘3班'},
+                {no: 3, name: '蓝执政', class: '25级特勤防暴1班'},
+                {no: 4, name: '张高升', class: '25法律事务特勤2班'},
+                {no: 5, name: '陈洪源', class: '25法律事务特勤2班'},
+                {no: 6, name: '卢卡斯', class: '25法律事务特勤2班'},
+                {no: 7, name: '黄棹杰', class: '25法律事务特勤3班'},
+                {no: 8, name: '罗方达', class: '25法律事务特勤3班'}
+            ],
+            '女子跳远': [
+                {no: 1, name: '余季欣', class: '25计算机4班'},
+                {no: 2, name: '常文丽', class: '25电子商务直播3班'},
+                {no: 3, name: '龙逸静', class: '25计算机高考班'},
+                {no: 4, name: '黄思远', class: '25数字媒体3班'},
+                {no: 5, name: '杨丹琪', class: '25数字媒体3班'},
+                {no: 6, name: '陈凯莉', class: '25数字媒体2班'},
+                {no: 7, name: '吴招弟', class: '25数字媒体2班'}
+            ],
+            '男子跳高': [
+                {no: 1, name: '黄泳铭', class: '26数字媒体高考班'},
+                {no: 2, name: '姚旭东', class: '25级特勤防暴1班'},
+                {no: 3, name: '严凯博', class: '25级特勤防暴1班'},
+                {no: 4, name: '吴炫林', class: '25级特勤防暴1班'},
+                {no: 5, name: '陈杰鑫', class: '25法律事务特勤2班'},
+                {no: 6, name: '谢梓烁', class: '24法律事务1班'},
+                {no: 7, name: '叶永安', class: '25社区公共事务班'},
+                {no: 8, name: '陈嘉家', class: '25计算机应用3班'}
+            ],
+            '男子铅球': [
+                {no: 1, name: '陈永杰', class: '25法律事务治安1班'},
+                {no: 2, name: '黄清源', class: '25法律事务治安1班'},
+                {no: 3, name: '黄树敏', class: '25计算机4班'},
+                {no: 4, name: '吴振聪', class: '25计算机4班'},
+                {no: 5, name: '张家豪', class: '25数字媒体高考班'},
+                {no: 6, name: '李志权', class: '25级特勤防暴1班'},
+                {no: 7, name: '黄塬阳', class: '25级特勤防暴1班'},
+                {no: 8, name: '谭垚', class: '25法律事务特勤2班'},
+                {no: 9, name: '黄颖柯', class: '25法律事务特勤2班'},
+                {no: 10, name: '苏泽钊', class: '25法律事务特勤2班'}
+            ],
+            '女子铅球': [
+                {no: 1, name: '李春悦', class: '25法律事务文秘3班'},
+                {no: 2, name: '王绮婷', class: '25级特勤防暴1班'},
+                {no: 3, name: '曾丽梅', class: '24法律事务2班'},
+                {no: 4, name: '肖冰', class: '25电子商务高考班'},
+                {no: 5, name: '张丹琪', class: '25电子商务跨境2班'},
+                {no: 6, name: '唐新荟', class: '25社区公共事务班'},
+                {no: 7, name: '蒲欣怡', class: '25社区公共事务班'}
+            ]
+        };
+        
+        // Navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+                
+                this.classList.add('active');
+                const section = this.getAttribute('data-section');
+                document.getElementById(section).classList.add('active');
+            });
+        });
+        
+        // Track Events Filter
+        function filterTrackEvents() {
+            const filter = document.getElementById('trackFilter').value;
+            const container = document.getElementById('trackContainer');
+            
+            if (filter === '') {
+                container.innerHTML = '';
+                document.getElementById('trackCount').textContent = '';
+                return;
+            }
+            
+            const groups = trackData[filter];
+            if (!groups) {
+                container.innerHTML = '<div class="card" style="margin: 12px;"><p>暂无数据</p></div>';
+                return;
+            }
+            
+            let html = '';
+            let totalCount = 0;
+            const isFemale = filter.includes('女子');
+            
+            for (let groupName in groups) {
+                const participants = groups[groupName];
+                html += `
+                    <div class="event-box ${isFemale ? 'female' : ''}">
+                        <div class="event-title">
+                            ${filter} ${groupName}
+                        </div>
+                        <table>
+                            <tr>
+                                <th style="${isFemale ? 'background: #e91e63;' : ''}">跑道</th>
+                                <th style="${isFemale ? 'background: #e91e63;' : ''}">姓名</th>
+                                <th style="${isFemale ? 'background: #e91e63;' : ''}">班级</th>
+                            </tr>
+                            ${participants.map(p => `
+                                <tr>
+                                    <td>${p.lane}</td>
+                                    <td>${p.name}</td>
+                                    <td style="font-size: 10px;">${p.class}</td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    </div>
+                `;
+                totalCount += participants.length;
+            }
+            
+            container.innerHTML = html;
+            document.getElementById('trackCount').textContent = `共 ${totalCount} 位参赛运动员`;
+        }
+        
+        // Field Events Filter
+        function filterFieldEvents() {
+            const filter = document.getElementById('fieldFilter').value;
+            const container = document.getElementById('fieldContainer');
+            
+            if (filter === '') {
+                container.innerHTML = '';
+                document.getElementById('fieldCount').textContent = '';
+                return;
+            }
+            
+            const data = fieldData[filter];
+            if (!data) {
+                container.innerHTML = '<div class="card" style="margin: 12px;"><p>暂无数据</p></div>';
+                return;
+            }
+            
+            let html = `
+                <div class="field-event">
+                    <div class="event-title">🎯 ${filter} - 参赛名单</div>
+                    <table>
+                        <tr>
+                            <th>序号</th>
+                            <th>姓名</th>
+                            <th>班级</th>
+                        </tr>
+                        ${data.map(p => `
+                            <tr>
+                                <td>${p.no}</td>
+                                <td>${p.name}</td>
+                                <td style="font-size: 10px;">${p.class}</td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+            document.getElementById('fieldCount').textContent = `共 ${data.length} 位参赛运动员`;
+        }
+    </script>
+</body>
+</html>
