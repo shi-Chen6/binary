@@ -262,14 +262,14 @@
         <!-- Navigation -->
         <nav>
             <button class="nav-btn active" data-section="overview">赛事总览</button>
-            <!-- 径赛详情按钮：点击后展示所有径赛项目分组名单
+            <!-- 径赛详情按钮：点击后展示所有径赛项目分组名单-->
             <button class="nav-btn" data-section="track">径赛详情</button>
-           田赛详情按钮：点击后展示所有田赛项目参赛名单 
-            <button class="nav-btn" data-section="field">田赛详情</button> -->
+         
+            <button class="nav-btn" data-section="field">田赛详情</button> 
             <button class="nav-btn" data-section="staff">人员分工</button>
             <button class="nav-btn" data-section="judges">裁判岗位</button>
             <button class="nav-btn" data-section="rules">规则说明</button>
-             <button class="nav-btn" onclick="window.location.href='tongji.html'">成绩统计</button>
+            <button class="nav-btn" onclick="window.location.href='tongji.html'">成绩统计</button>
         </nav>
         
         <!-- SECTION 1: Overview -->
@@ -384,6 +384,16 @@
                     <option value="">-- 选择项目查看详情 --</option>
                     <option value="男子100M">男子100M预赛</option>
                     <option value="女子100M">女子100M预赛</option>
+                        <option value="男子200M">男子 200M</option>
+                        <option value="男子400M">男子 400M</option>
+                        <option value="男子800M">男子 800M</option>
+                        <option value="男子1500M">男子 1500M</option>
+                        <option value="男子4×100M">男子 4×100M</option>
+                        <option value="女子200M">女子 200M</option>
+                        <option value="女子400M">女子 400M</option>
+                        <option value="女子800M">女子 800M</option>
+                        <option value="女子4×100M">女子 4×100M</option>
+               
                 </select>
                 <div class="result-count" id="trackCount"></div>
             </div>
@@ -532,93 +542,24 @@
         // 完整的径赛数据
         const trackData = {
             '男子100M': {
-                '第1组': [
-                    {lane: 2, name: '梁彦辉', class: '25计算机4班'},
-                    {lane: 3, name: '陈炳旭', class: '特勤防暴1班'},
-                    {lane: 4, name: '黄颖柯', class: '特勤2班'},
-                    {lane: 5, name: '黄建伟', class: '特勤4班'},
-                    {lane: 6, name: '朱荣科', class: '25计算机4班'},
-                    {lane: 7, name: '刘乔彬', class: '特勤3班'},
-                    {lane: 8, name: '李逸炬', class: '24法律事务2班'},
-                    {lane: 9, name: '吕泽辉', class: '电子商务跨境2班'}
-                ],
-                '第2组': [
-                    {lane: 2, name: '杨绍喆', class: '商务跨境2班'},
-                    {lane: 3, name: '陈奕彬', class: '25计算机2班'},
-                    {lane: 4, name: '陈杰鑫', class: '特勤2班'},
-                    {lane: 5, name: '吴振聪', class: '25计算机4班'},
-                    {lane: 6, name: '彭信凯', class: '特勤3班'},
-                    {lane: 7, name: '蓝执政', class: '特勤防暴1班'},
-                    {lane: 8, name: '吴庆楠', class: '特勤4班'},
-                    {lane: 9, name: '张梓预', class: '电子商务直播3班'}
-                ]
+               ' 第 1 组 ': [{lane: 2, name: ' 梁彦辉 ', class: '25 计算机 4 班 '},{lane: 3, name: ' 陈炳旭 ', class: ' 特勤防暴 1 班 '},{lane: 4, name: ' 黄颖柯 ', class: ' 特勤 2 班 '},{lane: 5, name: ' 黄建伟 ', class: ' 特勤 4 班 '},{lane: 6, name: ' 朱荣科 ', class: '25 计算机 4 班 '},{lane: 7, name: ' 刘乔彬 ', class: ' 特勤 3 班 '},{lane: 8, name: ' 李逸炬 ', class: '24 法律事务 2 班 '},{lane: 9, name: ' 吕泽辉 ', class: ' 电子商务跨境 2 班 '}],' 第 2 组 ': [{lane: 2, name: ' 杨绍喆 ', class: ' 商务跨境 2 班 '},{lane: 3, name: ' 陈奕彬 ', class: '25 计算机 2 班 '},{lane: 4, name: ' 陈杰鑫 ', class: ' 特勤 2 班 '},{lane: 5, name: ' 吴振聪 ', class: '25 计算机 4 班 '},{lane: 6, name: ' 彭信凯 ', class: ' 特勤 3 班 '},{lane: 7, name: ' 蓝执政 ', class: ' 特勤防暴 1 班 '},{lane: 8, name: ' 吴庆楠 ', class: ' 特勤 4 班 '},{lane: 9, name: ' 张梓预 ', class: ' 电子商务直播 3 班 '}],' 第 3 组 ': [{lane: 2, name: ' 张嘉庆 ', class: ' 计算机应用 3 班 '},{lane: 3, name: ' 卢煜清 ', class: '25 计算机高考班 '},{lane: 4, name: ' 罗方达 ', class: ' 事务特勤 3 班 '},{lane: 5, name: ' 黄宇豪 ', class: '25 计算机 4 班 '},{lane: 6, name: ' 冯锦壕 ', class: ' 电子商务直播 3 班 '},{lane: 7, name: ' 郑梓葵 ', class: ' 事务特勤 3 班 '},{lane: 8, name: ' 许楚鑫 ', class: ' 电子商务直播 2 班 '},{lane: 9, name: ' 陈梓涵 ', class: ' 工业机器人 3 班 '}],' 第 4 组 ': [{lane: 2, name: ' 林锦鸿 ', class: ' 电子商务直播 2 班 '},{lane: 3, name: ' 林梓康 ', class: ' 工业机器人 3 班 '},{lane: 4, name: ' 游灿彬 ', class: ' 计算机应用 3 班 '},{lane: 5, name: ' 陈浩锋 ', class: '24 高职高考 1 班 '},{lane: 6, name: ' 洪桐烨 ', class: '25 工业机器人高考班 '},{lane: 7, name: ' 宋江乙 ', class: '25 工业机器人 2 班 '},{lane: 8, name: ' 曾隆鑫 ', class: '25 工业机器人 4 班 '},{lane: 9, name: ' 郑煜南 ', class: '5 数字媒体 2 班 '}],' 第 5 组 ': [{lane: 2, name: ' 陈梓浩 ', class: '25 计算机应用 3 班 '},{lane: 3, name: ' 孟铁可 ', class: '25 法律事务治安 1 班 '},{lane: 4, name: ' 陈键坤 ', class: '25 工业机器人 4 班 '},{lane: 5, name: ' 杨锦泽 ', class: '25 工业机器人高考班 '},{lane: 6, name: ' 郭泽伟 ', class: '25 工业机器人 2 班 '},{lane: 7, name: ' 郭灿鹏 ', class: '25 工业机器人 4 班 '},{lane: 8, name: ' 洪武彬 ', class: '25 法律事务文秘 2 班 '},{lane: 9, name: ' 曾佳文 ', class: '25 数字媒体 1 班 '}],' 第 6 组 ': [{lane: 2, name: ' 马泽鹏 ', class: '25 工业机器人 2 班 '},{lane: 3, name: ' 王忆东 ', class: '25 数字媒体 2 班 '},{lane: 4, name: ' 谢锦扬 ', class: '25 法律事务治安 1 班 '},{lane: 5, name: ' 谢浩桐 ', class: '25 工业机器人 4 班 '},{lane: 6, name: ' 林智韩 ', class: '25 数字媒体 3 班 '},{lane: 7, name: ' 魏林 ', class: '25 工业机器人 2 班 '},{lane: 8, name: ' 罗谦馀 ', class: '25 法律事务高考班 '},{lane: 9, name: ' 曾鸿裕 ', class: '25 数字媒体 1 班 '}],' 第 7 组 ': [{lane: 2, name: ' 赵槿涌 ', class: '5 工业机器人 2 班 '},{lane: 3, name: ' 刘梓琪 ', class: '25 法律事务文秘 2 班 '},{lane: 4, name: ' 古如杨 ', class: '25 数字媒体 2 班 '},{lane: 5, name: ' 詹锐煌 ', class: '25 工业机器人 2 班 '},{lane: 6, name: ' 苏健壕 ', class: '25 数字媒体 1 班 '},{lane: 7, name: ' 洪浩杰 ', class: '25 工业机器人 2 班 '},{lane: 8, name: ' 陈子圣 ', class: '25 数字媒体 1 班 '},{lane: 9, name: ' 欧昊坛 ', class: '25 数字媒体 2 班 '}],' 第 8 组 ': [{lane: 2, name: ' 郑樟豪 ', class: '5 电子商务直播 1 班 '},{lane: 3, name: ' 陈梓泓 ', class: '25 法律事务文秘 5 班 '},{lane: 4, name: ' 陈栋鹏 ', class: '25 电子商务直播 1 班 '},{lane: 5, name: ' 林孟豪 ', class: '25 电子商务直播 1 班 '},{lane: 6, name: ' 赵槿涌 ', class: '5 工业机器人 2 班 '},{lane: 7, name: ' 赖佳铭 ', class: '25 数字媒体 2 班 '},{lane: 8, name: ' 熊广熠 ', class: '25 电子商务直播 1 班 '},{lane: 9, name: ' 刘承意 ', class: '5 电子商务直播 1 班 '}],' 第 9 组 ': [{lane: 3, name: ' 黄家浩 ', class: '25 法律事务治安 1 班 '},{lane: 4, name: ' 翁昌弘 ', class: '5 电子商务直播 1 班 '},{lane: 5, name: ' 张栖铭 ', class: '25 工业机器人高考班 '},{lane: 6, name: ' 赵伟涛 ', class: '25 工业机器人 2 班 '},{lane: 7, name: ' 伍骏鹏 ', class: '24 法律事务 1 班 '}]
             },
             '女子100M': {
-                '第1组': [
-                    {lane: 2, name: '李嘉倩', class: '25计算机2班'},
-                    {lane: 3, name: '韩思琪', class: '特勤防暴1班'},
-                    {lane: 4, name: '彭柯', class: '25计算机4班'},
-                    {lane: 5, name: '陈梓璇', class: '24法律事务2班'},
-                    {lane: 6, name: '陈楚欣', class: '25电子商务高考班'},
-                    {lane: 7, name: '赖金花', class: '社区公共事务'},
-                    {lane: 8, name: '吴梓荣', class: '24法律事务2班'}
-                ]
-            }
+                ' 第 1 组 ': [{lane: 2, name: ' 李嘉倩 ', class: '25 计算机 2 班 '},{lane: 3, name: ' 韩思琪 ', class: ' 特勤防暴一班 '},{lane: 4, name: ' 彭柯 ', class: '25 计算机 4 班 '},{lane: 5, name: ' 陈梓璇 ', class: '24 法律事务 2 班 '},{lane: 6, name: ' 陈楚欣 ', class: '25 电子商务高考班 '},{lane: 7, name: ' 赖金花 ', class: ' 社区公共事务 '},{lane: 8, name: ' 吴梓荣 ', class: '24 法律事务 2 班 '}],' 第 2 组 ': [{lane: 2, name: ' 陈梦雅 ', class: ' 公共事务班 '},{lane: 3, name: ' 朱欢欢 ', class: '25 数字媒体 2 班 '},{lane: 4, name: ' 房文静 ', class: '25 计算机 2 班 '},{lane: 5, name: ' 温杨灿 ', class: '24 法律事务 2 班 '},{lane: 6, name: ' 龙逸静 ', class: '25 计算机高考班 '},{lane: 7, name: ' 廖曼柔 ', class: '25 计算机应用 3 班 '},{lane: 8, name: ' 常文丽 ', class: ' 电子商务直播 3 班 '}],' 第 3 组 ': [{lane: 3, name: ' 陈欢 ', class: '25 计算机 2 班 '},{lane: 4, name: ' 詹灵桦 ', class: ''},{lane: 5, name: ' 林欣婷 ', class: '24 法律事务 2 班 '},{lane: 6, name: ' 陈思研 ', class: '25 数字媒体 2 班 '},{lane: 7, name: ' 吴鑫怡 ', class: ' 社区公共事务 '}],' 第 4 组 ': [{lane: 3, name: ' 詹雪琪 ', class: '25 数字媒体 2 班 '},{lane: 4, name: ' 林可烨 ', class: '4 法律事务 2 班 '},{lane: 5, name: ' 蔡嘉钰 ', class: ' 社区公共事务 '},{lane: 6, name: ' 张丹琪 ', class: ' 电子商务跨境 2 班 '},{lane: 7, name: ' 陈薇洁 ', class: ' 社区公共事务 '}]
+            },
+            '男子200M': {' 第 1 组 ': [{lane: 2, name: ' 陈武樽 ', class: '25 计算机 2 班 '},{lane: 3, name: ' 王家景 ', class: '25 计算机 4 班 '},{lane: 4, name: ' 洪凯豪 ', class: ' 特勤防暴一班 '},{lane: 5, name: ' 陈辛炎 ', class: ' 事务特勤 4 班 '},{lane: 6, name: ' 林梓烽 ', class: '24 法律事务 1 班 '},{lane: 7, name: ' 陈家豪 ', class: '25 工业机器人 3 班 '},{lane: 8, name: ' 孙佳铭 ', class: ' 工业机器人高考班 '},{lane: 9, name: ' 罗万嘉 ', class: '25 工业机器人 2 班 '}],' 第 2 组 ': [{lane: 2, name: ' 黄文嘉 ', class: '25 计算机 2 班 '},{lane: 3, name: ' 张宏睿 ', class: ' 法律事务特勤 4 班 '},{lane: 4, name: ' 李火杰 ', class: '25 社区公共事务班 '},{lane: 5, name: ' 吴伟明 ', class: ' 法律事务特勤 4 班 '},{lane: 6, name: ' 林勇杰 ', class: '25 计算机高考班 '},{lane: 7, name: ' 赖伟锋 ', class: '25 法律事务治安 1 班 '},{lane: 8, name: ' 胡金彬 ', class: '25 工业机器人 3 班 '},{lane: 9, name: ' 戴智涵 ', class: '25 工业机器人 4 班 '}],' 第 3 组 ': [{lane: 2, name: ' 赖浩洋 ', class: '25 数字媒体 3 班 '},{lane: 3, name: ' 李世杰 ', class: '25 法律事务文秘 2 班 '},{lane: 4, name: ' 罗谦馀 ', class: '25 法律事务高考班 '},{lane: 5, name: ' 传梓育 ', class: '25 法律事务治安 1 班 '},{lane: 6, name: ' 洪武彬 ', class: '25 法律事务文秘 2 班 '},{lane: 7, name: ' 彭绪钊 ', class: '25 数字媒体 3 班 '},{lane: 8, name: ' 洪浩俊 ', class: '25 法律事务文秘 2 班 '},{lane: 9, name: ' 周世杰 ', class: '25 数字媒体 2 班 '}],' 第 4 组 ': [{lane: 3, name: ' 蓝鑫泰 ', class: '25 法律事务治安 1 班 '},{lane: 4, name: ' 陈一明 ', class: '25 工业机器人 1 班 '},{lane: 5, name: ' 林枫豪 ', class: '25 法律事务文秘 2 班 '},{lane: 6, name: ' 黄俊杰 ', class: '25 级司法文秘 1 班 '}]},
+            '女子200M': {' 第 1 组 ': [{lane: 2, name: ' 詹舒涵 ', class: '25 计算机 2 班 '},{lane: 3, name: ' 刘诺琪 ', class: ' 特勤防暴一班 '},{lane: 4, name: ' 郭怡雯 ', class: '25 电子商务高考班 '},{lane: 5, name: ' 吴钰娴 ', class: ' 公共事务班 '},{lane: 6, name: ' 林艺铌 ', class: '25 数字媒体 1 班 '},{lane: 7, name: ' 罗诗妍 ', class: '25 社区公共事务班 '},{lane: 8, name: ' 陈铭珊 ', class: '25 数字媒体 3 班 '},{lane: 9, name: ' 罗雅莉 ', class: '25 电子商务直播 2 班 '}],' 第 2 组 ': [{lane: 2, name: ' 吕俊怡 ', class: '25 社区公共事务班 '},{lane: 3, name: ' 杨梓玥 ', class: '25 数字媒体 3 班 '},{lane: 4, name: ' 曾雪茹 ', class: '25 法律事务高考班 '},{lane: 5, name: ' 何梓苗 ', class: '25 社区公共事务班 '},{lane: 6, name: ' 刘嘉钰 ', class: '25 数字媒体 1 班 '},{lane: 7, name: ' 钟雪婷 ', class: '25 数字媒体 2 班 '},{lane: 8, name: ' 方曼婷 ', class: ' 公共事务班 '},{lane: 9, name: ' 严楚蕾 ', class: '25 数字媒体 2 班 '}],' 第 3 组 ': [{lane: 3, name: ' 吴明琳 ', class: '25 数字媒体 2 班 '},{lane: 4, name: ' 张安淇 ', class: '25 电子商务直播 2 班 '},{lane: 5, name: ' 黄玮璟 ', class: '25 数字媒体 2 班 '},{lane: 6, name: ' 赵楚津 ', class: '25 社区公共事务班 '}]},
+            '男子400M': {' 第 1 组 ': [{lane: 3, name: ' 姚旭东 ', class: '25 级特勤防暴一班 '},{lane: 4, name: ' 王斯杰 ', class: '25 法律事务治安 1 班 '},{lane: 5, name: ' 张高升 ', class: '25 法律事务特勤 2 班 '},{lane: 6, name: ' 廖柯煌 ', class: '25 法律事务特勤 3 班 '},{lane: 7, name: ' 吴立蓬 ', class: '25 计算机 1 班 '},{lane: 8, name: ' 黄家浩 ', class: '25 法律事务治安 1 班 '}],' 第 2 组 ': [{lane: 2, name: ' 林铠杭 ', class: '25 法律事务特勤 2 班 '},{lane: 3, name: ' 彭书睿 ', class: '25 计算机高考班 '},{lane: 4, name: ' 孟铁可 ', class: '25 法律事务治安 1 班 '},{lane: 5, name: ' 王淼鑫 ', class: '25 工业机器人 1 班 '},{lane: 6, name: ' 邱创锋 ', class: '25 工业机器人 3 班 '},{lane: 7, name: ' 侯运潮 ', class: '25 工业机器人高考班 '},{lane: 8, name: ' 马泽鹏 ', class: '25 工业机器人 2 班 '}],' 第 3 组 ': [{lane: 2, name: ' 刘伟滨 ', class: '25 数字媒体 3 班 '},{lane: 3, name: ' 蔡畅煜 ', class: '25 级特勤防暴一班 '},{lane: 4, name: ' 徐铭瀚 ', class: '25 数字媒体 1 班 '},{lane: 5, name: ' 李东铭 ', class: '25 数字媒体 2 班 '},{lane: 6, name: ' 郑逸辉 ', class: '25 法律事务特勤 3 班 '},{lane: 7, name: ' 卓君诚 ', class: '25 计算机高考班 '},{lane: 8, name: ' 陈俊涛 ', class: '25 法律事务治安 1 班 '}],' 第 4 组 ': [{lane: 3, name: ' 陈锦鸿 ', class: '25 法律事务特勤 2 班 '},{lane: 4, name: ' 蔡森鹏 ', class: '25 计算机高考班 '},{lane: 5, name: ' 林智韩 ', class: '25 数字媒体 3 班 '},{lane: 6, name: ' 罗圣宏 ', class: '25 法律事务治安 1 班 '},{lane: 7, name: ' 杨锦泽 ', class: '25 工业机器人高考班 '}]},
+            '女子400M': {' 第 1 组 ': [{lane: 2, name: ' 赖丽丽 ', class: '25 计算机 1 班 '},{lane: 3, name: ' 何佳馨 ', class: '25 法律事务文秘 3 班 '},{lane: 4, name: ' 陈紫莹 ', class: '25 社区公共事务班 '},{lane: 5, name: ' 邓梦琪 ', class: '25 级特勤防暴一班 '},{lane: 6, name: ' 刘逸淇 ', class: '24 法律事务 2 班 '},{lane: 7, name: ' 谢银峰 ', class: '25 计算机高考班 '}],' 第 2 组 ': [{lane: 2, name: ' 王佳如 ', class: ' 事务文秘 2 班 '},{lane: 3, name: ' 林艺铌 ', class: '25 数字媒体 1 班 '},{lane: 4, name: ' 陈嘉妍 ', class: '25 法律事务文秘 3 班 '},{lane: 5, name: ' 赵桠萱 ', class: '25 社区公共事务班 '},{lane: 6, name: ' 刘蓓仪 ', class: '25 计算机高考班 '}]},
+            '男子800M': {' 第 1 组 ': [{lane: 1, name: ' 吴立蓬 ', class: '25 计算机 1 班 '},{lane: 2, name: ' 郑佳雄 ', class: ' 电子商务跨境 2 班 '},{lane: 3, name: ' 徐林锦 ', class: '25 计算机 2 班 '},{lane: 4, name: ' 凌柏宇 ', class: ' 特勤防暴一班 '},{lane: 5, name: ' 吴泽颖 ', class: '25 电子商务直播 3 班 '},{lane: 6, name: ' 陈鸿荣 ', class: ' 法律事务特勤 2 班 '},{lane: 7, name: ' 严意涛 ', class: ' 法律事务特勤 3 班 '},{lane: 8, name: ' 欧辉煌 ', class: '25 电子商务跨境 2 班 '}],' 第 2 组 ': [{lane: 1, name: ' 吴庆楠 ', class: ' 法律事务特勤 4 班 '},{lane: 2, name: ' 杨林超 ', class: ' 特勤防暴一班 '},{lane: 3, name: ' 黄粤润 ', class: ' 电子商务跨境 2 班 '},{lane: 4, name: ' 许秋楷 ', class: '25 计算机 1 班 '},{lane: 5, name: ' 李梓豪 ', class: '25 法律事务特勤 3 班 '},{lane: 6, name: ' 吕泽辉 ', class: '25 电子商务跨境 2 班 '},{lane: 7, name: ' 傅佳豪 ', class: '25 工业机器人 3 班 '},{lane: 8, name: ' 黄建君 ', class: '24 法律事务 1 班 '}],' 第 3 组 ': [{lane: 1, name: ' 陈祺睿 ', class: '25 计算机高考班 '},{lane: 2, name: ' 赖培都 ', class: '24 高职高考 1 班 '},{lane: 3, name: ' 林耀杰 ', class: '25 数字媒体 2 班 '},{lane: 4, name: ' 蒲超隆 ', class: '25 工业机器人 4 班 '},{lane: 5, name: ' 代晓亮 ', class: '25 数字媒体 1 班 '},{lane: 6, name: ' 彭鑫润 ', class: '25 计算机应用 3 班 '},{lane: 7, name: ' 曾锦濠 ', class: '25 工业机器人 3 班 '},{lane: 8, name: ' 李长钰 ', class: '25 电子商务直播 3 班 '}],' 第 4 组 ': [{lane: 1, name: ' 曾鸿博 ', class: '25 法律事务高考班 '},{lane: 2, name: ' 陈其辉 ', class: '25 工业机器人 4 班 '},{lane: 3, name: ' 陈奕昊 ', class: '25 电子商务直播 3 班 '},{lane: 4, name: ' 邓林翔 ', class: '25 数字媒体 1 班 '},{lane: 5, name: ' 李卓亮 ', class: '25 数字媒体 3 班 '},{lane: 6, name: ' 孔远安 ', class: '25 社区公共事务班 '},{lane: 7, name: ' 陈彦浩 ', class: '25 法律事务文秘 2 班 '},{lane: 8, name: ' 施慧彬 ', class: '25 法律事务文秘 2 班 '}],' 第 5 组 ': [{lane: 1, name: ' 曾佳文 ', class: '25 数字媒体 1 班 '},{lane: 2, name: ' 詹耿豪 ', class: '25 电子商务直播 1 班 '},{lane: 3, name: ' 吴浩勇 ', class: '25 电子商务直播 1 班 '},{lane: 4, name: ' 李文榜 ', class: '25 数字媒体 1 班 '},{lane: 5, name: ' 陈奕廷 ', class: '25 法律事务治安 1 班 '},{lane: 6, name: ' 林学志 ', class: '25 数字媒体 1 班 '},{lane: 7, name: ' 胡恩丰 ', class: '25 工业机器人 1 班 '},{lane: 8, name: ' 张梓蕾 ', class: '25 工业机器人 4 班 '}],' 第 6 组 ': [{lane: 1, name: ' 周楚林 ', class: '25 电子商务直播 1 班 '},{lane: 2, name: ' 叶永安 ', class: '25 社区公共事务班 '},{lane: 3, name: ' 岳孝鑫 ', class: '25 数字媒体 1 班 '},{lane: 4, name: ' 唐勋波 ', class: '25 电子商务直播 1 班 '},{lane: 5, name: ' 黄宝鑫 ', class: '25 电子商务直播 1 班 '},{lane: 6, name: ' 陈俊涛 ', class: '25 法律事务治安 1 班 '}]},
+            '女子800M': {' 第 1 组 ': [{lane: 1, name: ' 杨瑞洳 ', class: '25 计算机 4 班 '},{lane: 2, name: ' 杨友春 ', class: ' 法律事务文秘 3 班 '},{lane: 3, name: ' 刘紫依 ', class: '25 法律事务文秘 2 班 '},{lane: 4, name: ' 詹梓林 ', class: ' 特勤防暴一班 '},{lane: 5, name: ' 杨洁芬 ', class: '24 高职高考 1 班 '},{lane: 6, name: ' 江嘉妮 ', class: '25 数字媒体 1 班 '},{lane: 7, name: ' 陈雪琳 ', class: '25 数字媒体 1 班 '},{lane: 8, name: ' 温佳凤 ', class: '24 法律事务 2 班 '}],' 第 2 组 ': [{lane: 1, name: ' 欧艺婷 ', class: '25 电子商务高考班 '},{lane: 2, name: ' 潘春钰 ', class: '25 社区公共事务班 '},{lane: 3, name: ' 刘佳惠 ', class: '24 高职高考 1 班 '},{lane: 4, name: ' 曾嘉琳 ', class: '24 法律事务 2 班 '},{lane: 5, name: ' 张慧敏 ', class: '25 法律事务高考班 '},{lane: 6, name: ' 谢洁妮 ', class: '25 法律事务文秘 2 班 '},{lane: 7, name: ' 龚莹 ', class: '25 法律事务特勤防暴 1 班 '},{lane: 8, name: ' 官荧莹 ', class: ' 法律事务文秘 3 班 '}],' 第 3 组 ': [{lane: 1, name: ' 郑冰烁 ', class: '25 数字媒体 1 班 '},{lane: 2, name: ' 秦韩金 ', class: '25 法律事务文秘 1 班 '},{lane: 3, name: ' 邱铭涵 ', class: '24 法律事务 2 班 '},{lane: 4, name: ' 刘宝琴 ', class: '25 法律事务文秘 1 班 '},{lane: 5, name: ' 庄洁玲 ', class: '25 电子商务跨境 1 班 '}]},
+           '男子 1500M': {' 第 1 组 ': [{lane: 1, name: ' 陈柏君 ', class: '25 计算机 1 班 '},{lane: 2, name: ' 李文宝 ', class: '25 计算机 1 班 '},{lane: 3, name: ' 徐林锦 ', class: '25 计算机 2 班 '},{lane: 4, name: ' 赖文杰 ', class: '25 法律事务文秘 3 班 '},{lane: 5, name: ' 陈嘉宝 ', class: '25 法律事务文秘 3 班 '},{lane: 6, name: ' 廖金尚 ', class: ' 特勤防暴 1 班 '},{lane: 7, name: ' 方国豪 ', class: '25 法律事务特勤 1 班 '},{lane: 8, name: ' 谢政鸿 ', class: '25 法律事务特勤 2 班 '}],' 第 2 组 ': [{lane: 9, name: ' 林铠杭 ', class: '5 法律事务特勤 2 班 '},{lane: 10, name: ' 林铠杭 ', class: '25 法律事务特勤 3 班 '},{lane: 11, name: ' 蔡畅豪 ', class: '25 法律事务特勤 3 班 '},{lane: 12, name: ' 严意涛 ', class: '25 法律事务特勤 3 班 '},{lane: 13, name: ' 庄家贤 ', class: '25 法律事务特勤 3 班 '},{lane: 14, name: ' 欧辉煌 ', class: '25 电子商务跨境 2 班 '},{lane: 15, name: ' 陈振华 ', class: '25 电子商务跨境 2 班 '},{lane: 16, name: ' 郑焕彬 ', class: '25 电子商务跨境 2 班 '}],' 第 3 组 ': [{lane: 17, name: ' 张梓预 ', class: '25 电子商务直播 3 班 '},{lane: 18, name: ' 钟浩轩 ', class: '25 社区公共事务班 '},{lane: 19, name: ' 陈咏诚 ', class: '25 社区公共事务班 '},{lane: 20, name: ' 黄柏竣 ', class: '25 电子商务跨境 1 班 '},{lane: 21, name: ' 陈浩柠 ', class: '25 电子商务跨境 1 班 '},{lane: 22, name: ' 陈毅峰 ', class: '25 工业机器人 1 班 '},{lane: 23, name: ' 魏凯翔 ', class: '25 工业机器人 3 班 '},{lane: 24, name: ' 徐新枫 ', class: '25 工业机器人 2 班 '}],' 第 4 组 ': [{lane: 25, name: ' 陈其辉 ', class: '25 工业机器人 4 班 '},{lane: 26, name: ' 吴梓强 ', class: '25 数字媒体 3 班 '},{lane: 27, name: ' 佘宏海 ', class: '25 数字媒体 3 班 '},{lane: 28, name: ' 曾维楠 ', class: '25 法律事务高考班 '},{lane: 29, name: ' 翁继浩 ', class: '25 法律事务高考班 '},{lane: 30, name: ' 施慧彬 ', class: '25 法律事务文秘 2 班 '},{lane: 31, name: ' 周建欣 ', class: '25 法律事务文秘 2 班 '},{lane: 32, name: ' 温鸿涛 ', class: '25 数字媒体 1 班 '}],' 第 5 组 ': [{lane: 33, name: ' 詹达毅 ', class: '25 数字媒体 1 班 '},{lane: 34, name: ' 陈炫凯 ', class: '25 数字媒体 2 班 '},{lane: 35, name: ' 韦春江 ', class: '25 数字媒体 2 班 '},{lane: 36, name: ' 洪觉航 ', class: '25 数字媒体 2 班 '},{lane: 37, name: ' 澎渝松 ', class: '25 数字媒体 2 班 '},{lane: 38, name: ' 金泽圻 ', class: '25 电子商务直播 20 班 '},{lane: 39, name: ' 朱嘉明 ', class: '25 法律事务治安 1 班 '},{lane: 40, name: ' 吴伟明 ', class: '25 法律事务特勤 4 班 '}]},
+            '男子4×100M': {' 第 1 组 ': [{lane: 1, team: '25 计算机应用 1 班 '},{lane: 2, team: '25 电子商务（直播）1 班 '},{lane: 3, team: '25 电子商务（跨境）2 班 '},{lane: 4, team: '25 工业机器人 2 班 '},{lane: 5, team: '25 数字媒体 2 班 '},{lane: 6, team: '25 法律事务（特勤防暴）2 班 '},{lane: 7, team: '25 法律事务（治安巡防）1 班 '}],' 第 2 组 ': [{lane: 1, team: '25 计算机应用 2 班 '},{lane: 2, team: '25 电子商务（直播）3 班 '},{lane: 3, team: '25 工业机器人 1 班 '},{lane: 4, team: '25 数字媒体 3 班 '},{lane: 5, team: '25 法律事务（特勤防暴）3 班 '},{lane: 6, team: '25 法律事务（司法文秘）2 班 '},{lane: 7, team: '25 电子商务（跨境）1 班 '},{lane: 8, team: '25 电子商务高考 1 班 '}],' 第 3 组 ': [{lane: 1, team: '25 计算机应用 3 班 '},{lane: 2, team: '25 电子商务（直播）4 班 '},{lane: 3, team: '25 工业机器人 4 班 '},{lane: 4, team: '25 法律事务（特勤防暴）4 班 '},{lane: 5, team: '25 法律事务（特勤防暴）1 班 '},{lane: 6, team: '25 计算机应用 4 班 '},{lane: 7, team: '25 工业机器人职教高考班 '},{lane: 8, team: '24 法律事务 1 班 '}],' 第 4 组 ': [{lane: 1, team: '25 计算机职教高考 1 班 '},{lane: 2, team: '25 电子商务（直播）2 班 '},{lane: 3, team: '25 社区公共事务 1 班 '},{lane: 4, team: '25 工业机器人 3 班 '},{lane: 5, team: '25 法律事务（职教高考）1 班 '},{lane: 6, team: '25 数字媒体职教高考 1 班 '}]},
+        '女子4×100M':{' 第 1 组 ': [{lane: 1, team: '25 计算机应用 2 班 '},{lane: 2, team: '25 电子商务（直播）1 班 '},{lane: 3, team: '25 电子商务（跨境）2 班 '},{lane: 4, team: '25 数字媒体 1 班 '},{lane: 5, team: '25 法律事务（司法文秘）2 班 '},{lane: 6, team: '25 法律事务（职教高考）1 班 '},{lane: 7, team: '25 电子商务（职教高考）1 班 '}],' 第 2 组 ': [{lane: 1, team: '25 电子商务（直播）4 班 '},{lane: 2, team: '25 电子商务（跨境）2 班 '},{lane: 3, team: '25 数字媒体 2 班 '},{lane: 4, team: '25 法律事务（司法文秘）1 班 '},{lane: 5, team: '25 法律事务（司法文秘）3 班 '},{lane: 6, team: '25 数字媒体职教高考 1 班 '},{lane: 7, team: '25 电子商务（直播）2 班 '}],' 第 3 组 ': [{lane: 1, team: '25 电子商务（直播）3 班 '},{lane: 2, team: '25 数字媒体 3 班 '},{lane: 3, team: '25 电子商务（跨境）3 班 '},{lane: 4, team: '25 社区公共事务 1 班 '},{lane: 5, team: '24 法律事务 2 班 '},{lane: 6, team: '25 计算机应用 1 班 '}]}
         };
         
         // 完整的田赛数据
-        const fieldData = {
-            '男子跳远': [
-                {no: 1, name: '郑震樾', class: '25计算机4班'},
-                {no: 2, name: '张文銮', class: '25法律事务文秘3班'},
-                {no: 3, name: '蓝执政', class: '25级特勤防暴1班'},
-                {no: 4, name: '张高升', class: '25法律事务特勤2班'},
-                {no: 5, name: '陈洪源', class: '25法律事务特勤2班'},
-                {no: 6, name: '卢卡斯', class: '25法律事务特勤2班'},
-                {no: 7, name: '黄棹杰', class: '25法律事务特勤3班'},
-                {no: 8, name: '罗方达', class: '25法律事务特勤3班'}
-            ],
-            '女子跳远': [
-                {no: 1, name: '余季欣', class: '25计算机4班'},
-                {no: 2, name: '常文丽', class: '25电子商务直播3班'},
-                {no: 3, name: '龙逸静', class: '25计算机高考班'},
-                {no: 4, name: '黄思远', class: '25数字媒体3班'},
-                {no: 5, name: '杨丹琪', class: '25数字媒体3班'},
-                {no: 6, name: '陈凯莉', class: '25数字媒体2班'},
-                {no: 7, name: '吴招弟', class: '25数字媒体2班'}
-            ],
-            '男子跳高': [
-                {no: 1, name: '黄泳铭', class: '26数字媒体高考班'},
-                {no: 2, name: '姚旭东', class: '25级特勤防暴1班'},
-                {no: 3, name: '严凯博', class: '25级特勤防暴1班'},
-                {no: 4, name: '吴炫林', class: '25级特勤防暴1班'},
-                {no: 5, name: '陈杰鑫', class: '25法律事务特勤2班'},
-                {no: 6, name: '谢梓烁', class: '24法律事务1班'},
-                {no: 7, name: '叶永安', class: '25社区公共事务班'},
-                {no: 8, name: '陈嘉家', class: '25计算机应用3班'}
-            ],
-            '男子铅球': [
-                {no: 1, name: '陈永杰', class: '25法律事务治安1班'},
-                {no: 2, name: '黄清源', class: '25法律事务治安1班'},
-                {no: 3, name: '黄树敏', class: '25计算机4班'},
-                {no: 4, name: '吴振聪', class: '25计算机4班'},
-                {no: 5, name: '张家豪', class: '25数字媒体高考班'},
-                {no: 6, name: '李志权', class: '25级特勤防暴1班'},
-                {no: 7, name: '黄塬阳', class: '25级特勤防暴1班'},
-                {no: 8, name: '谭垚', class: '25法律事务特勤2班'},
-                {no: 9, name: '黄颖柯', class: '25法律事务特勤2班'},
-                {no: 10, name: '苏泽钊', class: '25法律事务特勤2班'}
-            ],
-            '女子铅球': [
-                {no: 1, name: '李春悦', class: '25法律事务文秘3班'},
-                {no: 2, name: '王绮婷', class: '25级特勤防暴1班'},
-                {no: 3, name: '曾丽梅', class: '24法律事务2班'},
-                {no: 4, name: '肖冰', class: '25电子商务高考班'},
-                {no: 5, name: '张丹琪', class: '25电子商务跨境2班'},
-                {no: 6, name: '唐新荟', class: '25社区公共事务班'},
-                {no: 7, name: '蒲欣怡', class: '25社区公共事务班'}
-            ]
-        };
+       const fieldData = {'男子跳远': [{no: 1, name: ' 郑震樾 ', class: '25 计算机 4 班 '},{no: 2, name: ' 张文銮 ', class: '25 法律事务文秘 3 班 '},{no: 3, name: ' 蓝执政 ', class: '25 级特勤防暴一班 '},{no: 4, name: ' 张高升 ', class: '25 法律事务特勤 2 班 '},{no: 5, name: ' 陈洪源 ', class: '25 法律事务特勤 2 班 '},{no: 6, name: ' 卢卡斯 ', class: '25 法律事务特勤 2 班 '},{no: 7, name: ' 黄棹杰 ', class: '25 法律事务特勤 3 班 '},{no: 8, name: ' 罗方达 ', class: '25 法律事务特勤 3 班 '},{no: 9, name: ' 李梓豪 ', class: '25 法律事务特勤 3 班 '},{no: 10, name: ' 郑锌涛 ', class: '25 法律事务特勤 3 班 '},{no: 11, name: ' 徐锦满 ', class: '25 法律事务特勤 3 班 '},{no: 12, name: ' 吴庆楠 ', class: '25 法律事务特勤 4 班 '},{no: 13, name: ' 曾浩宇 ', class: '25 法律事务特勤 4 班 '},{no: 14, name: ' 罗勇 ', class: '31 电子商务高考班 '},{no: 15, name: ' 陈浩鑫 ', class: '25 电子商务跨境 2 班 '},{no: 16, name: ' 王梓涛 ', class: '25 电子商务跨境 2 班 '},{no: 17, name: ' 吴宏杰 ', class: '24 法律事务 1 班 '},{no: 18, name: ' 陈湘鸿 ', class: '25 社区公共事务班 '},{no: 19, name: ' 陈佳鑫 ', class: '25 电子商务直播 2 班 '},{no: 20, name: ' 陈浩锐 ', class: '24 高职高考 1 班 '},{no: 21, name: ' 张财鑫 ', class: '25 工业机器人高考班 '},{no: 22, name: ' 王嘉耀 ', class: '25 工业机器人 2 班 '},{no: 23, name: ' 戴智涵 ', class: '25 工业机器人 4 班 '},{no: 24, name: ' 林森灏 ', class: '25 数字媒体 3 班 '},{no: 25, name: ' 林国武 ', class: '25 法律事务高考班 '},{no: 26, name: ' 岳孝鑫 ', class: '25 数字媒体 1 班 '},{no: 27, name: ' 谢涵羽 ', class: '25 数字媒体 1 班 '},{no: 28, name: ' 罗杰 ', class: '25 数字媒体 1 班 '},{no: 29, name: ' 文子刚 ', class: '25 数字媒体 1 班 '},{no: 30, name: ' 李冕涛 ', class: '25 数字媒体 1 班 '},{no: 31, name: ' 郑煜南 ', class: '25 数字媒体 2 班 '},{no: 32, name: ' 袁梓炫 ', class: '25 数字媒体 2 班 '},{no: 33, name: ' 陈子坜 ', class: '25 数字媒体 2 班 '},{no: 34, name: ' 宋凯涛 ', class: '25 电子商务直播 1 班 '},{no: 35, name: ' 谢晓熙 ', class: '25 电子商务直播 1 班 '},{no: 36, name: ' 谢洁锐 ', class: '25 电子商务直播 1 班 '},{no: 37, name: ' 曾宇晨 ', class: '25 电子商务直播 1 班 '},{no: 38, name: ' 黄俊杰 ', class: '25 级司法文秘 1 班 '}],'女子跳远': [{no: 1, name: ' 余季欣 ', class: '25 计算机 4 班 '},{no: 2, name: ' 常文丽 ', class: '25 电子商务直播 3 班 '},{no: 3, name: ' 龙逸静 ', class: '25 计算机高考班 '},{no: 4, name: ' 黄思远 ', class: '25 数字媒体 3 班 '},{no: 5, name: ' 杨丹琪 ', class: '25 数字媒体 3 班 '},{no: 6, name: ' 陈凯莉 ', class: '25 数字媒体 2 班 '},{no: 7, name: ' 吴招弟 ', class: '25 数字媒体 2 班 '}],'男子跳高': [{no: 1, name: ' 黄泳铭 ', class: '25 数字媒体高考班 '},{no: 2, name: ' 姚旭东 ', class: '25 级特勤防暴一班 '},{no: 3, name: ' 严凯博 ', class: '25 级特勤防暴一班 '},{no: 4, name: ' 吴炫林 ', class: '25 级特勤防暴一班 '},{no: 5, name: ' 陈杰鑫 ', class: '25 法律事务特勤 2 班 '},{no: 6, name: ' 谢梓烁 ', class: '24 法律事务 1 班 '},{no: 7, name: ' 叶永安 ', class: '25 社区公共事务班 '},{no: 8, name: ' 陈嘉家 ', class: '25 计算机应用 3 班 '},{no: 9, name: ' 彭鑫润 ', class: '25 计算机应用 3 班 '},{no: 10, name: ' 林耀庭 ', class: '25 法律事务高考班 '},{no: 11, name: ' 程兴誉 ', class: '25 法律事务治安 1 班 '}],'男子铅球': [{no: 1, name: ' 陈永杰 ', class: '25 法律事务治安 1 班 '},{no: 2, name: ' 黄清源 ', class: '25 法律事务治安 1 班 '},{no: 3, name: ' 黄树敏 ', class: '25 计算机 4 班 '},{no: 4, name: ' 吴振聪 ', class: '25 计算机 4 班 '},{no: 5, name: ' 张家豪 ', class: '25 数字媒体高考班 '},{no: 6, name: ' 李志权 ', class: '25 级特勤防暴一班 '},{no: 7, name: ' 黄塬阳 ', class: '25 级特勤防暴一班 '},{no: 8, name: ' 谭垚 ', class: '25 法律事务特勤 2 班 '},{no: 9, name: ' 黄颖柯 ', class: '25 法律事务特勤 2 班 '},{no: 10, name: ' 苏泽钊 ', class: '25 法律事务特勤 2 班 '},{no: 11, name: ' 陈思东 ', class: '25 法律事务特勤 2 班 '},{no: 12, name: ' 刘乔彬 ', class: '25 法律事务特勤 3 班 '},{no: 13, name: ' 彭信凯 ', class: '25 法律事务特勤 3 班 '},{no: 14, name: ' 朱罡 ', class: '25 法律事务特勤 3 班 '},{no: 15, name: ' 郭耿杭 ', class: '25 法律事务特勤 3 班 '},{no: 16, name: ' 文新炜 ', class: '25 电子商务高考班 '},{no: 17, name: ' 黄梓健 ', class: '24 法律事务 1 班 '},{no: 18, name: ' 李火杰 ', class: '25 社区公共事务班 '},{no: 19, name: ' 陈沛宏 ', class: '25 电子商务跨境 1 班 '},{no: 20, name: ' 黄文洲 ', class: '25 计算机高考班 '},{no: 21, name: ' 吴洪明 ', class: '25 工业机器人 1 班 '},{no: 22, name: ' 陈标铧 ', class: '25 工业机器人 3 班 '},{no: 23, name: ' 丘景松 ', class: '25 工业机器人 3 班 '},{no: 24, name: ' 周炎辉 ', class: '25 工业机器人 3 班 '},{no: 25, name: ' 陈建锋 ', class: '25 工业机器人 3 班 '},{no: 26, name: ' 高泽锋 ', class: '24 高职高考 1 班 '},{no: 27, name: ' 张栖铭 ', class: '25 工业机器人高考班 '},{no: 28, name: ' 张喜庆 ', class: '25 工业机器人高考班 '},{no: 29, name: ' 郑润添 ', class: '25 工业机器人高考班 '},{no: 30, name: ' 罗万嘉 ', class: '25 工业机器人 2 班 '},{no: 31, name: ' 田嘉豪 ', class: '25 工业机器人 4 班 '},{no: 32, name: ' 官源龙 ', class: '25 数字媒体 3 班 '},{no: 33, name: ' 李豪杰 ', class: '25 法律事务高考班 '},{no: 34, name: ' 李世杰 ', class: '25 法律事务文秘 2 班 '},{no: 35, name: ' 吴彦聪 ', class: '25 数字媒体 1 班 '},{no: 36, name: ' 罗梓炫 ', class: '25 数字媒体 1 班 '},{no: 37, name: ' 邓亮亮 ', class: '25 数字媒体 1 班 '},{no: 38, name: ' 许敏伟 ', class: '25 数字媒体 2 班 '},{no: 39, name: ' 张浩 ', class: '25 数字媒体 2 班 '},{no: 40, name: ' 林圣鸿 ', class: '25 数字媒体 2 班 '},{no: 41, name: ' 王锦源 ', class: '25 电子商务直播 1 班 '},{no: 42, name: ' 刘远丁 ', class: '25 电子商务直播 1 班 '},{no: 43, name: ' 陈炳全 ', class: '25 电子商务直播 21 班 '},{no: 44, name: ' 李宗杰 ', class: '25 特勤一班 '}],'女子铅球': [{no: 1, name: ' 李春悦 ', class: '25 法律事务文秘 3 班 '},{no: 2, name: ' 王绮婷 ', class: '25 级特勤防暴一班 '},{no: 3, name: ' 曾丽梅 ', class: '24 法律事务 2 班 '},{no: 4, name: ' 肖冰 ', class: '25 电子商务高考班 '},{no: 5, name: ' 张丹琪 ', class: '25 电子商务跨境 2 班 '},{no: 6, name: ' 唐新荟 ', class: '25 社区公共事务班 '},{no: 7, name: ' 蒲欣怡 ', class: '25 社区公共事务班 '},{no: 8, name: ' 张韩婧 ', class: '25 计算机高考班 '},{no: 9, name: ' 盘钰文 ', class: '25 电子商务直播 2 班 '},{no: 10, name: ' 刘娅妍 ', class: '24 高职高考 1 班 '},{no: 11, name: ' 陈秋玲 ', class: '24 高职高考 1 班 '},{no: 12, name: ' 黄思远 ', class: '25 数字媒体 3 班 '},{no: 13, name: ' 陈雪琳 ', class: '25 数字媒体 1 班 '},{no: 14, name: ' 林艺铌 ', class: '25 数字媒体 1 班 '},{no: 15, name: ' 郑冰烁 ', class: '25 数字媒体 1 班 '},{no: 16, name: ' 黄泽柔 ', class: '25 数字媒体 2 班 '},{no: 17, name: ' 周燕如 ', class: '25 数字媒体 2 班 '}]};
         
         // Navigation
         document.querySelectorAll('.nav-btn').forEach(btn => {
