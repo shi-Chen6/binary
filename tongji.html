@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运动会成绩登记系统 - 成绩公示组</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .toolbar {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            align-items: center;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e063 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .left-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .project-list {
+            list-style: none;
+        }
+
+        .project-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .project-item:hover {
+            background: #e8ebf7;
+            transform: translateX(5px);
+        }
+
+        .project-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-left-color: white;
+        }
+
+        .project-item .category {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .project-item .name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .right-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .input-group.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .results-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 8px;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .results-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .results-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .rank {
+            font-weight: bold;
+            color: #667eea;
+            width: 40px;
+            text-align: center;
+        }
+
+        .rank-gold { color: #FFB81C; }
+        .rank-silver { color: #C0C0C0; }
+        .rank-bronze { color: #CD7F32; }
+
+        .stats-box {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+
+        .edit-btn, .delete-btn {
+            padding: 4px 8px;
+            margin-right: 4px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .edit-btn {
+            background: #4facfe;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #f5576c;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .stats-box {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏆 运动会成绩登记系统</h1>
+        <p>成绩公示组 - 网页不要在微信页面打开，请在浏览器打开</p>
+    </div>
+
+    <div class="container">
+        <div class="toolbar">
+            <button class="btn btn-success" onclick="exportData()">📥 导出数据</button>
+            <button class="btn btn-info" onclick="triggerImport()">📤 导入数据</button>
+            <button class="btn btn-warning" onclick="clearAllData()">🗑️ 清空所有</button>
+            <button class="btn btn-primary" onclick="showAddAthleteModal()">➕ 手动添加运动员</button>
+            <button class="btn btn-primary" onclick="window.location.href='sports.html'">🏅田径运动会</button>
+            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData()">
+        </div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <h3 style="margin-bottom: 15px; color: #333;">📋 竞赛项目</h3>
+                <ul class="project-list" id="projectList"></ul>
+                
+                <h3 style="margin: 20px 0 15px 0; color: #333;">🏫 班级成绩</h3>
+                <div style="margin-bottom: 10px;">
+                    <select id="classFilter" onchange="showClassResults()" style="width: 100%; padding: 8px; border-radius: 6px; border: 2px solid #e0e0e0;">
+                        <option value="">-- 选择班级 --</option>
+                    </select>
+                </div>
+                <div id="classResultsPanel" style="max-height: 300px; overflow-y: auto;"></div>
+            </div>
+
+            <div class="right-panel" id="mainPanel">
+                <div id="statsContainer" class="stats-box hidden"></div>
+                
+                <div id="inputSection">
+                    <div class="section-title">📝 成绩输入</div>
+                    
+                    <div class="input-group full">
+                        <div class="form-group">
+                            <label>选择运动员</label>
+                            <select id="athleteSelect">
+                                <option value="">-- 请选择运动员 --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="form-group">
+                            <label>成绩 (秒/米/次)</label>
+                            <input type="number" id="scoreInput" placeholder="输入成绩" step="0.01" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>备注</label>
+                            <input type="text" id="remarkInput" placeholder="可选">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="addScore()" style="width: 100%; margin-bottom: 20px;">✅ 添加成绩</button>
+                </div>
+
+                <div id="resultsSection" class="hidden">
+                    <div class="section-title">🏅 成绩排名</div>
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>名次</th>
+                                <th>运动员</th>
+                                <th>班级</th>
+                                <th>成绩</th>
+                                <th>备注</th>
+                                <th style="width: 100px;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="emptyState" class="empty-state">
+                    <p>👈 选择左侧项目开始登记成绩</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑成绩模态框 -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">编辑成绩</div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>成绩</label>
+                <input type="number" id="editScore" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+                <label>备注</label>
+                <input type="text" id="editRemark">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="saveEdit()">保存</button>
+                <button class="btn" style="background: #e0e0e0;" onclick="closeModal('editModal')">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加运动员模态框 -->
+    <div id="addAthleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">➕ 手动添加参赛运动员</div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>运动员姓名</label>
+                <input type="text" id="newAthleteName" placeholder="请输入姓名">
+            </div>
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>班级</label>
+                <input type="text" id="newAthleteClass" placeholder="例如：25计算机1班">
+            </div>
+            <div class="form-group">
+                <label>性别组别</label>
+                <select id="newAthleteCategory">
+                    <option value="男子组">男子组</option>
+                    <option value="女子组">女子组</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="saveNewAthlete()">添加</button>
+                <button class="btn" style="background: #e0e0e0;" onclick="closeModal('addAthleteModal')">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const projects = {
+            "男子组": ["100m", "200m", "400m", "800m", "1500m", "跳高", "跳远", "三级跳远", "铅球", "4×100m"],
+            "女子组": ["100m", "200m", "400m", "800m", "跳高", "跳远", "三级跳远", "铅球", "4×100m"]
+        };
+
+        const builtInAthletes = {
+            "男子组-100m": [
+                {name: "梁彦辉", class: "25计算机4班"}, {name: "陈炳旭", class: "特勤防暴一班"},
+                {name: "黄颖柯", class: "事务特勤2班"}, {name: "黄建伟", class: "事务特勤4班"},
+                {name: "朱荣科", class: "25计算机4班"}, {name: "刘乔彬", class: "事务特勤3班"},
+                {name: "李逸炬", class: "24法律事务2班"}, {name: "吕泽辉", class: "电子商务跨境2班"},
+                {name: "杨绍喆", class: "商务跨境2班"}, {name: "陈奕彬", class: "25计算机2班"},
+                {name: "陈杰鍂", class: "事务特勤2班"}, {name: "吴振聪", class: "25计算机4班"},
+                {name: "彭信凯", class: "事务特勤3班"}, {name: "蓝执政", class: "特勤防暴一班"},
+                {name: "吴庆楠", class: "事务特勤4班"}, {name: "张梓预", class: "电子商务直播3班"},
+                {name: "张嘉庆", class: "计算机应用3班"}, {name: "卢煜清", class: "25计算机高考班"},
+                {name: "罗方达", class: "事务特勤3班"}, {name: "黄宇豪", class: "25计算机4班"},
+                {name: "冯锦壕", class: "电子商务直播3班"}, {name: "郑梓葵", class: "事务特勤3班"},
+                {name: "许楚釷", class: "电子商务直播2班"}, {name: "陈梓涵", class: "工业机器人3班"},
+                {name: "林锦鸿", class: "电子商务直播2班"}, {name: "林梓康", class: "工业机器人3班"},
+                {name: "游灿彬", class: "计算机应用3班"}, {name: "陈浩锋", class: "24高职高考1班"},
+                {name: "洪桐烨", class: "25工业机器人高考班"}, {name: "宋江乙", class: "25工业机器人2班"},
+                {name: "曾隆鑫", class: "25工业机器人4班"}, {name: "郑煜南", class: "25数字媒体2班"},
+                {name: "陈梓浩", class: "25 计算机应用 3 班"},{name: "孟铁可", class: "25 法律事务治安 1 班"},{name: "陈键坤", class: "25 工业机器人 4 班"},{name: "杨锦泽", class: "25 工业机器人高考班"},{name: "郭泽伟", class: "25 工业机器人 2 班"},{name: "郭灿鹏", class: "25 工业机器人 4 班"},{name: "洪武彬", class: "25 法律事务文秘 2 班"},{name: "曾佳文", class: "25 数字媒体 1 班"},{name: "马泽鹏", class: "25 工业机器人 2 班"},{name: "王忆东", class: "25 数字媒体 2 班"},{name: "谢锦扬", class: "25 法律事务治安 1 班"},{name: "谢浩桐", class: "25 工业机器人 4 班"},{name: "林智韩", class: "25 数字媒体 3 班"},{name: "魏林", class: "25 工业机器人 2 班"},{name: "罗谦馀", class: "25 法律事务高考班"},{name: "曾鸿裕", class: "25 数字媒体 1 班"},{name: "赵槿涌", class: "5 工业机器人 2 班"},{name: "刘梓琪", class: "25 法律事务文秘 2 班"},{name: "古如杨", class: "25 数字媒体 2 班"},{name: "詹锐煌", class: "25 工业机器人 2 班"},{name: "苏健壕", class: "25 数字媒体 1 班"},{name: "洪浩杰", class: "25 工业机器人 2 班"},{name: "陈子圣", class: "25 数字媒体 1 班"},{name: "欧昊坛", class: "25 数字媒体 2 班"},{name: "郑樟豪", class: "5 电子商务直播 1 班"},{name: "陈梓泓", class: "25 法律事务文秘 5 班"},{name: "陈栋鹏", class: "25 电子商务直播 1 班"},{name: "林孟豪", class: "25 电子商务直播 1 班"},{name: "赵槿涌", class: "5 工业机器人 2 班"},{name: "赖佳铭", class: "25 数字媒体 2 班"},{name: "熊广熠", class: "25 电子商务直播 1 班"},{name: "刘承意", class: "5 电子商务直播 1 班"},{name: "黄家浩", class: "25 法律事务治安 1 班"},{name: "翁昌弘", class: "5 电子商务直播 1 班"},{name: "张栖铭", class: "25 工业机器人高考班"},{name: "赵伟涛", class: "25 工业机器人 2 班"},{name: "伍骏鹏", class: "24 法律事务 1 班"}
+            ],
+            "女子组-100m": [
+                {name: "李嘉倩", class: "25计算机2班"}, {name: "韩思琪", class: "特勤防暴一班"},
+                {name: "彭柯", class: "25计算机4班"}, {name: "陈梓璇", class: "24法律事务2班"},
+                {name: "陈楚欣", class: "25电子商务高考班"}, {name: "赖金花", class: "社区公共事务"},
+                {name: "吴梓荣", class: "24法律事务2班"}, {name: "陈梦雅", class: "公共事务班"},
+                {name: "朱欢欢", class: "25数字媒体2班"}, {name: "房文静", class: "25计算机2班"},
+                {name: "温杨灿", class: "24法律事务2班"}, {name: "龙逸静", class: "25计算机高考班"},
+                {name: "廖曼柔", class: "25计算机应用3班"}, {name: "常文丽", class: "电子商务直播3班"},{name: "陈欢", class: "25 计算机 2 班"},{name: "詹灵桦", class: ""},{name: "林欣婷", class: "24 法律事务 2 班"},{name: "陈思研", class: "25 数字媒体 2 班"},{name: "吴鑫怡", class: "社区公共事务"},{name: "詹雪琪", class: "25 数字媒体 2 班"},{name: "林可烨", class: "4 法律事务 2 班"},{name: "蔡嘉钰", class: "社区公共事务"},{name: "张丹琪", class: "电子商务跨境 2 班"},{name: "陈薇洁", class: "社区公共事务"}
+            ],
+            "男子组-200m": [
+                {name: "陈武樽", class: "25 计算机 2 班"},{name: "王家景", class: "25 计算机 4 班"},{name: "洪凯豪", class: "特勤防暴一班"},{name: "陈辛炎", class: "事务特勤 4 班"},{name: "林梓烽", class: "24 法律事务 1 班"},{name: "陈家豪", class: "25 工业机器人 3 班"},{name: "孙佳铭", class: "工业机器人高考班"},{name: "罗万嘉", class: "25 工业机器人 2 班"},
+                {name: "黄文嘉", class: "25 计算机 2 班"},{name: "张宏睿", class: "法律事务特勤 4 班"},{name: "李火杰", class: "25 社区公共事务班"},{name: "吴伟明", class: "法律事务特勤 4 班"},{name: "林勇杰", class: "25 计算机高考班"},{name: "赖伟锋", class: "25 法律事务治安 1 班"},{name: "胡金彬", class: "25 工业机器人 3 班"},{name: "戴智涵", class: "25 工业机器人 4 班"},
+                {name: "赖浩洋", class: "25 数字媒体 3 班"},{name: "李世杰", class: "25 法律事务文秘 2 班"},{name: "罗谦馀", class: "25 法律事务高考班"},{name: "传梓育", class: "25 法律事务治安 1 班"},{name: "洪武彬", class: "25 法律事务文秘 2 班"},{name: "彭绪钊", class: "25 数字媒体 3 班"},{name: "洪浩俊", class: "25 法律事务文秘 2 班"},{name: "周世杰", class: "25 数字媒体 2 班"},
+                {name: "蓝鑫泰", class: "25 法律事务治安 1 班"},{name: "陈一明", class: "25 工业机器人 1 班"},{name: "林枫豪", class: "25 法律事务文秘 2 班"},{name: "黄俊杰", class: "25 级司法文秘 1 班"}
+            ],
+            "男子组-400m": [{name: "姚旭东", class: "25 级特勤防暴一班"},{name: "王斯杰", class: "25 法律事务治安 1 班"},{name: "张高升", class: "25 法律事务特勤 2 班"},{name: "廖柯煌", class: "25 法律事务特勤 3 班"},{name: "吴立蓬", class: "25 计算机 1 班"},{name: "黄家浩", class: "25 法律事务治安 1 班"},{name: "林铠杭", class: "25 法律事务特勤 2 班"},{name: "彭书睿", class: "25 计算机高考班"},{name: "孟铁可", class: "25 法律事务治安 1 班"},{name: "王淼鑫", class: "25 工业机器人 1 班"},{name: "邱创锋", class: "25 工业机器人 3 班"},{name: "侯运潮", class: "25 工业机器人高考班"},{name: "马泽鹏", class: "25 工业机器人 2 班"},{name: "刘伟滨", class: "25 数字媒体 3 班"},{name: "蔡畅煜", class: "25 级特勤防暴一班"},{name: "徐铭瀚", class: "25 数字媒体 1 班"},{name: "李东铭", class: "25 数字媒体 2 班"},{name: "郑逸辉", class: "25 法律事务特勤 3 班"},{name: "卓君诚", class: "25 计算机高考班"},{name: "陈俊涛", class: "25 法律事务治安 1 班"},{name: "陈锦鸿", class: "25 法律事务特勤 2 班"},{name: "蔡森鹏", class: "25 计算机高考班"},{name: "林智韩", class: "25 数字媒体 3 班"},{name: "罗圣宏", class: "25 法律事务治安 1 班"},{name: "杨锦泽", class: "25 工业机器人高考班"}],
+            "男子组-800m": [{name: "吴立蓬", class: "25 计算机 1 班"},{name: "郑佳雄", class: "电子商务跨境 2 班"},{name: "徐林锦", class: "25 计算机 2 班"},{name: "凌柏宇", class: "特勤防暴一班"},{name: "吴泽颖", class: "25 电子商务直播 3 班"},{name: "陈鸿荣", class: "法律事务特勤 2 班"},{name: "严意涛", class: "法律事务特勤 3 班"},{name: "欧辉煌", class: "25 电子商务跨境 2 班"},{name: "吴庆楠", class: "法律事务特勤 4 班"},{name: "杨林超", class: "特勤防暴一班"},{name: "黄粤润", class: "电子商务跨境 2 班"},{name: "许秋楷", class: "25 计算机 1 班"},{name: "李梓豪", class: "25 法律事务特勤 3 班"},{name: "吕泽辉", class: "25 电子商务跨境 2 班"},{name: "傅佳豪", class: "25 工业机器人 3 班"},{name: "黄建君", class: "24 法律事务 1 班"},{name: "陈祺睿", class: "25 计算机高考班"},{name: "赖培都", class: "24 高职高考 1 班"},{name: "林耀杰", class: "25 数字媒体 2 班"},{name: "蒲超隆", class: "25 工业机器人 4 班"},{name: "代晓亮", class: "25 数字媒体 1 班"},{name: "彭鑫润", class: "25 计算机应用 3 班"},{name: "曾锦濠", class: "25 工业机器人 3 班"},{name: "李长钰", class: "25 电子商务直播 3 班"},{name: "曾鸿博", class: "25 法律事务高考班"},{name: "陈其辉", class: "25 工业机器人 4 班"},{name: "陈奕昊", class: "25 电子商务直播 3 班"},{name: "邓林翔", class: "25 数字媒体 1 班"},{name: "李卓亮", class: "25 数字媒体 3 班"},{name: "孔远安", class: "25 社区公共事务班"},{name: "陈彦浩", class: "25 法律事务文秘 2 班"},{name: "施慧彬", class: "25 法律事务文秘 2 班"},{name: "曾佳文", class: "25 数字媒体 1 班"},{name: "詹耿豪", class: "25 电子商务直播 1 班"},{name: "吴浩勇", class: "25 电子商务直播 1 班"},{name: "李文榜", class: "25 数字媒体 1 班"},{name: "陈奕廷", class: "25 法律事务治安 1 班"},{name: "林学志", class: "25 数字媒体 1 班"},{name: "胡恩丰", class: "25 工业机器人 1 班"},{name: "张梓蕾", class: "25 工业机器人 4 班"},{name: "周楚林", class: "25 电子商务直播 1 班"},{name: "叶永安", class: "25 社区公共事务班"},{name: "岳孝鑫", class: "25 数字媒体 1 班"},{name: "唐勋波", class: "25 电子商务直播 1 班"},{name: "黄宝鑫", class: "25 电子商务直播 1 班"},{name: "陈俊涛", class: "25 法律事务治安 1 班"}],
+            "男子组-1500m": [{name: "陈柏君", class: "25 计算机 1 班"}, {name: "李文宝", class: "25 计算机 1 班"}, {name: "徐林锦", class: "25 计算机 2 班"}, {name: "赖文杰", class: "25 法律事务文秘 3 班"}, {name: "陈嘉宝", class: "25 法律事务文秘 3 班"}, {name: "廖金尚", class: "特勤防暴 1 班"}, {name: "方国豪", class: "25 法律事务特勤 1 班"}, {name: "谢政鸿", class: "25 法律事务特勤 2 班"}, {name: "林铠杭", class: "25 法律事务特勤 2 班"}, {name: "林铠杭", class: "25 法律事务特勤 3 班"}, {name: "蔡畅豪", class: "25 法律事务特勤 3 班"}, {name: "严意涛", class: "25 法律事务特勤 3 班"}, {name: "庄家贤", class: "25 法律事务特勤 3 班"}, {name: "欧辉煌", class: "25 电子商务跨境 2 班"}, {name: "陈振华", class: "25 电子商务跨境 2 班"}, {name: "郑焕彬", class: "25 电子商务跨境 2 班"}, {name: "张梓预", class: "25 电子商务直播 3 班"}, {name: "钟浩轩", class: "25 社区公共事务班"}, {name: "陈咏诚", class: "25 社区公共事务班"}, {name: "黄柏竣", class: "25 电子商务跨境 1 班"}, {name: "陈浩柠", class: "25 电子商务跨境 1 班"}, {name: "陈毅峰", class: "25 工业机器人 1 班"}, {name: "魏凯翔", class: "25 工业机器人 3 班"}, {name: "徐新枫", class: "25 工业机器人 2 班"}, {name: "陈其辉", class: "25 工业机器人 4 班"}, {name: "吴梓强", class: "25 数字媒体 3 班"}, {name: "佘宏海", class: "25 数字媒体 3 班"}, {name: "曾维楠", class: "25 法律事务高考班"}, {name: "翁继浩", class: "25 法律事务高考班"}, {name: "施慧彬", class: "25 法律事务文秘 2 班"}, {name: "周建欣", class: "25 法律事务文秘 2 班"}, {name: "温鸿涛", class: "25 数字媒体 1 班"}, {name: "詹达毅", class: "25 数字媒体 1 班"}, {name: "陈炫凯", class: "25 数字媒体 2 班"}, {name: "韦春江", class: "25 数字媒体 2 班"}, {name: "洪觉航", class: "25 数字媒体 2 班"}, {name: "澎渝松", class: "25 数字媒体 2 班"}, {name: "金泽圻", class: "25 电子商务直播 20 班"}, {name: "朱嘉明", class: "25 法律事务治安 1 班"}, {name: "吴伟明", class: "25 法律事务特勤 4 班"}],
+            "男子组-跳高": [{name: "黄泳铭", class: "25 数字媒体高考班"},{name: "姚旭东", class: "25 级特勤防暴一班"},{name: "严凯博", class: "25 级特勤防暴一班"},{name: "吴炫林", class: "25 级特勤防暴一班"},{name: "陈杰鑫", class: "25 法律事务特勤 2 班"},{name: "谢梓烁", class: "24 法律事务 1 班"},{name: "叶永安", class: "25 社区公共事务班"},{name: "陈嘉家", class: "25 计算机应用 3 班"},{name: "彭鑫润", class: "25 计算机应用 3 班"},{name: "林耀庭", class: "25 法律事务高考班"},{name: "程兴誉", class: "25 法律事务治安 1 班"}],
+            "男子组-跳远": [{name: "郑震樾", class: "25 计算机 4 班"},{name: "张文銮", class: "25 法律事务文秘 3 班"},{name: "蓝执政", class: "25 级特勤防暴一班"},{name: "张高升", class: "25 法律事务特勤 2 班"},{name: "陈洪源", class: "25 法律事务特勤 2 班"},{name: "卢卡斯", class: "25 法律事务特勤 2 班"},{name: "黄棹杰", class: "25 法律事务特勤 3 班"},{name: "罗方达", class: "25 法律事务特勤 3 班"},{name: "李梓豪", class: "25 法律事务特勤 3 班"},{name: "郑锌涛", class: "25 法律事务特勤 3 班"},{name: "徐锦满", class: "25 法律事务特勤 3 班"},{name: "吴庆楠", class: "25 法律事务特勤 4 班"},{name: "曾浩宇", class: "25 法律事务特勤 4 班"},{name: "罗勇", class: "31 电子商务高考班"},{name: "陈浩鑫", class: "25 电子商务跨境 2 班"},{name: "王梓涛", class: "25 电子商务跨境 2 班"},{name: "吴宏杰", class: "24 法律事务 1 班"},{name: "陈湘鸿", class: "25 社区公共事务班"},{name: "陈佳鑫", class: "25 电子商务直播 2 班"},{name: "陈浩锐", class: "24 高职高考 1 班"},{name: "张财鑫", class: "25 工业机器人高考班"},{name: "王嘉耀", class: "25 工业机器人 2 班"},{name: "戴智涵", class: "25 工业机器人 4 班"},{name: "林森灏", class: "25 数字媒体 3 班"},{name: "林国武", class: "25 法律事务高考班"},{name: "岳孝鑫", class: "25 数字媒体 1 班"},{name: "谢涵羽", class: "25 数字媒体 1 班"},{name: "罗杰", class: "25 数字媒体 1 班"},{name: "文子刚", class: "25 数字媒体 1 班"},{name: "李冕涛", class: "25 数字媒体 1 班"},{name: "郑煜南", class: "25 数字媒体 2 班"},{name: "袁梓炫", class: "25 数字媒体 2 班"},{name: "陈子坜", class: "25 数字媒体 2 班"},{name: "宋凯涛", class: "25 电子商务直播 1 班"},{name: "谢晓熙", class: "25 电子商务直播 1 班"},{name: "谢洁锐", class: "25 电子商务直播 1 班"},{name: "曾宇晨", class: "25 电子商务直播 1 班"},{name: "黄俊杰", class: "25 级司法文秘 1 班"}],
+            "男子组-三级跳远": [],
+            "男子组-铅球": [{name: "陈永杰", class: "25 法律事务治安 1 班"},{name: "黄清源", class: "25 法律事务治安 1 班"},{name: "黄树敏", class: "25 计算机 4 班"},{name: "吴振聪", class: "25 计算机 4 班"},{name: "张家豪", class: "25 数字媒体高考班"},{name: "李志权", class: "25 级特勤防暴一班"},{name: "黄塬阳", class: "25 级特勤防暴一班"},{name: "谭垚", class: "25 法律事务特勤 2 班"},{name: "黄颖柯", class: "25 法律事务特勤 2 班"},{name: "苏泽钊", class: "25 法律事务特勤 2 班"},{name: "陈思东", class: "25 法律事务特勤 2 班"},{name: "刘乔彬", class: "25 法律事务特勤 3 班"},{name: "彭信凯", class: "25 法律事务特勤 3 班"},{name: "朱罡", class: "25 法律事务特勤 3 班"},{name: "郭耿杭", class: "25 法律事务特勤 3 班"},{name: "文新炜", class: "25 电子商务高考班"},{name: "黄梓健", class: "24 法律事务 1 班"},{name: "李火杰", class: "25 社区公共事务班"},{name: "陈沛宏", class: "25 电子商务跨境 1 班"},{name: "黄文洲", class: "25 计算机高考班"},{name: "吴洪明", class: "25 工业机器人 1 班"},{name: "陈标铧", class: "25 工业机器人 3 班"},{name: "丘景松", class: "25 工业机器人 3 班"},{name: "周炎辉", class: "25 工业机器人 3 班"},{name: "陈建锋", class: "25 工业机器人 3 班"},{name: "高泽锋", class: "24 高职高考 1 班"},{name: "张栖铭", class: "25 工业机器人高考班"},{name: "张喜庆", class: "25 工业机器人高考班"},{name: "郑润添", class: "25 工业机器人高考班"},{name: "罗万嘉", class: "25 工业机器人 2 班"},{name: "田嘉豪", class: "25 工业机器人 4 班"},{name: "官源龙", class: "25 数字媒体 3 班"},{name: "李豪杰", class: "25 法律事务高考班"},{name: "李世杰", class: "25 法律事务文秘 2 班"},{name: "吴彦聪", class: "25 数字媒体 1 班"},{name: "罗梓炫", class: "25 数字媒体 1 班"},{name: "邓亮亮", class: "25 数字媒体 1 班"},{name: "许敏伟", class: "25 数字媒体 2 班"},{name: "张浩", class: "25 数字媒体 2 班"},{name: "林圣鸿", class: "25 数字媒体 2 班"},{name: "王锦源", class: "25 电子商务直播 1 班"},{name: "刘远丁", class: "25 电子商务直播 1 班"},{name: "陈炳全", class: "25 电子商务直播 21 班"},{name: "李宗杰", class: "25 特勤一班"}],
+            "男子组-4×100m": [{name: "", class:"25 计算机应用 1 班 "},{name: "", class:"25 电子商务（直播）1 班 "},{name: "", class:"25 电子商务（跨境）2 班 "},{name: "", class:"25 工业机器人 2 班 "},{name: "", class:"25 数字媒体 2 班 "},{name: "", class:"25 法律事务（特勤防暴）2 班 "},{name: "", class:"25 法律事务（治安巡防）1 班 "},{name: "", class:"25 计算机应用 2 班 "},{name: "", class:"25 电子商务（直播）3 班 "},{name: "", class:"25 工业机器人 1 班 "},{name: "", class:"25 数字媒体 3 班 "},{name: "", class:"25 法律事务（特勤防暴）3 班 "},{name: "", class:"25 法律事务（司法文秘）2 班 "},{name: "", class:"25 电子商务（跨境）1 班 "},{name: "", class:"25 电子商务高考 1 班 "},{name: "", class:"25 计算机应用 3 班 "},{name: "", class:"25 电子商务（直播）4 班 "},{name: "", class:"25 工业机器人 4 班 "},{name: "", class:"25 法律事务（特勤防暴）4 班 "},{name: "", class:"25 法律事务（特勤防暴）1 班 "},{name: "", class:"25 计算机应用 4 班 "},{name: "", class:"25 工业机器人职教高考班 "},{name: "", class:"24 法律事务 1 班 "},{name: "", class:"25 计算机职教高考 1 班 "},{name: "", class:"25 电子商务（直播）2 班 "},{name: "", class:"25 社区公共事务 1 班 "},{name: "", class:"25 工业机器人 3 班 "},{name: "", class:"25 法律事务（职教高考）1 班 "},{name: "", class:"25 数字媒体职教高考 1 班 "}],
+            "女子组-200m": [{name: "詹舒涵", class: "25 计算机 2 班"},{name: "刘诺琪", class: "特勤防暴一班"},{name: "郭怡雯", class: "25 电子商务高考班"},{name: "吴钰娴", class: "公共事务班"},{name: "林艺铌", class: "25 数字媒体 1 班"},{name: "罗诗妍", class: "25 社区公共事务班"},{name: "陈铭珊", class: "25 数字媒体 3 班"},{name: "罗雅莉", class: "25 电子商务直播 2 班"},{name: "吕俊怡", class: "25 社区公共事务班"},{name: "杨梓玥", class: "25 数字媒体 3 班"},{name: "曾雪茹", class: "25 法律事务高考班"},{name: "何梓苗", class: "25 社区公共事务班"},{name: "刘嘉钰", class: "25 数字媒体 1 班"},{name: "钟雪婷", class: "25 数字媒体 2 班"},{name: "方曼婷", class: "公共事务班"},{name: "严楚蕾", class: "25 数字媒体 2 班"},{name: "吴明琳", class: "25 数字媒体 2 班"},{name: "张安淇", class: "25 电子商务直播 2 班"},{name: "黄玮璟", class: "25 数字媒体 2 班"},{name: "赵楚津", class: "25 社区公共事务班"}],
+            "女子组-400m": [{name: "赖丽丽", class: "25 计算机 1 班"},{name: "何佳馨", class: "25 法律事务文秘 3 班"},{name: "陈紫莹", class: "25 社区公共事务班"},{name: "邓梦琪", class: "25 级特勤防暴一班"},{name: "刘逸淇", class: "24 法律事务 2 班"},{name: "谢银峰", class: "25 计算机高考班"},{name: "王佳如", class: "25 事务文秘 2 班"},{name: "林艺铌", class: "25 数字媒体 1 班"},{name: "陈嘉妍", class: "25 法律事务文秘 3 班"},{name: "赵桠萱", class: "25 社区公共事务班"},{name: "刘蓓仪", class: "25 计算机高考班"}],
+            "女子组-800m": [{name: "杨瑞洳", class: "25 计算机 4 班"},{name: "杨友春", class: "法律事务文秘 3 班"},{name: "刘紫依", class: "25 法律事务文秘 2 班"},{name: "詹梓林", class: "特勤防暴一班"},{name: "杨洁芬", class: "24 高职高考 1 班"},{name: "江嘉妮", class: "25 数字媒体 1 班"},{name: "陈雪琳", class: "25 数字媒体 1 班"},{name: "温佳凤", class: "24 法律事务 2 班"},{name: "欧艺婷", class: "25 电子商务高考班"},{name: "潘春钰", class: "25 社区公共事务班"},{name: "刘佳惠", class: "24 高职高考 1 班"},{name: "曾嘉琳", class: "24 法律事务 2 班"},{name: "张慧敏", class: "25 法律事务高考班"},{name: "谢洁妮", class: "25 法律事务文秘 2 班"},{name: "龚莹", class: "25 法律事务特勤防暴 1 班"},{name: "官荧莹", class: "法律事务文秘 3 班"},{name: "郑冰烁", class: "25 数字媒体 1 班"},{name: "秦韩金", class: "25 法律事务文秘 1 班"},{name: "邱铭涵", class: "24 法律事务 2 班"},{name: "刘宝琴", class: "25 法律事务文秘 1 班"},{name: "庄洁玲", class: "25 电子商务跨境 1 班"}],
+            "女子组-跳高": [],
+            "女子组-跳远": [{name: "余季欣", class: "25 计算机 4 班"},{name: "常文丽", class: "25 电子商务直播 3 班"},{name: "龙逸静", class: "25 计算机高考班"},{name: "黄思远", class: "25 数字媒体 3 班"},{name: "杨丹琪", class: "25 数字媒体 3 班"},{name: "陈凯莉", class: "25 数字媒体 2 班"},{name: "吴招弟", class: "25 数字媒体 2 班"}],
+            "女子组-三级跳远": [],
+            "女子组-铅球": [{name: "李春悦", class: "25 法律事务文秘 3 班"},{name: "王绮婷", class: "25 级特勤防暴一班"},{name: "曾丽梅", class: "24 法律事务 2 班"},{name: "肖冰", class: "25 电子商务高考班"},{name: "张丹琪", class: "25 电子商务跨境 2 班"},{name: "唐新荟", class: "25 社区公共事务班"},{name: "蒲欣怡", class: "25 社区公共事务班"},{name: "张韩婧", class: "25 计算机高考班"},{name: "盘钰文", class: "25 电子商务直播 2 班"},{name: "刘娅妍", class: "24 高职高考 1 班"},{name: "陈秋玲", class: "24 高职高考 1 班"},{name: "黄思远", class: "25 数字媒体 3 班"},{name: "陈雪琳", class: "25 数字媒体 1 班"},{name: "林艺铌", class: "25 数字媒体 1 班"},{name: "郑冰烁", class: "25 数字媒体 1 班"},{name: "黄泽柔", class: "25 数字媒体 2 班"},{name: "周燕如", class: "25 数字媒体 2 班"}],
+            "女子组-4×100m": [{name: "", class:"25 计算机应用 2 班 "},{name: "", class:"25 电子商务（直播）1 班 "},{name: "", class:"25 电子商务（跨境）2 班 "},{name: "", class:"25 数字媒体 1 班 "},{name: "", class:"25 法律事务（司法文秘）2 班 "},{name: "", class:"25 法律事务（职教高考）1 班 "},{name: "", class:"25 电子商务（职教高考）1 班 "},{name: "", class:"25 电子商务（直播）4 班 "},{name: "", class:"25 数字媒体 2 班 "},{name: "", class:"25 法律事务（司法文秘）1 班 "},{name: "", class:"25 法律事务（司法文秘）3 班 "},{name: "", class:"25 数字媒体职教高考 1 班 "},{name: "", class:"25 电子商务（直播）2 班 "},{name: "", class:"25 电子商务（直播）3 班 "},{name: "", class:"25 数字媒体 3 班 "},{name: "", class:"25 电子商务（跨境）3 班 "},{name: "", class:"25 社区公共事务 1 班 "},{name: "", class:"24 法律事务 2 班 "},{name: "", class:"25 计算机应用 1 班 "}]
+        };
+
+        let currentProject = null;
+        let currentCategory = null;
+        let scoresData = {};
+        let customAthletes = {};
+        let editingIndex = -1;
+
+        function init() {
+            loadDataFromStorage();
+            renderProjectList();
+            initClassFilter();
+        }
+        
+        function initClassFilter() {
+            const classSet = new Set();
+            
+            // 从内置运动员中提取班级
+            Object.values(builtInAthletes).forEach(athletes => {
+                athletes.forEach(a => classSet.add(a.class));
+            });
+            
+            // 从自定义运动员中提取班级
+            Object.values(customAthletes).forEach(athletes => {
+                athletes.forEach(a => classSet.add(a.class));
+            });
+            
+            const select = document.getElementById('classFilter');
+            const classes = Array.from(classSet).sort();
+            
+            classes.forEach(className => {
+                const option = document.createElement('option');
+                option.value = className;
+                option.textContent = className;
+                select.appendChild(option);
+            });
+        }
+        
+        function showClassResults() {
+            const selectedClass = document.getElementById('classFilter').value;
+            const panel = document.getElementById('classResultsPanel');
+            
+            if (!selectedClass) {
+                panel.innerHTML = '';
+                return;
+            }
+            
+            // 收集该班级在所有项目中的成绩
+            const classResults = [];
+            Object.entries(scoresData).forEach(([key, scores]) => {
+                scores.forEach((score, index) => {
+                    if (score.class === selectedClass) {
+                        const [category, project] = key.split('-');
+                        classResults.push({
+                            category,
+                            project,
+                            name: score.name,
+                            score: score.score,
+                            rank: index + 1,
+                            remark: score.remark
+                        });
+                    }
+                });
+            });
+            
+            if (classResults.length === 0) {
+                panel.innerHTML = '<div style="padding: 15px; color: #999; text-align: center;">该班级暂无成绩记录</div>';
+                return;
+            }
+            
+            // 渲染班级成绩
+            let html = '<div style="font-size: 12px;">';
+            classResults.forEach(result => {
+                let rankColor = '#667eea';
+                if (result.rank === 1) rankColor = '#FFB81C';
+                else if (result.rank === 2) rankColor = '#C0C0C0';
+                else if (result.rank === 3) rankColor = '#CD7F32';
+                
+                html += `
+                    <div style="background: #f8f9fa; padding: 10px; margin-bottom: 8px; border-radius: 6px; border-left: 3px solid ${rankColor};">
+                        <div style="font-weight: bold; margin-bottom: 4px;">${result.category} ${result.project}</div>
+                        <div style="color: #666;">
+                            ${result.name} - 第${result.rank}名 - ${result.score}
+                            ${result.remark ? ` (${result.remark})` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            panel.innerHTML = html;
+        }
+
+        function renderProjectList() {
+            const list = document.getElementById('projectList');
+            list.innerHTML = '';
+            Object.entries(projects).forEach(([category, items]) => {
+                items.forEach(project => {
+                    const li = document.createElement('li');
+                    li.className = 'project-item';
+                    li.onclick = () => selectProject(category, project);
+                    li.innerHTML = `<div class="category">${category}</div><div class="name">${project}</div>`;
+                    list.appendChild(li);
+                });
+            });
+        }
+
+        function selectProject(category, project) {
+            currentProject = project;
+            currentCategory = category;
+            
+            document.querySelectorAll('.project-item').forEach(item => item.classList.remove('active'));
+            event.target.closest('.project-item').classList.add('active');
+
+            const key = `${category}-${project}`;
+            if (!scoresData[key]) scoresData[key] = [];
+
+            updateAthleteSelect();
+            displayResults();
+            
+            // 显示输入区域
+            document.getElementById('inputSection').style.display = 'block';
+        }
+
+        function updateAthleteSelect() {
+            const select = document.getElementById('athleteSelect');
+            select.innerHTML = '<option value="">-- 请选择运动员 --</option>';
+
+            if (!currentCategory || !currentProject) return;
+
+            const key = `${currentCategory}-${currentProject}`;
+            const built = builtInAthletes[key] || [];
+            const custom = customAthletes[key] || [];
+            
+            const allAthletes = [...built, ...custom];
+            
+            if (allAthletes.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = '暂无运动员，请手动添加';
+                select.appendChild(option);
+            } else {
+                allAthletes.forEach((athlete, index) => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify(athlete);
+                    option.textContent = `${athlete.name} (${athlete.class})`;
+                    select.appendChild(option);
+                });
+            }
+        }
+
+        function addScore() {
+            const athleteSelect = document.getElementById('athleteSelect');
+            const scoreInput = document.getElementById('scoreInput');
+            const remarkInput = document.getElementById('remarkInput');
+
+            if (!currentProject || !currentCategory) {
+                alert('请先选择一个比赛项目');
+                return;
+            }
+
+            if (!athleteSelect.value || !scoreInput.value) {
+                alert('请选择运动员并输入成绩');
+                return;
+            }
+
+            const athlete = JSON.parse(athleteSelect.value);
+            const key = `${currentCategory}-${currentProject}`;
+
+            const existingIndex = scoresData[key].findIndex(s => s.name === athlete.name);
+            if (existingIndex !== -1) {
+                if (!confirm('该运动员已有成绩，是否覆盖？')) return;
+                scoresData[key].splice(existingIndex, 1);
+            }
+
+            scoresData[key].push({
+                name: athlete.name,
+                class: athlete.class,
+                score: parseFloat(scoreInput.value),
+                remark: remarkInput.value || ''
+            });
+
+            // 判断项目类型决定排序方向
+            const fieldEvents = ['跳高', '跳远', '三级跳远', '铅球'];
+            const isFieldEvent = fieldEvents.includes(currentProject);
+            
+            // 田赛项目：成绩从大到小；径赛项目：成绩从小到大
+            scoresData[key].sort((a, b) => isFieldEvent ? b.score - a.score : a.score - b.score);
+            saveDataToStorage();
+            displayResults();
+            
+            athleteSelect.value = '';
+            scoreInput.value = '';
+            remarkInput.value = '';
+            
+            alert('✅ 成绩已添加！');
+        }
+
+        function displayResults() {
+            const key = `${currentCategory}-${currentProject}`;
+            const scores = scoresData[key] || [];
+
+            const emptyState = document.getElementById('emptyState');
+            const inputSection = document.getElementById('inputSection');
+            const resultsSection = document.getElementById('resultsSection');
+            const statsContainer = document.getElementById('statsContainer');
+
+            if (scores.length === 0) {
+                emptyState.classList.remove('hidden');
+                resultsSection.classList.add('hidden');
+                statsContainer.classList.add('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                resultsSection.classList.remove('hidden');
+
+                statsContainer.innerHTML = `
+                    <div class="stat-card"><div class="number">${scores.length}</div><div class="label">参赛人数</div></div>
+                    <div class="stat-card"><div class="number">${Math.min(8, scores.length)}</div><div class="label">计分人数</div></div>
+                    <div class="stat-card"><div class="number">${scores[0].score}</div><div class="label">最佳成绩</div></div>
+                    <div class="stat-card"><div class="number">${scores.length >= 8 ? scores[7].score : scores[scores.length-1].score}</div><div class="label">第8名成绩</div></div>
+                `;
+                statsContainer.classList.remove('hidden');
+
+                const tbody = document.getElementById('resultsBody');
+                tbody.innerHTML = '';
+                scores.forEach((score, index) => {
+                    let rankClass = '';
+                    if (index === 0) rankClass = 'rank-gold';
+                    else if (index === 1) rankClass = 'rank-silver';
+                    else if (index === 2) rankClass = 'rank-bronze';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="rank ${rankClass}">${index + 1}</td>
+                        <td>${score.name}</td>
+                        <td>${score.class}</td>
+                        <td><strong>${score.score}</strong></td>
+                        <td>${score.remark || '-'}</td>
+                        <td>
+                            <button class="edit-btn" onclick="editScore(${index})">编辑</button>
+                            <button class="delete-btn" onclick="deleteScore(${index})">删除</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        function editScore(index) {
+            const key = `${currentCategory}-${currentProject}`;
+            const score = scoresData[key][index];
+            document.getElementById('editScore').value = score.score;
+            document.getElementById('editRemark').value = score.remark;
+            editingIndex = index;
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function saveEdit() {
+            const key = `${currentCategory}-${currentProject}`;
+            const newScore = parseFloat(document.getElementById('editScore').value);
+            if (!newScore || newScore < 0) {
+                alert('请输入有效成绩');
+                return;
+            }
+            scoresData[key][editingIndex].score = newScore;
+            scoresData[key][editingIndex].remark = document.getElementById('editRemark').value;
+            
+            // 判断项目类型决定排序方向
+            const fieldEvents = ['跳高', '跳远', '三级跳远', '铅球'];
+            const isFieldEvent = fieldEvents.includes(currentProject);
+            scoresData[key].sort((a, b) => isFieldEvent ? b.score - a.score : a.score - b.score);
+            saveDataToStorage();
+            displayResults();
+            closeModal('editModal');
+        }
+
+        function deleteScore(index) {
+            if (!confirm('确定删除该成绩吗？')) return;
+            const key = `${currentCategory}-${currentProject}`;
+            scoresData[key].splice(index, 1);
+            saveDataToStorage();
+            displayResults();
+        }
+
+        function showAddAthleteModal() {
+            if (!currentProject) {
+                alert('请先选择一个比赛项目');
+                return;
+            }
+            document.getElementById('newAthleteName').value = '';
+            document.getElementById('newAthleteClass').value = '';
+            document.getElementById('newAthleteCategory').value = currentCategory;
+            document.getElementById('addAthleteModal').classList.add('active');
+        }
+
+        function saveNewAthlete() {
+            const name = document.getElementById('newAthleteName').value.trim();
+            const athleteClass = document.getElementById('newAthleteClass').value.trim();
+            const category = document.getElementById('newAthleteCategory').value;
+
+            if (!name || !athleteClass) {
+                alert('请填写完整信息');
+                return;
+            }
+
+            const key = `${category}-${currentProject}`;
+            if (!customAthletes[key]) customAthletes[key] = [];
+
+            if (customAthletes[key].some(a => a.name === name)) {
+                alert('该运动员已存在');
+                return;
+            }
+
+            customAthletes[key].push({name, class: athleteClass});
+            localStorage.setItem('customAthletes', JSON.stringify(customAthletes));
+            
+            updateAthleteSelect();
+            closeModal('addAthleteModal');
+            alert(`已添加运动员：${name}`);
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            editingIndex = -1;
+        }
+
+        function saveDataToStorage() {
+            localStorage.setItem('sportsScoresData', JSON.stringify(scoresData));
+        }
+
+        function loadDataFromStorage() {
+            const saved = localStorage.getItem('sportsScoresData');
+            if (saved) scoresData = JSON.parse(saved);
+            
+            const savedAthletes = localStorage.getItem('customAthletes');
+            if (savedAthletes) customAthletes = JSON.parse(savedAthletes);
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify({scores: scoresData, customAthletes}, null, 2);
+            const blob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `运动会成绩_${new Date().toLocaleDateString()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function triggerImport() {
+            document.getElementById('importFile').click();
+        }
+
+        function importData() {
+            const file = document.getElementById('importFile').files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.scores) scoresData = {...scoresData, ...imported.scores};
+                    if (imported.customAthletes) customAthletes = {...customAthletes, ...imported.customAthletes};
+                    saveDataToStorage();
+                    localStorage.setItem('customAthletes', JSON.stringify(customAthletes));
+                    alert('数据导入成功！');
+                    displayResults();
+                } catch (error) {
+                    alert('导入失败：文件格式不正确');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllData() {
+            if (!confirm('确定要清空所有数据吗？')) return;
+            scoresData = {};
+            customAthletes = {};
+            saveDataToStorage();
+            localStorage.setItem('customAthletes', JSON.stringify(customAthletes));
+            document.getElementById('emptyState').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('statsContainer').classList.add('hidden');
+            alert('所有数据已清空');
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
