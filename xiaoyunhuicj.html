@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校运会成绩公示系统</title>
+    <style>
+        :root {
+            --color-primary: #2196F3;
+            --color-success: #4CAF50;
+            --color-warning: #FF9800;
+            --color-danger: #f44336;
+            --color-bg: #f5f7fa;
+            --color-surface: #ffffff;
+            --color-text: #333333;
+            --color-text-light: #666666;
+            --color-border: #e0e0e0;
+            --color-gold: #FFD700;
+            --color-silver: #C0C0C0;
+            --color-bronze: #CD7F32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--color-primary);
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--color-text-light);
+            font-size: 16px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            background: white;
+            color: var(--color-text);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .tab-btn.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .content-section {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--color-text);
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .rank-input {
+            text-align: center;
+        }
+
+        .rank-input label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        .rank-input input {
+            text-align: center;
+            font-size: 13px;
+            padding: 8px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px 5px;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid var(--color-border);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e3f2fd;
+        }
+
+        .rank-1 { background: rgba(255, 215, 0, 0.2) !important; }
+        .rank-2 { background: rgba(192, 192, 192, 0.2) !important; }
+        .rank-3 { background: rgba(205, 127, 50, 0.2) !important; }
+
+        .medal {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .medal-gold { background: var(--color-gold); }
+        .medal-silver { background: var(--color-silver); }
+        .medal-bronze { background: var(--color-bronze); }
+
+        #exportCanvas {
+            display: none;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+
+        .stats-card h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .stats-card p {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .data-management {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .data-management h3 {
+            margin-bottom: 15px;
+            color: var(--color-primary);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 校运会成绩公示系统</h1>
+            <p>专业的成绩录入与班级积分统计平台</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('input')">📝 成绩录入</button>
+            <button class="tab-btn" onclick="switchTab('results')">🏅 项目成绩公示</button>
+            <button class="tab-btn" onclick="switchTab('class')">📊 班级积分统计</button>
+            <button class="tab-btn" onclick="switchTab('data')">💾 数据管理</button>
+ <button class="tab-btn" onclick="window.location.href='sports.html'">
+        🏃 运动会主页
+    </button>
+        </div>
+
+        <div id="inputSection" class="content-section active">
+            <h2 style="margin-bottom: 20px; color: var(--color-primary);">比赛成绩录入</h2>
+            
+            <div class="form-group">
+                <label>选择比赛项目</label>
+                <select id="eventSelect" onchange="updateEventForm()">
+                    <option value="">-- 请选择项目 --</option>
+                    <optgroup label="径赛项目 - 男子">
+                        <option value="男子100M">男子100M</option>
+                        <option value="男子200M">男子200M</option>
+                        <option value="男子400M">男子400M</option>
+                        <option value="男子800M">男子800M</option>
+                        <option value="男子1500M">男子1500M</option>
+                        <option value="男子4×100M接力">男子4×100M接力 (双倍计分)</option>
+                    </optgroup>
+                    <optgroup label="径赛项目 - 女子">
+                        <option value="女子100M">女子100M</option>
+                        <option value="女子200M">女子200M</option>
+                        <option value="女子400M">女子400M</option>
+                        <option value="女子800M">女子800M</option>
+                        <option value="女子4×100M接力">女子4×100M接力 (双倍计分)</option>
+                    </optgroup>
+                    <optgroup label="田赛项目">
+                        <option value="男子跳高">男子跳高</option>
+                        <option value="女子跳高">女子跳高</option>
+                        <option value="男子跳远">男子跳远</option>
+                        <option value="女子跳远">女子跳远</option>
+                        <option value="男子铅球">男子铅球</option>
+                        <option value="女子铅球">女子铅球</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div id="eventForm" style="display: none;">
+                <h3 style="margin: 20px 0; color: var(--color-primary);">录入前八名成绩</h3>
+                <div class="results-grid" id="resultsGrid"></div>
+                
+                <div class="form-group" id="performanceInput" style="display: none; margin-top: 20px;">
+                    <label>比赛成绩说明</label>
+                    <p style="color: var(--color-text-light); font-size: 14px; margin-bottom: 10px;">
+                        径赛项目请输入时间（如：12.56），田赛项目请输入距离或高度（如：1.65、6.78）
+                    </p>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-primary" onclick="saveEventResults()">💾 保存成绩</button>
+                    <button class="btn btn-success" onclick="clearEventForm()">🔄 清空表单</button>
+                </div>
+            </div>
+
+            <div id="savedAlert" class="alert alert-success" style="display: none;">
+                ✅ 成绩已保存成功！
+            </div>
+        </div>
+
+        <div id="resultsSection" class="content-section">
+            <h2 style="margin-bottom: 20px; color: var(--color-primary);">项目成绩公示</h2>
+            
+            <div class="form-group">
+                <label>选择查看项目</label>
+                <select id="viewEventSelect" onchange="displayEventResults()">
+                    <option value="">-- 请选择项目 --</option>
+                    <optgroup label="径赛项目 - 男子">
+                        <option value="男子100M">男子100M</option>
+                        <option value="男子200M">男子200M</option>
+                        <option value="男子400M">男子400M</option>
+                        <option value="男子800M">男子800M</option>
+                        <option value="男子1500M">男子1500M</option>
+                        <option value="男子4×100M接力">男子4×100M接力</option>
+                    </optgroup>
+                    <optgroup label="径赛项目 - 女子">
+                        <option value="女子100M">女子100M</option>
+                        <option value="女子200M">女子200M</option>
+                        <option value="女子400M">女子400M</option>
+                        <option value="女子800M">女子800M</option>
+                        <option value="女子4×100M接力">女子4×100M接力</option>
+                    </optgroup>
+                    <optgroup label="田赛项目">
+                        <option value="男子跳高">男子跳高</option>
+                        <option value="女子跳高">女子跳高</option>
+                        <option value="男子跳远">男子跳远</option>
+                        <option value="女子跳远">女子跳远</option>
+                        <option value="男子铅球">男子铅球</option>
+                        <option value="女子铅球">女子铅球</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div id="eventResultsDisplay" style="display: none; margin-top: 20px;">
+                <div class="table-container">
+                    <table id="eventResultsTable">
+                        <thead>
+                            <tr>
+                                <th>名次</th>
+                                <th>姓名</th>
+                                <th>比赛成绩</th>
+                                <th>所在班级</th>
+                                <th>获得积分</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventResultsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="noResultsAlert" class="alert alert-info" style="display: none; margin-top: 20px;">
+                该项目暂无成绩数据
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button class="btn btn-success" onclick="exportEventImage()">📸 导出本项目成绩图片</button>
+            </div>
+        </div>
+
+        <div id="classSection" class="content-section">
+            <h2 style="margin-bottom: 20px; color: var(--color-primary);">班级积分统计与排名</h2>
+            
+            <div class="table-container">
+                <table id="classStatsTable">
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>班级</th>
+                            <th>总积分</th>
+                            <th>项目明细</th>
+                        </tr>
+                    </thead>
+                    <tbody id="classStatsBody"></tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button class="btn btn-success" onclick="exportImage()">📸 导出精美成绩图片</button>
+            </div>
+        </div>
+
+        <div id="dataSection" class="content-section">
+            <div class="data-management">
+                <h3>📦 数据导入导出</h3>
+                <p style="color: var(--color-text-light); margin-bottom: 15px;">
+                    数据自动保存在浏览器中，您也可以手动导出备份或导入之前的数据。
+                </p>
+                
+                <button class="btn btn-primary" onclick="exportData()">📥 导出数据 (JSON)</button>
+                <button class="btn btn-success" onclick="document.getElementById('importFile').click()">📤 导入数据</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                <button class="btn" style="background: var(--color-danger); color: white;" onclick="clearAllData()">🗑️ 清空所有数据</button>
+
+                <div class="alert alert-info" style="margin-top: 20px;">
+                    💡 提示：数据已自动保存到浏览器本地存储，关闭页面后数据不会丢失。
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <h3 style="color: var(--color-primary); margin-bottom: 15px;">📋 已录入项目</h3>
+                <div id="savedEventsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="exportCanvas"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+        const classes = [
+            '25计算机应用1班', '25计算机应用2班', '25计算机应用3班', '25计算机应用4班',
+            '25计算机职教高考1班', '25电子商务（直播）1班', '25电子商务（直播）2班',
+            '25电子商务（直播）3班', '25电子商务（直播）4班', '25电子商务（跨境）1班',
+            '25电子商务（跨境）2班', '25电子商务（跨境）3班', '25电子商务（职教高考）1班',
+            '25社区公共事务1班', '25工业机器人1班', '25工业机器人2班', '25工业机器人3班',
+            '25工业机器人4班', '25工业机器人职教高考1班', '25数字媒体1班', '25数字媒体2班',
+            '25数字媒体3班', '25数字媒体职教高考1班', '25法律事务（特勤防暴）1班',
+            '25法律事务（特勤防暴）2班', '25法律事务（特勤防暴）3班', '25法律事务（特勤防暴）4班',
+            '25法律事务（司法文秘）1班', '25法律事务（司法文秘）2班', '25法律事务（司法文秘）3班',
+            '25法律事务（治安巡防）1班', '25法律事务（职教高考）1班', '24法律事务1班',
+            '24法律事务2班', '24职教高考', '24计算机应用'
+        ];
+
+        let eventsData = JSON.parse(localStorage.getItem('sportsEventsData') || '{}');
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            if (tabName === 'input') {
+                document.getElementById('inputSection').classList.add('active');
+                event.target.classList.add('active');
+            } else if (tabName === 'results') {
+                document.getElementById('resultsSection').classList.add('active');
+                event.target.classList.add('active');
+            } else if (tabName === 'class') {
+                document.getElementById('classSection').classList.add('active');
+                event.target.classList.add('active');
+                updateClassStats();
+            } else if (tabName === 'data') {
+                document.getElementById('dataSection').classList.add('active');
+                event.target.classList.add('active');
+                updateSavedEventsList();
+            }
+        }
+
+        function updateEventForm() {
+            const eventSelect = document.getElementById('eventSelect');
+            const eventForm = document.getElementById('eventForm');
+            const resultsGrid = document.getElementById('resultsGrid');
+            
+            if (eventSelect.value) {
+                eventForm.style.display = 'block';
+                resultsGrid.innerHTML = '';
+                
+                const scores = [8, 7, 6, 5, 4, 3, 2, 1];
+                const isRelay = eventSelect.value.includes('接力');
+                
+                for (let i = 0; i < 8; i++) {
+                    const rank = i + 1;
+                    const score = isRelay ? scores[i] * 2 : scores[i];
+                    
+                    const div = document.createElement('div');
+                    div.className = 'rank-input';
+                    div.innerHTML = `
+                        <label>第${rank}名<br>(${score}分)</label>
+                        <input type="text" id="name${rank}" placeholder="姓名" />
+                        <select id="class${rank}" style="margin-top: 5px;">
+                            <option value="">选择班级</option>
+                            ${classes.map(c => `<option value="${c}">${c}</option>`).join('')}
+                        </select>
+                        <input type="text" id="performance${rank}" placeholder="成绩" style="margin-top: 5px;" />
+                    `;
+                    resultsGrid.appendChild(div);
+                }
+
+                document.getElementById('performanceInput').style.display = 'block';
+
+                const existingData = eventsData[eventSelect.value];
+                if (existingData) {
+                    existingData.forEach((item, index) => {
+                        document.getElementById(`name${index + 1}`).value = item.name;
+                        document.getElementById(`class${index + 1}`).value = item.class;
+                        document.getElementById(`performance${index + 1}`).value = item.performance || '';
+                    });
+                }
+            } else {
+                eventForm.style.display = 'none';
+            }
+        }
+
+        function saveEventResults() {
+            const eventSelect = document.getElementById('eventSelect');
+            const eventName = eventSelect.value;
+            
+            if (!eventName) {
+                alert('请先选择比赛项目！');
+                return;
+            }
+
+            const scores = [8, 7, 6, 5, 4, 3, 2, 1];
+            const isRelay = eventName.includes('接力');
+            const results = [];
+
+            for (let i = 0; i < 8; i++) {
+                const rank = i + 1;
+                const name = document.getElementById(`name${rank}`).value.trim();
+                const className = document.getElementById(`class${rank}`).value;
+                const performance = document.getElementById(`performance${rank}`).value.trim();
+                
+                if (name && className) {
+                    results.push({
+                        rank: rank,
+                        name: name,
+                        class: className,
+                        score: isRelay ? scores[i] * 2 : scores[i],
+                        performance: performance
+                    });
+                }
+            }
+
+            if (results.length === 0) {
+                alert('请至少录入一名学生的成绩！');
+                return;
+            }
+
+            eventsData[eventName] = results;
+            localStorage.setItem('sportsEventsData', JSON.stringify(eventsData));
+
+            const alertDiv = document.getElementById('savedAlert');
+            alertDiv.style.display = 'block';
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function clearEventForm() {
+            for (let i = 1; i <= 8; i++) {
+                document.getElementById(`name${i}`).value = '';
+                document.getElementById(`class${i}`).value = '';
+                document.getElementById(`performance${i}`).value = '';
+            }
+        }
+
+        // 页面加载时显示浏览器提示
+        window.addEventListener('load', function() {
+            const isWeChat = /micromessenger/i.test(navigator.userAgent);
+            if (isWeChat) {
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.8);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                `;
+                
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    background: white;
+                    padding: 40px;
+                    border-radius: 15px;
+                    max-width: 400px;
+                    text-align: center;
+                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+                `;
+                
+                modal.innerHTML = `
+                    <div style="font-size: 60px; margin-bottom: 20px;">⚠️</div>
+                    <h2 style="color: #f44336; margin-bottom: 15px; font-size: 24px;">温馨提示</h2>
+                    <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">
+                        请不要在微信中打开此页面<br>
+                        请前往浏览器打开使用<br>
+                        以获得最佳体验
+                    </p>
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="background: #2196F3; color: white; border: none; padding: 12px 30px; 
+                                   border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600;">
+                        我知道了
+                    </button>
+                `;
+                
+                overlay.appendChild(modal);
+                document.body.appendChild(overlay);
+            }
+        });
+
+        function updateClassStats() {
+            const classScores = {};
+            classes.forEach(c => {
+                classScores[c] = { total: 0, details: {} };
+            });
+
+            for (const [eventName, results] of Object.entries(eventsData)) {
+                results.forEach(result => {
+                    if (classScores[result.class]) {
+                        classScores[result.class].total += result.score;
+                        if (!classScores[result.class].details[eventName]) {
+                            classScores[result.class].details[eventName] = 0;
+                        }
+                        classScores[result.class].details[eventName] += result.score;
+                    }
+                });
+            }
+
+            const sortedClasses = Object.entries(classScores)
+                .filter(([_, data]) => data.total > 0)
+                .sort((a, b) => b[1].total - a[1].total);
+
+            const tbody = document.getElementById('classStatsBody');
+            tbody.innerHTML = '';
+
+            sortedClasses.forEach(([className, data], index) => {
+                const rank = index + 1;
+                const tr = document.createElement('tr');
+                tr.className = rank <= 3 ? `rank-${rank}` : '';
+                
+                let medal = '';
+                if (rank === 1) medal = '<span class="medal medal-gold"></span>';
+                else if (rank === 2) medal = '<span class="medal medal-silver"></span>';
+                else if (rank === 3) medal = '<span class="medal medal-bronze"></span>';
+
+                const detailsHtml = Object.entries(data.details)
+                    .map(([event, score]) => `${event}: ${score}分`)
+                    .join('<br>');
+
+                tr.innerHTML = `
+                    <td><strong>${medal}${rank}</strong></td>
+                    <td><strong>${className}</strong></td>
+                    <td><strong style="color: var(--color-primary); font-size: 18px;">${data.total}</strong></td>
+                    <td style="text-align: left; font-size: 12px;">${detailsHtml || '暂无成绩'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function exportImage() {
+            const exportDiv = document.createElement('div');
+            exportDiv.style.cssText = `
+                width: 1200px;
+                padding: 60px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                font-family: 'Microsoft YaHei', sans-serif;
+            `;
+
+            const classScores = {};
+            classes.forEach(c => {
+                classScores[c] = { total: 0, details: {} };
+            });
+
+            for (const [eventName, results] of Object.entries(eventsData)) {
+                results.forEach(result => {
+                    if (classScores[result.class]) {
+                        classScores[result.class].total += result.score;
+                        if (!classScores[result.class].details[eventName]) {
+                            classScores[result.class].details[eventName] = 0;
+                        }
+                        classScores[result.class].details[eventName] += result.score;
+                    }
+                });
+            }
+
+            const sortedClasses = Object.entries(classScores)
+                .filter(([_, data]) => data.total > 0)
+                .sort((a, b) => b[1].total - a[1].total);
+
+            let tableHTML = `
+                <div style="background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <h1 style="text-align: center; color: #667eea; margin-bottom: 30px; font-size: 48px; font-weight: 700;">
+                        🏆 校运会班级积分榜
+                    </h1>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                        <thead>
+                            <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                <th style="padding: 20px; font-size: 20px; border: none;">排名</th>
+                                <th style="padding: 20px; font-size: 20px; border: none;">班级</th>
+                                <th style="padding: 20px; font-size: 20px; border: none;">总积分</th>
+                                <th style="padding: 20px; font-size: 20px; border: none;">项目明细</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            sortedClasses.forEach(([className, data], index) => {
+                const rank = index + 1;
+                let bgColor = '#ffffff';
+                if (rank === 1) bgColor = 'rgba(255, 215, 0, 0.3)';
+                else if (rank === 2) bgColor = 'rgba(192, 192, 192, 0.3)';
+                else if (rank === 3) bgColor = 'rgba(205, 127, 50, 0.3)';
+                else if (index % 2 === 0) bgColor = '#f8f9fa';
+
+                let medal = '';
+                if (rank === 1) medal = '🥇';
+                else if (rank === 2) medal = '🥈';
+                else if (rank === 3) medal = '🥉';
+
+                const detailsHtml = Object.entries(data.details)
+                    .map(([event, score]) => `<div style="margin: 4px 0; font-size: 14px;">${event}: ${score}分</div>`)
+                    .join('');
+
+                tableHTML += `
+                    <tr style="background: ${bgColor};">
+                        <td style="padding: 18px; text-align: center; font-size: 24px; font-weight: 700; border: 1px solid #e0e0e0;">
+                            ${medal} ${rank}
+                        </td>
+                        <td style="padding: 18px; text-align: center; font-size: 18px; font-weight: 600; border: 1px solid #e0e0e0;">
+                            ${className}
+                        </td>
+                        <td style="padding: 18px; text-align: center; font-size: 28px; font-weight: 700; color: #667eea; border: 1px solid #e0e0e0;">
+                            ${data.total}
+                        </td>
+                        <td style="padding: 18px; text-align: left; font-size: 14px; color: #666; border: 1px solid #e0e0e0;">
+                            ${detailsHtml || '<div style="text-align: center; color: #999;">暂无明细</div>'}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                        </tbody>
+                    </table>
+                    <p style="text-align: center; margin-top: 30px; color: #666; font-size: 16px;">
+                        生成时间: ${new Date().toLocaleString('zh-CN')}
+                    </p>
+                </div>
+            `;
+
+            exportDiv.innerHTML = tableHTML;
+            document.body.appendChild(exportDiv);
+
+            html2canvas(exportDiv, {
+                scale: 2,
+                backgroundColor: null,
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `校运会成绩榜_${new Date().getTime()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                document.body.removeChild(exportDiv);
+            });
+        }
+
+        function exportData() {
+            const dataStr = JSON.stringify(eventsData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `校运会数据_${new Date().getTime()}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    eventsData = data;
+                    localStorage.setItem('sportsEventsData', JSON.stringify(eventsData));
+                    alert('数据导入成功！');
+                    updateSavedEventsList();
+                } catch (error) {
+                    alert('数据格式错误，导入失败！');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllData() {
+            if (confirm('确定要清空所有数据吗？此操作不可恢复！')) {
+                eventsData = {};
+                localStorage.removeItem('sportsEventsData');
+                alert('数据已清空！');
+                updateSavedEventsList();
+                updateClassStats();
+            }
+        }
+
+        function displayEventResults() {
+            const eventSelect = document.getElementById('viewEventSelect');
+            const eventName = eventSelect.value;
+            const display = document.getElementById('eventResultsDisplay');
+            const noResultsAlert = document.getElementById('noResultsAlert');
+            const tbody = document.getElementById('eventResultsBody');
+
+            if (!eventName) {
+                display.style.display = 'none';
+                noResultsAlert.style.display = 'none';
+                return;
+            }
+
+            const results = eventsData[eventName];
+            
+            if (!results || results.length === 0) {
+                display.style.display = 'none';
+                noResultsAlert.style.display = 'block';
+                return;
+            }
+
+            noResultsAlert.style.display = 'none';
+            display.style.display = 'block';
+            tbody.innerHTML = '';
+
+            results.forEach((result) => {
+                const tr = document.createElement('tr');
+                tr.className = result.rank <= 3 ? `rank-${result.rank}` : '';
+                
+                let medal = '';
+                if (result.rank === 1) medal = '🥇 ';
+                else if (result.rank === 2) medal = '🥈 ';
+                else if (result.rank === 3) medal = '🥉 ';
+
+                const performanceDisplay = result.performance || '未录入';
+
+                tr.innerHTML = `
+                    <td><strong>${medal}${result.rank}</strong></td>
+                    <td><strong>${result.name}</strong></td>
+                    <td style="color: var(--color-primary); font-weight: 600;">${performanceDisplay}</td>
+                    <td>${result.class}</td>
+                    <td><strong style="color: var(--color-success);">${result.score}分</strong></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function exportEventImage() {
+            const eventSelect = document.getElementById('viewEventSelect');
+            const eventName = eventSelect.value;
+            
+            if (!eventName) {
+                alert('请先选择要导出的项目！');
+                return;
+            }
+
+            const results = eventsData[eventName];
+            
+            if (!results || results.length === 0) {
+                alert('该项目暂无成绩数据，无法导出！');
+                return;
+            }
+
+            const exportDiv = document.createElement('div');
+            exportDiv.style.cssText = `
+                width: 1200px;
+                padding: 60px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                font-family: 'Microsoft YaHei', sans-serif;
+            `;
+
+            let tableHTML = `
+                <div style="background: white; border-radius: 20px; padding: 40px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                    <h1 style="text-align: center; color: #667eea; margin-bottom: 15px; font-size: 48px; font-weight: 700;">
+                        🏆 校运会成绩公示
+                    </h1>
+                    <h2 style="text-align: center; color: #764ba2; margin-bottom: 30px; font-size: 32px; font-weight: 600;">
+                        ${eventName}
+                    </h2>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                        <thead>
+                            <tr style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                <th style="padding: 20px; font-size: 20px; border: none;">名次</th>
+                                <th style="padding: 20px; font-size: 20px; border: none;">姓名</th>
+                                <th style="padding: 20px; font-size: 20px; border: none;">比赛成绩</th>
+                                <th style="padding: 20px; font-size: 20px; border: none;">所在班级</th>
+                                <th style="padding: 20px; font-size: 20px; border: none;">获得积分</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            results.forEach((result) => {
+                let bgColor = '#ffffff';
+                if (result.rank === 1) bgColor = 'rgba(255, 215, 0, 0.3)';
+                else if (result.rank === 2) bgColor = 'rgba(192, 192, 192, 0.3)';
+                else if (result.rank === 3) bgColor = 'rgba(205, 127, 50, 0.3)';
+                else if (result.rank % 2 === 0) bgColor = '#f8f9fa';
+
+                let medal = '';
+                if (result.rank === 1) medal = '🥇 ';
+                else if (result.rank === 2) medal = '🥈 ';
+                else if (result.rank === 3) medal = '🥉 ';
+
+                const performanceDisplay = result.performance || '未录入';
+
+                tableHTML += `
+                    <tr style="background: ${bgColor};">
+                        <td style="padding: 18px; text-align: center; font-size: 24px; font-weight: 700; border: 1px solid #e0e0e0;">
+                            ${medal}${result.rank}
+                        </td>
+                        <td style="padding: 18px; text-align: center; font-size: 20px; font-weight: 600; border: 1px solid #e0e0e0;">
+                            ${result.name}
+                        </td>
+                        <td style="padding: 18px; text-align: center; font-size: 22px; font-weight: 700; color: #667eea; border: 1px solid #e0e0e0;">
+                            ${performanceDisplay}
+                        </td>
+                        <td style="padding: 18px; text-align: center; font-size: 18px; border: 1px solid #e0e0e0;">
+                            ${result.class}
+                        </td>
+                        <td style="padding: 18px; text-align: center; font-size: 22px; font-weight: 700; color: #4CAF50; border: 1px solid #e0e0e0;">
+                            ${result.score}分
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                        </tbody>
+                    </table>
+                    <p style="text-align: center; margin-top: 30px; color: #666; font-size: 16px;">
+                        生成时间: ${new Date().toLocaleString('zh-CN')}
+                    </p>
+                </div>
+            `;
+
+            exportDiv.innerHTML = tableHTML;
+            document.body.appendChild(exportDiv);
+
+            html2canvas(exportDiv, {
+                scale: 2,
+                backgroundColor: null,
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `${eventName}_成绩公示_${new Date().getTime()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                document.body.removeChild(exportDiv);
+            });
+        }
+
+        function updateSavedEventsList() {
+            const listDiv = document.getElementById('savedEventsList');
+            const eventNames = Object.keys(eventsData);
+            
+            if (eventNames.length === 0) {
+                listDiv.innerHTML = '<p style="color: var(--color-text-light);">暂无已保存的项目数据</p>';
+                return;
+            }
+
+            let html = '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">';
+            eventNames.forEach(eventName => {
+                html += `
+                    <div style="background: white; padding: 15px; border-radius: 10px; border: 2px solid var(--color-primary); box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <strong style="color: var(--color-primary);">${eventName}</strong><br>
+                        <span style="color: var(--color-text-light); font-size: 14px;">已录入 ${eventsData[eventName].length} 人</span>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            listDiv.innerHTML = html;
+        }
+
+        updateSavedEventsList();
+    </script>
+</body>
+</html>
+
