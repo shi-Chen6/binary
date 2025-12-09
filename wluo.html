@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络基础概念题 - 希沃白板展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif; /* 适配中文显示，易读性高 */
+        }
+        body {
+            background-color: #f8f9fa; /* 浅背景，护眼 */
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 36px; /* 大标题适配大屏 */
+            margin-bottom: 20px;
+            color: #333;
+        }
+        /* 新增提示栏样式 */
+        .tip-box {
+            background-color: #dc3545; /* 红色背景突出提示 */
+            color: white; /* 白色字体对比强烈 */
+            font-size: 26px; /* 字体放大适配大屏 */
+            text-align: center;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-weight: bold; /* 加粗强调 */
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2); /* 阴影增强视觉突出 */
+        }
+        /* 导航栏样式 */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .nav-btn {
+            padding: 15px 40px;
+            font-size: 24px; /* 导航按钮字体放大 */
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-btn.active {
+            background-color: #0056b3; /* 选中状态高亮 */
+        }
+        .nav-btn:hover {
+            background-color: #0069d9; /* 鼠标悬浮效果 */
+        }
+        /* 题目区域样式 */
+        .question-section {
+            display: none;
+            font-size: 22px; /* 题目字体适配大屏 */
+            line-height: 1.8; /* 行间距舒适 */
+            color: #333;
+            max-width: 1200px; /* 限制宽度，避免大屏拉伸 */
+            margin: 0 auto; /* 居中显示 */
+        }
+        .question-section.active {
+            display: block; /* 激活的区域显示 */
+        }
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #444;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 轻微阴影，突出题目卡片 */
+        }
+        .question p {
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-left: 20px;
+        }
+        .option {
+            font-size: 20px; /* 选项字体略小于题目 */
+        }
+    </style>
+</head>
+<body>
+    <h1>网络基础概念题</h1>
+    <!-- 新增提示栏 -->
+    <div class="tip-box">
+        需抄写选择题题目及答案，无需抄写选项。<br>提交截止时间：周三晚自习下课。
+    </div>
+    <!-- 导航栏 -->
+    <div class="nav">
+        <button class="nav-btn active" onclick="switchTab('robot')">工业机器人</button>
+        <button class="nav-btn" onclick="switchTab('digital')">数媒</button>
+    </div>
+
+    <!-- 工业机器人题目区域 -->
+    <div id="robot" class="question-section active">
+        <h2 class="section-title">一、基础概念题（10 题）（适合中职工业机器人专业一年级学生）</h2>
+        <div class="question">
+            <p>1. 校园内的机房电脑互相连接形成的网络，属于（ ）</p>
+            <div class="options">
+                <div class="option">A. 局域网（LAN）</div>
+                <div class="option">B. 城域网（MAN）</div>
+                <div class="option">C. 广域网（WAN）</div>
+                <div class="option">D. 互联网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>2. 王者荣耀中 “五排组队” 时，队友们的设备通过附近网络连接，本质是（ ）</p>
+            <div class="options">
+                <div class="option">A. 广域网</div>
+                <div class="option">B. 局域网</div>
+                <div class="option">C. 城域网</div>
+                <div class="option">D. 卫星网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>3. 覆盖一座城市的公交刷卡系统网络，属于（ ）</p>
+            <div class="options">
+                <div class="option">A. 局域网</div>
+                <div class="option">B. 城域网</div>
+                <div class="option">C. 广域网</div>
+                <div class="option">D. 物联网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>4. 超级飞侠配送包裹时，总部与全国各配送点的网络连接是（ ）</p>
+            <div class="options">
+                <div class="option">A. 局域网</div>
+                <div class="option">B. 城域网</div>
+                <div class="option">C. 广域网</div>
+                <div class="option">D. 校园网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>5. 以下哪种网络的覆盖范围最小？（ ）</p>
+            <div class="options">
+                <div class="option">A. 网吧内的网络</div>
+                <div class="option">B. 北京市的政务网络</div>
+                <div class="option">C. 中国移动的全国网络</div>
+                <div class="option">D. 国际互联网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>6. 工业机器人车间内，机器人与控制柜之间的短距离网络，属于（ ）</p>
+            <div class="options">
+                <div class="option">A. 局域网</div>
+                <div class="option">B. 城域网</div>
+                <div class="option">C. 广域网</div>
+                <div class="option">D. 专线网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>7. 以下属于广域网典型应用的是（ ）</p>
+            <div class="options">
+                <div class="option">A. 教室电脑共享打印机</div>
+                <div class="option">B. 家庭 WiFi 连接手机</div>
+                <div class="option">C. 跨省份视频会议</div>
+                <div class="option">D. 校园门禁系统</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>8. 城域网的覆盖范围通常在（ ）之间</p>
+            <div class="options">
+                <div class="option">A. 10 米 - 1 公里</div>
+                <div class="option">B. 1 公里 - 100 公里</div>
+                <div class="option">C. 100 公里 - 1000 公里</div>
+                <div class="option">D. 无距离限制</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>9. 网吧里所有电脑都连接到一台核心设备，这种网络属于（ ）拓扑结构</p>
+            <div class="options">
+                <div class="option">A. 星型</div>
+                <div class="option">B. 总线型</div>
+                <div class="option">C. 环型</div>
+                <div class="option">D. 网状型</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>10. 工业机器人生产线中，多台机器人串联成一个闭环传递信号，属于（ ）拓扑</p>
+            <div class="options">
+                <div class="option">A. 星型</div>
+                <div class="option">B. 环型</div>
+                <div class="option">C. 总线型</div>
+                <div class="option">D. 树型</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 数媒题目区域 -->
+    <div id="digital" class="question-section">
+        <h2 class="section-title">一、基础概念题（10 题）（数媒专业）</h2>
+        <div class="question">
+            <p>1. 短视频工作室里的电脑、相机、剪辑设备互相连接的网络，属于（ ）</p>
+            <div class="options">
+                <div class="option">A. 局域网（LAN）</div>
+                <div class="option">B. 城域网（MAN）</div>
+                <div class="option">C. 广域网（WAN）</div>
+                <div class="option">D. 物联网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>2. 直播时主播的电脑、麦克风、补光灯通过同一交换机连接，本质是（ ）网络</p>
+            <div class="options">
+                <div class="option">A. 广域网</div>
+                <div class="option">B. 局域网</div>
+                <div class="option">C. 城域网</div>
+                <div class="option">D. 卫星网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>3. 某城市的动漫产业园内所有企业共享的网络，属于（ ）</p>
+            <div class="options">
+                <div class="option">A. 局域网</div>
+                <div class="option">B. 城域网</div>
+                <div class="option">C. 广域网</div>
+                <div class="option">D. 专线网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>4. 数媒学生通过网课平台观看全国名师的剪辑教学直播，依赖的是（ ）</p>
+            <div class="options">
+                <div class="option">A. 局域网</div>
+                <div class="option">B. 城域网</div>
+                <div class="option">C. 广域网</div>
+                <div class="option">D. 校园网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>5. 以下哪种网络的覆盖范围最小？（ ）</p>
+            <div class="options">
+                <div class="option">A. 影视后期机房的网络</div>
+                <div class="option">B. 上海市的文创产业网络</div>
+                <div class="option">C. 阿里云的全国服务器网络</div>
+                <div class="option">D. 国际互联网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>6. VR 体验区里，多台 VR 设备与控制主机的短距离互联，属于（ ）</p>
+            <div class="options">
+                <div class="option">A. 局域网</div>
+                <div class="option">B. 城域网</div>
+                <div class="option">C. 广域网</div>
+                <div class="option">D. 5G 网</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>7. 以下属于广域网典型应用的是（ ）</p>
+            <div class="options">
+                <div class="option">A. 工作室电脑共享素材硬盘</div>
+                <div class="option">B. 家庭 WiFi 连接剪辑平板</div>
+                <div class="option">C. 跨省份的动漫项目协作</div>
+                <div class="option">D. 机房打印机共享</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>8. 城域网的覆盖范围通常对应（ ）</p>
+            <div class="options">
+                <div class="option">A. 一个工作室</div>
+                <div class="option">B. 一座城市</div>
+                <div class="option">C. 多个省份</div>
+                <div class="option">D. 全球范围</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>9. 游戏设计工作室中，所有设计师的电脑都连接到一台核心服务器，这种网络属于（ ）拓扑结构</p>
+            <div class="options">
+                <div class="option">A. 星型</div>
+                <div class="option">B. 总线型</div>
+                <div class="option">C. 环型</div>
+                <div class="option">D. 网状型</div>
+            </div>
+        </div>
+        <div class="question">
+            <p>10. 短视频拍摄团队的设备（相机、稳定器、传输器）串联成闭环传输数据，属于（ ）拓扑</p>
+            <div class="options">
+                <div class="option">A. 星型</div>
+                <div class="option">B. 环型</div>
+                <div class="option">C. 总线型</div>
+                <div class="option">D. 树型</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 切换导航的脚本 -->
+    <script>
+        function switchTab(tabId) {
+            // 隐藏所有题目区域
+            const allSections = document.querySelectorAll('.question-section');
+            allSections.forEach(section => section.classList.remove('active'));
+            // 取消所有导航按钮的选中状态
+            const allBtns = document.querySelectorAll('.nav-btn');
+            allBtns.forEach(btn => btn.classList.remove('active'));
+            // 显示选中的题目区域，激活对应按钮
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
