@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPv4二进制转十进制练习题</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+            line-height: 1.8;
+        }
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .example, .exercise, .answer-section {
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .example {
+            background-color: #e8f4fd;
+        }
+        .exercise {
+            background-color: #f9f9f9;
+        }
+        h2 {
+            color: #3498db;
+            margin-top: 0;
+            font-size: 22px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .answer {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            display: none;
+        }
+        .weight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        /* 放大二进制数字字号，方便学生查看 */
+        code {
+            font-size: 26px; 
+            font-weight: 600; 
+            color: #2c3e50; 
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">IPv4地址二进制转十进制专项练习</h1>
+
+    <!-- 例题部分 -->
+    <div class="example">
+        <h2>一、例题演示</h2>
+        <p><strong>题目：</strong>将二进制IPv4地址 <code>11000000.10101000.00000001.00000001</code> 转换为十进制</p>
+        <p><strong>解题原理：</strong>IPv4由4段8位二进制数组成，每段权重从左到右为 <span class="weight">128、64、32、16、8、4、2、1</span>，逐段计算求和</p>
+        <ol>
+            <li>第一段 <code>11000000</code>：1×128 + 1×64 + 0×32 + 0×16 + 0×8 + 0×4 + 0×2 + 0×1 = 192</li>
+            <li>第二段 <code>10101000</code>：1×128 + 0×64 + 1×32 + 0×16 + 1×8 + 0×4 + 0×2 + 0×1 = 168</li>
+            <li>第三段 <code>00000001</code>：0×128 + 0×64 + 0×32 + 0×16 + 0×8 + 0×4 + 0×2 + 1×1 = 1</li>
+            <li>第四段 <code>00000001</code>：计算结果同第三段 = 1</li>
+        </ol>
+        <p><strong>最终十进制地址：</strong><span class="weight">192.168.1.1</span></p>
+    </div>
+
+    <!-- 练习题部分 -->
+    <div class="exercise">
+        <h2>二、课堂练习题（3道）</h2>
+        <ol>
+            <li>将二进制地址 <code>10101010.00001111.00000000.11111111</code> 转换为十进制</li>
+            <li>将二进制地址 <code>11001100.10011001.01010101.10101010</code> 转换为十进制</li>
+            <li>将二进制地址 <code>10000000.00000000.00000000.00000001</code> 转换为十进制</li>
+        </ol>
+    </div>
+
+    <!-- 答案部分 -->
+    <div class="answer-section">
+        <button class="btn" onclick="toggleAnswer()">点击显示/隐藏答案</button>
+        <div class="answer" id="answerBox">
+            <h2>三、练习题答案</h2>
+            <ol>
+                <li><code>10101010.00001111.00000000.11111111</code> → <span class="weight">170.15.0.255</span></li>
+                <li><code>11001100.10011001.01010101.10101010</code> → <span class="weight">204.153.85.170</span></li>
+                <li><code>10000000.00000000.00000000.00000001</code> → <span class="weight">128.0.0.1</span></li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer() {
+            // 弹出密码输入框
+            var password = prompt("请输入查看答案的密码：", "");
+            
+            // 验证密码（密码为123456）
+            if (password === "123456") {
+                var answerBox = document.getElementById("answerBox");
+                if (answerBox.style.display === "none" || answerBox.style.display === "") {
+                    answerBox.style.display = "block";
+                    alert("密码正确，已显示答案！");
+                } else {
+                    answerBox.style.display = "none";
+                    alert("已隐藏答案！");
+                }
+            } else if (password === null) {
+                // 点击取消按钮时的提示
+                alert("已取消操作！");
+            } else {
+                // 密码错误提示
+                alert("密码错误！请输入正确的密码（123456）");
+            }
+        }
+    </script>
+</body>
+</html>
