@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP地址分类作业题 - 希沃白板（三栏全屏版）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 100vw;
+            height: 100vh;
+            padding: 0.8vw; /* 极致精简内边距 */
+            font-family: "Microsoft YaHei", sans-serif;
+            background-color: #ffffff;
+            overflow: hidden; /* 强制隐藏滚动条，确保一屏显示 */
+        }
+        .title {
+            font-size: 3.0vw; /* 最终适配字号，保证醒目且不占空间 */
+            text-align: center;
+            margin-bottom: 1.0vw; /* 大幅缩小标题间距 */
+            color: #333333;
+            font-weight: bold;
+            width: 100%;
+        }
+        /* 三栏容器 */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.8vw; /* 最小化栏间距 */
+            height: calc(100vh - 5vw); /* 计算剩余高度，适配全屏 */
+        }
+        .col {
+            width: 32.5%; /* 微调宽度，充分利用空间 */
+            overflow: hidden; /* 确保单栏无滚动 */
+        }
+        .section {
+            margin-bottom: 0.8vw; /* 极致精简模块间距 */
+        }
+        .section-title {
+            font-size: 2.5vw; /* 小节标题适配字号 */
+            color: #0066cc;
+            margin-bottom: 0.6vw;
+            font-weight: bold;
+        }
+        .range-list, .question-list {
+            list-style: none;
+            font-size: 2.2vw; /* 题目核心字号，清晰且紧凑 */
+            line-height: 1.5; /* 最紧凑行高，不影响阅读 */
+        }
+        .range-list li, .question-list li {
+            margin-bottom: 0.4vw; /* 最小化行间距 */
+        }
+        .option {
+            margin-left: 1.0vw;
+            font-size: 2.0vw; /* 选项字号适配 */
+            line-height: 1.4;
+        }
+        .blank {
+            text-decoration: underline;
+            text-underline-offset: 0.3vw;
+            padding: 0 0.5vw;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">IP地址A~E类分类 课堂作业</h1>
+    
+    <!-- 三栏容器 -->
+    <div class="container">
+        <!-- 左栏：范围题 + 选择题 -->
+        <div class="col">
+            <div class="section">
+                <h2 class="section-title">一、IP地址范围</h2>
+                <ul class="range-list">
+                    <li>A：<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li>B：<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li>C：<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li>D：<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                    <li>E：<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2 class="section-title">二、选择题</h2>
+                <ul class="question-list">
+                    <li>1. 10.23.56.78 属于？（）
+                        <div class="option">A.A类 B.B类 C.C类 D.D类</div>
+                    </li>
+                    <li>2. 属于B类的是？（）
+                        <div class="option">A.192.168.10.1 B.128.32.64.12 C.224.0.0.5 D.240.1.1.1</div>
+                    </li>
+                    <li>3. 225.100.200.150 属于？（）
+                        <div class="option">A.A类 B.C类 C.D类 D.E类</div>
+                    </li>
+                    <li>4. 不属于A类的是？（）
+                        <div class="option">A.1.0.0.1 B.126.255.255.255 C.127.0.0.1 D.60.5.3.2</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 中栏：判断题 + 填空题（1-8题） -->
+        <div class="col">
+            <div class="section">
+                <h2 class="section-title">三、判断题</h2>
+                <ul class="question-list">
+                    <li>1. 191.255.255.255 属于B类。（<span class="blank">&nbsp;&nbsp;&nbsp;</span>）</li>
+                    <li>2. C类范围：192.0.0.0-223.255.255.255。（<span class="blank">&nbsp;&nbsp;&nbsp;</span>）</li>
+                    <li>3. E类起始段：240-255。（<span class="blank">&nbsp;&nbsp;&nbsp;</span>）</li>
+                    <li>4. 127.0.0.1是可用A类地址。（<span class="blank">&nbsp;&nbsp;&nbsp;</span>）</li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2 class="section-title">四、填空题（1-8）</h2>
+                <ul class="question-list">
+                    <li>1、22.5.3.1 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>2、150.10.6.21 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>3、210.8.9.3 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>4、226.7.4.8 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>5、145.255.1.5 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>6、9.0.0.7 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>7、239.15.6.8 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>8、198.7.3.2 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 右栏：填空题（9-18题） -->
+        <div class="col">
+            <div class="section">
+                <h2 class="section-title">四、填空题（9-18）</h2>
+                <ul class="question-list">
+                    <li>9、241.10.20.30 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>10、126.255.255.255 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>11、191.0.0.1 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>12、223.255.255.255 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>13、172.16.8.1 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>14、230.5.6.7 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>15、127.0.0.1 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>16、192.168.1.1 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>17、249.8.9.10 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                    <li>18、88.77.66.55 是<span class="blank">&nbsp;&nbsp;&nbsp;&nbsp;</span>类</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
