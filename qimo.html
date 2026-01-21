@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-2026学年第一学期期末监考查询</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f3f4f6; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .highlight-text { color: #2563eb; font-weight: 600; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="bg-blue-800 text-white py-6 shadow-md">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-2xl md:text-3xl font-bold tracking-wide">2025-2026学年第一学期</h1>
+            <h2 class="text-xl md:text-2xl mt-2 font-light">期末考试监考安排查询</h2>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl card-shadow mb-8">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="search-input">
+                请输入监考教师姓名：
+            </label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <input type="text" id="search-input" 
+                    class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-lg transition duration-150 ease-in-out" 
+                    placeholder="例如：王亮胜" autofocus>
+                <button id="clear-btn" class="absolute inset-y-0 right-0 pr-3 flex items-center hidden text-gray-400 hover:text-gray-600 cursor-pointer">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <p class="text-xs text-gray-500 mt-2 text-center">支持输入全名进行精确匹配</p>
+        </div>
+
+        <div id="result-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+
+        <div id="empty-state" class="text-center py-12 hidden">
+            <svg class="mx-auto h-16 w-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="mt-2 text-lg font-medium text-gray-900">未找到相关安排</h3>
+            <p class="mt-1 text-gray-500">请检查姓名是否输入正确（无需输入“老师”二字）。</p>
+        </div>
+        
+        <div id="intro-state" class="text-center py-12 text-gray-500">
+            请在上方搜索框输入姓名开始查询
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-300 py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center text-sm">
+            &copy; 2026 教务处 | 期末考试监考系统
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. 数据集成 (Data Integration) ---
+        // 将所有 CSV 数据标准化为 JSON 对象
+        // 格式: { name, date, time, subject, class, category }
+        
+        const examData = [
+            // --- 语文 (Source 1) ---
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "24法律事务（1）班", name: "林金蓉" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "24计算机应用（1）班", name: "王亮胜" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25法律事务（1）班-特勤防暴", name: "韦萌珊" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25法律事务（2）班-特勤防暴", name: "蔡梓然" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25法律事务（3）班-特勤防暴", name: "杨佳敏" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25法律事务（4）班-特勤防暴", name: "杜佳" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25法律事务（6）班-司法文秘", name: "陈敏慧" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25法律事务（7）班-司法文秘", name: "莫清妮" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25法律事务（8）班-司法文秘", name: "曾萍" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25法律事务（9）班-治安巡防", name: "陈妙芬" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25计算机应用（1）班", name: "方哲佳" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25计算机应用（2）班", name: "肖世珍" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25计算机应用（3）班", name: "郑春兰" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25计算机应用（4）班", name: "万佳欣" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25电子商务（1）班-直播电商", name: "陈楚词" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25电子商务（2）班-直播电商", name: "陈锐鹏" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25电子商务（3）班-直播电商", name: "刘燕煌" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25电子商务（4）班-直播电商", name: "金少清" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25电子商务（5）班-跨境电商", name: "王春燕" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25电子商务（6）班-跨境电商", name: "詹培波" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25电子商务（7）班-跨境电商", name: "钟仪" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25社区公共事务（1）班", name: "胡旭妍" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25工业机器人（1）班", name: "彭志崇" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25工业机器人（2）班", name: "陈梓涛" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25工业机器人（3）班", name: "谭颖茵" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25工业机器人（4）班", name: "林嘉伟" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25数字媒体（1）班", name: "张洁冬" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25数字媒体（2）班", name: "陈秋燕" },
+            { date: "1月27日 (周二)", time: "8:40-10:10", subject: "语文", category: "语文", class: "25数字媒体（3）班", name: "韩同成" },
+
+            // --- 思政 (Source 2) ---
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "24法律事务（1）班", name: "黄海帆" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "24计算机应用（1）班", name: "廖楚灵" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25法律事务（1）班-特勤防暴", name: "胡凤玲" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25法律事务（2）班-特勤防暴", name: "张珩" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25法律事务（3）班-特勤防暴", name: "吴家佳" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25法律事务（4）班-特勤防暴", name: "陈楚词" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25法律事务（6）班-司法文秘", name: "陈锐鹏" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25法律事务（7）班-司法文秘", name: "方哲佳" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25法律事务（8）班-司法文秘", name: "谭翠" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25法律事务（9）班-治安巡防", name: "肖宇渊" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25计算机应用（1）班", name: "程晓慧" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25计算机应用（2）班", name: "黄创钦" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25计算机应用（3）班", name: "李奕蓉" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25计算机应用（4）班", name: "王子波" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25电子商务（1）班-直播电商", name: "李晓冰" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25电子商务（2）班-直播电商", name: "艾睿慧" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25电子商务（3）班-直播电商", name: "郑丽丽" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25电子商务（4）班-直播电商", name: "何琦琪" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25电子商务（5）班-跨境电商", name: "江苗" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25电子商务（6）班-跨境电商", name: "郑成" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25电子商务（7）班-跨境电商", name: "叶家宝" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25社区公共事务（1）班", name: "韦萌珊" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25工业机器人（1）班", name: "蔡梓然" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25工业机器人（2）班", name: "杨佳敏" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25工业机器人（3）班", name: "杜佳" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25工业机器人（4）班", name: "陈敏慧" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25数字媒体（1）班", name: "莫清妮" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25数字媒体（2）班", name: "曾萍" },
+            { date: "1月27日 (周二)", time: "10:40-11:40", subject: "思想政治", category: "思政", class: "25数字媒体（3）班", name: "陈妙芬" },
+
+            // --- 英语 (Source 3) ---
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "24法律事务（1）班", name: "刘婷" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "24计算机应用（1）班", name: "王亮胜" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25法律事务（1）班-特勤防暴", name: "胡凤玲" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25法律事务（2）班-特勤防暴", name: "张珩" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25法律事务（3）班-特勤防暴", name: "吴家佳" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25法律事务（4）班-特勤防暴", name: "吴佳钰" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25法律事务（6）班-司法文秘", name: "余静" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25法律事务（7）班-司法文秘", name: "何坤青" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25法律事务（8）班-司法文秘", name: "谭翠" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25法律事务（9）班-治安巡防", name: "肖宇渊" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25计算机应用（1）班", name: "程晓慧" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25计算机应用（2）班", name: "黄创钦" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25计算机应用（3）班", name: "廖楚灵" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25计算机应用（4）班", name: "武佳欣" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25电子商务（1）班-直播电商", name: "李晓冰" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25电子商务（2）班-直播电商", name: "艾睿慧" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25电子商务（3）班-直播电商", name: "刘燕煌" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25电子商务（4）班-直播电商", name: "黄珠莹" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25电子商务（5）班-跨境电商", name: "王春燕" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25电子商务（6）班-跨境电商", name: "詹培波" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25电子商务（7）班-跨境电商", name: "钟仪" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25社区公共事务（1）班", name: "胡旭妍" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25工业机器人（1）班", name: "彭志崇" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25工业机器人（2）班", name: "陈梓涛" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25工业机器人（3）班", name: "谭颖茵" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25工业机器人（4）班", name: "林嘉伟" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25数字媒体（1）班", name: "张洁冬" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25数字媒体（2）班", name: "陈秋燕" },
+            { date: "1月27日 (周二)", time: "14:40-15:40", subject: "英语", category: "英语", class: "25数字媒体（3）班", name: "韩同成" },
+
+            // --- 数学 (Source 4) ---
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "24法律事务（1）班", name: "朱晓萍" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "24计算机应用（1）班", name: "郭良华" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25法律事务（1）班-特勤防暴", name: "郑丽丽" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25法律事务（2）班-特勤防暴", name: "何琦琪" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25法律事务（3）班-特勤防暴", name: "黄海帆" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25法律事务（4）班-特勤防暴", name: "郑成" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25法律事务（6）班-司法文秘", name: "叶家宝" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25法律事务（7）班-司法文秘", name: "韦萌珊" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25法律事务（8）班-司法文秘", name: "蔡梓然" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25法律事务（9）班-治安巡防", name: "杨佳敏" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25计算机应用（1）班", name: "杜佳" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25计算机应用（2）班", name: "陈敏慧" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25计算机应用（3）班", name: "莫清妮" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25计算机应用（4）班", name: "曾萍" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25电子商务（1）班-直播电商", name: "陈妙芬" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25电子商务（2）班-直播电商", name: "方哲佳" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25电子商务（3）班-直播电商", name: "林嘉伟" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25电子商务（4）班-直播电商", name: "张洁冬" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25电子商务（5）班-跨境电商", name: "韩同成" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25电子商务（6）班-跨境电商", name: "陈楚词" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25电子商务（7）班-跨境电商", name: "陈锐鹏" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25社区公共事务（1）班", name: "刘燕煌" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25工业机器人（1）班", name: "金少清" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25工业机器人（2）班", name: "王春燕" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25工业机器人（3）班", name: "詹培波" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25工业机器人（4）班", name: "钟仪" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25数字媒体（1）班", name: "胡旭妍" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25数字媒体（2）班", name: "彭志崇" },
+            { date: "1月28日 (周三)", time: "8:40-9:40", subject: "数学", category: "数学", class: "25数字媒体（3）班", name: "陈梓涛" },
+
+            // --- 科目一 (Source 5) ---
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "民法基础理论与实务", category: "科目一", class: "24法律事务（1）班", name: "林金蓉" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "计算机安全技术基础", category: "科目一", class: "24计算机应用（1）班", name: "王亮胜" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "宪法", category: "科目一", class: "25法律事务（1）班-特勤防暴", name: "胡凤玲" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "宪法", category: "科目一", class: "25法律事务（2）班-特勤防暴", name: "张珩" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "宪法", category: "科目一", class: "25法律事务（3）班-特勤防暴", name: "吴家佳" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "宪法", category: "科目一", class: "25法律事务（4）班-特勤防暴", name: "陈秋燕" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "宪法", category: "科目一", class: "25法律事务（6）班-司法文秘", name: "谭颖茵" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "宪法", category: "科目一", class: "25法律事务（7）班-司法文秘", name: "何坤青" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "宪法", category: "科目一", class: "25法律事务（8）班-司法文秘", name: "谭翠" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "宪法", category: "科目一", class: "25法律事务（9）班-治安巡防", name: "肖宇渊" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "信息安全技术基础", category: "科目一", class: "25计算机应用（1）班", name: "程晓慧" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "信息安全技术基础", category: "科目一", class: "25计算机应用（2）班", name: "黄创钦" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "信息安全技术基础", category: "科目一", class: "25计算机应用（3）班", name: "廖楚灵" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "信息安全技术基础", category: "科目一", class: "25计算机应用（4）班", name: "王子波" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电子商务基础", category: "科目一", class: "25电子商务（1）班-直播电商", name: "李晓冰" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电子商务基础", category: "科目一", class: "25电子商务（2）班-直播电商", name: "艾睿慧" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电子商务基础", category: "科目一", class: "25电子商务（3）班-直播电商", name: "郑丽丽" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电子商务基础", category: "科目一", class: "25电子商务（4）班-直播电商", name: "何琦琪" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电子商务基础", category: "科目一", class: "25电子商务（5）班-跨境电商", name: "黄海帆" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电子商务基础", category: "科目一", class: "25电子商务（6）班-跨境电商", name: "郑成" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电子商务基础", category: "科目一", class: "25电子商务（7）班-跨境电商", name: "叶家宝" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "社区工作认知", category: "科目一", class: "25社区公共事务（1）班", name: "韦萌珊" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电工电子技术与技能", category: "科目一", class: "25工业机器人（1）班", name: "蔡梓然" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电工电子技术与技能", category: "科目一", class: "25工业机器人（2）班", name: "杨佳敏" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电工电子技术与技能", category: "科目一", class: "25工业机器人（3）班", name: "杜佳" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "电工电子技术与技能", category: "科目一", class: "25工业机器人（4）班", name: "陈梓涛" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "实用美术基础", category: "科目一", class: "25数字媒体（1）班", name: "莫清妮" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "实用美术基础", category: "科目一", class: "25数字媒体（2）班", name: "曾萍" },
+            { date: "1月28日 (周三)", time: "10:10-11:10", subject: "实用美术基础", category: "科目一", class: "25数字媒体（3）班", name: "陈妙芬" },
+
+            // --- 高考班 (Source 6) ---
+            // 语文
+            { date: "1月27日 (周二)", time: "8:40-11:10", subject: "语文", category: "高考班", class: "24高职高考（1）班", name: "刘婷" },
+            { date: "1月27日 (周二)", time: "8:40-11:10", subject: "语文", category: "高考班", class: "25法律事务（10）班-职教高考", name: "郭良华" },
+            { date: "1月27日 (周二)", time: "8:40-11:10", subject: "语文", category: "高考班", class: "25计算机应用（5）班-职教高考", name: "林思晓" },
+            { date: "1月27日 (周二)", time: "8:40-11:10", subject: "语文", category: "高考班", class: "25电子商务（8）班-职教高考", name: "黄珠莹" },
+            { date: "1月27日 (周二)", time: "8:40-11:10", subject: "语文", category: "高考班", class: "25工业机器人（5）班-职教高考", name: "朱晓萍" },
+            { date: "1月27日 (周二)", time: "8:40-11:10", subject: "语文", category: "高考班", class: "25数字媒体（4）班-职教高考", name: "武佳欣" },
+            // 英语
+            { date: "1月27日 (周二)", time: "14:40-16:40", subject: "英语", category: "高考班", class: "24高职高考（1）班", name: "林金蓉" },
+            { date: "1月27日 (周二)", time: "14:40-16:40", subject: "英语", category: "高考班", class: "25法律事务（10）班-职教高考", name: "林思晓" },
+            { date: "1月27日 (周二)", time: "14:40-16:40", subject: "英语", category: "高考班", class: "25计算机应用（5）班-职教高考", name: "江苗" },
+            { date: "1月27日 (周二)", time: "14:40-16:40", subject: "英语", category: "高考班", class: "25电子商务（8）班-职教高考", name: "金少清" },
+            { date: "1月27日 (周二)", time: "14:40-16:40", subject: "英语", category: "高考班", class: "25工业机器人（5）班-职教高考", name: "王子波" },
+            { date: "1月27日 (周二)", time: "14:40-16:40", subject: "英语", category: "高考班", class: "25数字媒体（4）班-职教高考", name: "李奕蓉" },
+            // 数学
+            { date: "1月28日 (周三)", time: "8:40-10:40", subject: "数学", category: "高考班", class: "24高职高考（1）班", name: "吴佳钰" },
+            { date: "1月28日 (周三)", time: "8:40-10:40", subject: "数学", category: "高考班", class: "25法律事务（10）班-职教高考", name: "郑春兰" },
+            { date: "1月28日 (周三)", time: "8:40-10:40", subject: "数学", category: "高考班", class: "25计算机应用（5）班-职教高考", name: "何坤青" },
+            { date: "1月28日 (周三)", time: "8:40-10:40", subject: "数学", category: "高考班", class: "25电子商务（8）班-职教高考", name: "万佳欣" },
+            { date: "1月28日 (周三)", time: "8:40-10:40", subject: "数学", category: "高考班", class: "25工业机器人（5）班-职教高考", name: "余静" },
+            { date: "1月28日 (周三)", time: "8:40-10:40", subject: "数学", category: "高考班", class: "25数字媒体（4）班-职教高考", name: "肖世珍" },
+        ];
+
+        // --- 2. 核心逻辑 (Logic) ---
+
+        const searchInput = document.getElementById('search-input');
+        const clearBtn = document.getElementById('clear-btn');
+        const resultContainer = document.getElementById('result-container');
+        const emptyState = document.getElementById('empty-state');
+        const introState = document.getElementById('intro-state');
+
+        // 获取所有教师姓名列表
+        const allTeachers = [...new Set(examData.map(item => item.name))].sort();
+
+        // 监听输入事件
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            handleSearch(query);
+            toggleClearBtn(query);
+        });
+
+        // 监听清除按钮
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            handleSearch('');
+            toggleClearBtn('');
+            searchInput.focus();
+        });
+
+        function toggleClearBtn(query) {
+            if(query.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+        }
+
+        function handleSearch(query) {
+            resultContainer.innerHTML = ''; // 清空之前的结果
+
+            if (!query) {
+                introState.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+                return;
+            }
+
+            introState.classList.add('hidden');
+
+            // 筛选数据 (不区分大小写)
+            const results = examData.filter(item => 
+                item.name.toLowerCase().includes(query.toLowerCase())
+            );
+
+            if (results.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                
+                // 按时间排序 (简单处理：日期字符串排序，因为格式固定)
+                results.sort((a, b) => {
+                    if(a.date !== b.date) return a.date.localeCompare(b.date);
+                    return a.time.localeCompare(b.time);
+                });
+
+                results.forEach(item => {
+                    const card = createCard(item);
+                    resultContainer.appendChild(card);
+                });
+            }
+        }
+
+        // 添加教师姓名建议功能
+        function initTeacherSuggestions() {
+            // 创建建议容器
+            const suggestionContainer = document.createElement('div');
+            suggestionContainer.id = 'suggestion-container';
+            suggestionContainer.className = 'absolute z-10 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 hidden';
+            suggestionContainer.style.top = '100%';
+            suggestionContainer.style.left = '0';
+            
+            // 插入到搜索框下方
+            const searchWrapper = searchInput.parentElement;
+            searchWrapper.style.position = 'relative';
+            searchWrapper.appendChild(suggestionContainer);
+
+            // 监听输入显示建议
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                if (query.length < 1) {
+                    suggestionContainer.classList.add('hidden');
+                    return;
+                }
+
+                // 过滤匹配的教师
+                const matchedTeachers = allTeachers.filter(teacher => 
+                    teacher.toLowerCase().includes(query)
+                );
+
+                if (matchedTeachers.length > 0) {
+                    suggestionContainer.innerHTML = matchedTeachers.map(teacher => 
+                        `<div class="px-4 py-2 hover:bg-gray-100 cursor-pointer" data-teacher="${teacher}">${teacher}</div>`
+                    ).join('');
+                    suggestionContainer.classList.remove('hidden');
+                } else {
+                    suggestionContainer.classList.add('hidden');
+                }
+            });
+
+            // 点击建议项
+            suggestionContainer.addEventListener('click', (e) => {
+                if (e.target.dataset.teacher) {
+                    searchInput.value = e.target.dataset.teacher;
+                    handleSearch(e.target.dataset.teacher);
+                    toggleClearBtn(e.target.dataset.teacher);
+                    suggestionContainer.classList.add('hidden');
+                }
+            });
+
+            // 点击外部关闭建议
+            document.addEventListener('click', (e) => {
+                if (!searchWrapper.contains(e.target)) {
+                    suggestionContainer.classList.add('hidden');
+                }
+            });
+        }
+
+        // 初始化
+        initTeacherSuggestions();
+
+        function createCard(item) {
+            const div = document.createElement('div');
+            div.className = 'bg-white rounded-xl card-shadow overflow-hidden fade-in border border-gray-100 hover:shadow-lg transition-shadow duration-300';
+            
+            // 颜色标识（不同科目不同颜色条，可选）
+            let accentColor = "bg-blue-600";
+            if (item.category === '高考班') accentColor = "bg-red-600";
+            if (item.category === '科目一') accentColor = "bg-purple-600";
+
+            div.innerHTML = `
+                <div class="${accentColor} text-white text-xs px-4 py-1 uppercase tracking-wider font-semibold flex justify-between">
+                    <span>${item.date}</span>
+                    <span class="bg-white bg-opacity-20 px-2 rounded">${item.category}</span>
+                </div>
+                <div class="p-5">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm mb-1">考试时间</p>
+                            <p class="text-xl font-bold text-gray-800 highlight-text mb-3">${item.time}</p>
+                            
+                            <p class="text-gray-500 text-sm mb-1">考试科目</p>
+                            <p class="text-lg font-semibold text-gray-900 mb-3">${item.subject}</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-100 pt-3 mt-1">
+                        <p class="text-gray-500 text-sm mb-1">监考班级</p>
+                        <p class="text-md text-gray-700">${item.class}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-sm">
+                        <span class="text-gray-400">监考教师</span>
+                        <span class="font-medium text-blue-800 bg-blue-50 px-2 py-1 rounded">${item.name}</span>
+                    </div>
+                </div>
+            `;
+            return div;
+        }
+    </script>
+</body>
+</html>
