@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>监考老师安排表</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>监考老师安排表</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -454,7 +455,12 @@
         </div>
         
         <div class="table-section">
-            <h2>监考记录</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>监考记录</h2>
+                <button id="export-btn" style="padding: 10px 20px; background: rgba(100, 255, 218, 0.2); border: 1px solid #64ffda; color: #64ffda; border-radius: 6px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 14px; transition: all 0.3s ease;">
+                    导出为图片
+                </button>
+            </div>
             <div class="table-container">
                 <table id="schedule-table">
                     <thead>
@@ -751,17 +757,32 @@
             const labels = Object.keys(categoryCounts);
             const data = Object.values(categoryCounts);
             
+            // 科技感颜色方案
+            const techColors = [
+                'rgba(100, 255, 218, 0.8)',  // 主色调
+                'rgba(139, 92, 246, 0.8)',    // 辅助色
+                'rgba(59, 130, 246, 0.8)',    // 蓝色
+                'rgba(16, 185, 129, 0.8)',    // 绿色
+                'rgba(245, 158, 11, 0.8)',    // 橙色
+                'rgba(239, 68, 68, 0.8)',     // 红色
+                'rgba(96, 165, 250, 0.8)',    // 浅蓝色
+                'rgba(167, 139, 250, 0.8)',   // 紫色
+                'rgba(236, 72, 153, 0.8)',    // 粉色
+                'rgba(20, 184, 166, 0.8)',    // 青色
+                'rgba(249, 115, 22, 0.8)',    // 深橙色
+                'rgba(107, 33, 168, 0.8)'      // 深紫色
+            ];
+            
             new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: labels,
                     datasets: [{
                         data: data,
-                        backgroundColor: [
-                            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40',
-                            '#8AC4D0', '#F45B69', '#845EC2', '#008B74', '#B39CD0', '#F9F871'
-                        ],
-                        borderWidth: 1
+                        backgroundColor: techColors,
+                        borderColor: techColors.map(color => color.replace('0.8', '1')),
+                        borderWidth: 1,
+                        hoverOffset: 10
                     }]
                 },
                 options: {
@@ -769,14 +790,31 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom'
+                            position: 'bottom',
+                            labels: {
+                                color: '#ccd6f6',
+                                font: {
+                                    family: 'Roboto, sans-serif',
+                                    size: 12
+                                },
+                                padding: 20
+                            }
                         },
                         tooltip: {
+                            backgroundColor: 'rgba(17, 25, 40, 0.9)',
+                            titleColor: '#64ffda',
+                            bodyColor: '#e6f1ff',
+                            borderColor: 'rgba(100, 255, 218, 0.3)',
+                            borderWidth: 1,
+                            padding: 15,
+                            cornerRadius: 8,
                             callbacks: {
                                 label: function(context) {
                                     const label = context.label || '';
                                     const value = context.raw || 0;
-                                    return `${label}: ${value}次`;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value}次 (${percentage}%)`;
                                 }
                             }
                         }
@@ -809,9 +847,11 @@
                     datasets: [{
                         label: '监考记录数量',
                         data: data,
-                        backgroundColor: '#36A2EB',
-                        borderColor: '#36A2EB',
-                        borderWidth: 1
+                        backgroundColor: 'rgba(100, 255, 218, 0.7)',
+                        borderColor: 'rgba(100, 255, 218, 1)',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        hoverBackgroundColor: 'rgba(100, 255, 218, 0.9)'
                     }]
                 },
                 options: {
@@ -821,12 +861,45 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                precision: 0
+                                precision: 0,
+                                color: '#ccd6f6',
+                                font: {
+                                    family: 'Roboto, sans-serif'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(100, 255, 218, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#ccd6f6',
+                                font: {
+                                    family: 'Roboto, sans-serif'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(100, 255, 218, 0.1)'
                             }
                         }
                     },
                     plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ccd6f6',
+                                font: {
+                                    family: 'Roboto, sans-serif'
+                                }
+                            }
+                        },
                         tooltip: {
+                            backgroundColor: 'rgba(17, 25, 40, 0.9)',
+                            titleColor: '#64ffda',
+                            bodyColor: '#e6f1ff',
+                            borderColor: 'rgba(100, 255, 218, 0.3)',
+                            borderWidth: 1,
+                            padding: 15,
+                            cornerRadius: 8,
                             callbacks: {
                                 label: function(context) {
                                     const value = context.raw || 0;
@@ -860,6 +933,54 @@
                     const sortField = this.getAttribute('data-sort');
                     sortTable(sortField);
                 });
+            });
+            
+            // 导出按钮事件
+            const exportBtn = document.getElementById('export-btn');
+            exportBtn.addEventListener('click', exportTableAsImage);
+            
+            // 导出按钮悬停效果
+            exportBtn.addEventListener('mouseenter', function() {
+                this.style.background = 'rgba(100, 255, 218, 0.3)';
+                this.style.boxShadow = '0 0 15px rgba(100, 255, 218, 0.4)';
+            });
+            
+            exportBtn.addEventListener('mouseleave', function() {
+                this.style.background = 'rgba(100, 255, 218, 0.2)';
+                this.style.boxShadow = 'none';
+            });
+        }
+        
+        // 导出表格为图片
+        function exportTableAsImage() {
+            const tableSection = document.querySelector('.table-section');
+            const exportBtn = document.getElementById('export-btn');
+            
+            // 临时隐藏导出按钮
+            exportBtn.style.display = 'none';
+            
+            // 使用html2canvas将表格转换为图片
+            html2canvas(tableSection, {
+                scale: 2, // 提高图片质量
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#111928',
+                scrollX: 0,
+                scrollY: 0
+            }).then(canvas => {
+                // 恢复导出按钮显示
+                exportBtn.style.display = 'block';
+                
+                // 创建下载链接
+                const link = document.createElement('a');
+                link.download = `监考记录_${new Date().toISOString().slice(0, 10)}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                // 恢复导出按钮显示
+                exportBtn.style.display = 'block';
+                console.error('导出失败:', err);
+                alert('导出失败，请重试');
             });
         }
         
