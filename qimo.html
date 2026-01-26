@@ -464,6 +464,12 @@
                     </select>
                 </div>
                 <div class="filter-group">
+                    <label for="class-filter">班级</label>
+                    <select id="class-filter">
+                        <option value="">全部班级</option>
+                    </select>
+                </div>
+                <div class="filter-group">
                     <label for="date-filter">考试日期</label>
                     <select id="date-filter">
                         <option value="">全部日期</option>
@@ -534,7 +540,7 @@
     "time": "8:40-10:10",
     "subject": "语文",
     "category": "语文",
-    "class": "24计算机应用（1）班",
+    "class": "24计算机应用&电子商务",
     "name": "王亮胜"
   },
   {
@@ -766,7 +772,7 @@
     "time": "10:40-11:40",
     "subject": "思想政治",
     "category": "思政",
-    "class": "24计算机应用（1）班",
+    "class": "24计算机应用&电子商务",
     "name": "廖楚灵"
   },
   {
@@ -998,7 +1004,7 @@
     "time": "14:40-15:40",
     "subject": "英语",
     "category": "英语",
-    "class": "24计算机应用（1）班",
+    "class": "24计算机应用&电子商务",
     "name": "王亮胜"
   },
   {
@@ -1230,7 +1236,7 @@
     "time": "8:40-9:40",
     "subject": "数学",
     "category": "数学",
-    "class": "24计算机应用（1）班",
+    "class": "24计算机应用&电子商务",
     "name": "郭良华"
   },
   {
@@ -1841,6 +1847,7 @@
         function initFilters() {
             const teacherFilter = document.getElementById('teacher-filter');
             const categoryFilter = document.getElementById('category-filter');
+            const classFilter = document.getElementById('class-filter');
             const dateFilter = document.getElementById('date-filter');
             
             // 提取不重复的老师姓名
@@ -1859,6 +1866,15 @@
                 option.value = category;
                 option.textContent = category;
                 categoryFilter.appendChild(option);
+            });
+
+            // 提取不重复的班级
+            const classes = [...new Set(examData.map(item => item.class))].sort();
+            classes.forEach(cls => {
+                const option = document.createElement('option');
+                option.value = cls;
+                option.textContent = cls;
+                classFilter.appendChild(option);
             });
             
             // 提取不重复的考试日期
@@ -2081,7 +2097,7 @@
         // 初始化事件监听器
         function initEventListeners() {
             // 筛选事件
-            const filters = ['teacher-filter', 'category-filter', 'date-filter'];
+            const filters = ['teacher-filter', 'category-filter', 'class-filter', 'date-filter'];
             filters.forEach(filterId => {
                 document.getElementById(filterId).addEventListener('change', applyFilters);
             });
@@ -2213,6 +2229,22 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+
+            // 增加用户引导提示
+            setTimeout(() => {
+                const isWechat = /MicroMessenger/i.test(navigator.userAgent);
+                if (isWechat) {
+                    alert('⚠️ 微信可能会拦截下载\n\n请点击右上角三个点 "..." \n选择 "在浏览器打开" \n然后再点击“加入日历”即可正常使用！');
+                } else {
+                    // 对于 iOS 和 Android 的通用提示，指导用户下一步操作
+                    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                    if (isIOS) {
+                        alert('📅 日历文件生成成功！\n\n请在弹出的日历预览页面中\n点击右上角“添加”或“全部添加”\n即可同步到系统日历。');
+                    } else {
+                        alert('📅 日历文件已下载！\n\n1. 请点击“打开”刚刚下载的文件\n2. 选择“导入到日历”即可同步。');
+                    }
+                }
+            }, 500);
         }
 
         // 导出表格为图片
@@ -2404,6 +2436,7 @@
             const searchValue = document.getElementById('teacher-search').value.toLowerCase();
             const teacherValue = document.getElementById('teacher-filter').value;
             const categoryValue = document.getElementById('category-filter').value;
+            const classValue = document.getElementById('class-filter').value;
             const dateValue = document.getElementById('date-filter').value;
             
             // 筛选数据
@@ -2411,8 +2444,9 @@
                 const matchSearch = !searchValue || item.name.toLowerCase().includes(searchValue);
                 const matchTeacher = !teacherValue || item.name === teacherValue;
                 const matchCategory = !categoryValue || item.category === categoryValue;
+                const matchClass = !classValue || item.class === classValue;
                 const matchDate = !dateValue || item.date === dateValue;
-                return matchSearch && matchTeacher && matchCategory && matchDate;
+                return matchSearch && matchTeacher && matchCategory && matchClass && matchDate;
             });
             
             // 渲染筛选结果
