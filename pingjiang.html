@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <!-- 核心手机适配：视口宽度跟随设备，禁止缩放 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>计算机安全技术基础A卷-题目+答案与解析</title>
+    <!-- 引入Tailwind CSS，快速实现手机适配样式 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入字体图标，用于导航箭头 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 自定义样式：适配手机阅读的字体、行高、间距 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .question-card {
+                @apply bg-white rounded-lg shadow-md p-5 mb-4 border-l-4 border-blue-500 transition-all duration-300 hover:shadow-lg;
+            }
+            .answer-tag {
+                @apply text-red-600 font-bold text-lg;
+            }
+            .title-section {
+                @apply bg-blue-50 py-4 px-5 rounded-lg mb-5 border border-blue-100 shadow-sm;
+            }
+            .nav-item {
+                @apply px-4 py-2.5 rounded-md bg-blue-50 hover:bg-blue-100 active:bg-blue-200 transition-all duration-300 text-blue-700 font-medium whitespace-nowrap;
+            }
+            .nav-item.active {
+                @apply bg-blue-600 text-white;
+            }
+            .analysis-block {
+                @apply bg-gray-50 p-4 rounded-md mt-3 text-gray-700 text-sm border border-gray-100;
+            }
+            .question-text {
+                @apply text-gray-800 mb-3 leading-relaxed;
+            }
+            .option-item {
+                @apply ml-5 mb-2 leading-relaxed;
+            }
+            .back-to-top {
+                @apply fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg z-50 transition-all duration-300 hover:bg-blue-700;
+            }
+            .header-fixed {
+                @apply fixed top-0 left-0 right-0 bg-white shadow-md z-40 px-4 py-3;
+            }
+        }
+    </style>
+    <style>
+        /* 平滑滚动效果 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 导航栏激活状态 */
+        .nav-item.active {
+            background-color: #2563eb;
+            color: white;
+        }
+        
+        /* 题目卡片动画 */
+        .question-card {
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .question-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* 加载动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        section {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen pt-24 pb-12 px-3 font-sans text-base text-gray-800 leading-relaxed">
+    <!-- 固定顶部导航栏 -->
+    <header class="header-fixed">
+        <div class="max-w-2xl mx-auto flex justify-between items-center">
+            <h1 class="text-lg font-bold text-blue-800">计算机安全技术基础A卷</h1>
+            <div class="overflow-x-auto whitespace-nowrap">
+                <nav class="flex gap-2 justify-start">
+                    <a href="#choice" class="nav-item"><i class="fas fa-circle-check mr-1"></i> 选择题</a>
+                    <a href="#judge" class="nav-item"><i class="fas fa-check-to-slot mr-1"></i> 判断题</a>
+                    <a href="#fill" class="nav-item"><i class="fas fa-pen-to-square mr-1"></i> 填空题</a>
+                    <a href="#answer" class="nav-item"><i class="fas fa-comment-dots mr-1"></i> 简答题</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- 题型标题 -->
+    <div class="text-center mb-8 mt-4">
+        <p class="text-gray-600 text-lg"><i class="fas fa-book-open"></i> 题目+答案与解析</p>
+        <div class="w-20 h-1 bg-blue-500 mx-auto mt-3"></div>
+    </div>
+
+    <main class="max-w-2xl mx-auto">
+        <!-- 一、选择题 -->
+        <section id="choice" class="mb-8">
+            <div class="title-section">
+                <h2 class="text-xl font-bold text-blue-700 flex items-center">
+                    <i class="fas fa-circle-check mr-2"></i>一、选择题（共15小题，每小题3分，共45分）
+                </h2>
+            </div>
+            <!-- 选择题1-15 -->
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">1.</span>
+                    <span class="answer-tag">答案：B</span>
+                </div>
+                <div class="question-text">
+                    下列关于网络安全的描述，正确的是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 网络安全是指网络系统不受任何攻击，实现绝对安全</div>
+                    <div class="option-item">B. 网络安全核心是保障数据保密性、完整性、可用性，结合技术与管理</div>
+                    <div class="option-item">C. 网络安全仅需防范计算机病毒、木马等恶意软件的入侵</div>
+                    <div class="option-item">D. 网络安全就是对网络设备进行合理配置，确保设备正常运行</div>
+                </div>
+                <div class="analysis-block">
+                    网络安全的核心是保障数据“保密性（不泄露）、完整性（不篡改）、可用性（可访问）”，且需结合技术手段和管理措施（如制度、人员培训）。<br>
+                    - A错误：不存在“不受任何攻击”的绝对安全，网络安全是“降低风险”而非“杜绝攻击”；<br>
+                    - C错误：范围过窄，网络安全不仅防范恶意软件，还包括数据保护、身份认证等；<br>
+                    - D错误：仅强调设备配置，忽略数据安全和管理措施，定义不完整。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">2.</span>
+                    <span class="answer-tag">答案：B</span>
+                </div>
+                <div class="question-text">
+                    下列技术中，属于典型身份认证技术的是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. VPN</div>
+                    <div class="option-item">B. Kerberos</div>
+                    <div class="option-item">C. PKI</div>
+                    <div class="option-item">D. 网络隐身</div>
+                </div>
+                <div class="analysis-block">
+                    身份认证技术是验证用户身份的技术，核心是“确认主体是否为声称的身份”。<br>
+                    - A（VPN）：虚拟专用网络，用于加密远程访问通道，非身份认证；<br>
+                    - B（Kerberos）：基于票据的身份认证协议，是经典身份认证技术；<br>
+                    - C（PKI）：公钥基础设施，核心是密钥管理，可支撑身份认证，但本身不是身份认证技术；<br>
+                    - D（网络隐身）：隐藏网络设备，避免被扫描，非身份认证。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">3.</span>
+                    <span class="answer-tag">答案：B</span>
+                </div>
+                <div class="question-text">
+                    收到陌生邮件称“你的邮箱账户存在异常，点击下方链接验证身份即可恢复使用”，正确的操作是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 立即点击链接，按照提示完成身份验证</div>
+                    <div class="option-item">B. 直接删除邮件，不点击任何链接，通过官方APP检查账户状态</div>
+                    <div class="option-item">C. 回复邮件，询问对方具体的异常原因和解决方法</div>
+                    <div class="option-item">D. 将链接复制到浏览器中打开，确认是否为官方页面</div>
+                </div>
+                <div class="analysis-block">
+                    该场景为典型“钓鱼邮件”，核心风险是链接指向钓鱼网站，窃取账号密码。<br>
+                    - A/D错误：点击陌生链接或泄露账号密码，直接导致信息被盗；<br>
+                    - C错误：回复邮件可能被攻击者获取更多信息，且官方不会通过邮件回复处理账户异常。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">4.</span>
+                    <span class="answer-tag">答案：B</span>
+                </div>
+                <div class="question-text">
+                    某安全设备可实时监测网络中的攻击行为，并及时发出告警，但不主动阻断攻击流量，该设备是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. IPS</div>
+                    <div class="option-item">B. IDS</div>
+                    <div class="option-item">C. 漏洞扫描设备</div>
+                    <div class="option-item">D. 防火墙</div>
+                </div>
+                <div class="analysis-block">
+                    区分核心安全技术的功能：<br>
+                    - A（IPS）：入侵防御系统，不仅检测，还能主动阻断攻击；<br>
+                    - B（IDS）：入侵检测系统，核心功能是“检测攻击行为+发出告警”，不阻断；<br>
+                    - C（漏洞扫描）：检测系统/设备的安全漏洞，不直接检测攻击；<br>
+                    - D（防火墙）：基于规则过滤数据包，防范攻击但不侧重“检测告警”。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">5.</span>
+                    <span class="answer-tag">答案：A</span>
+                </div>
+                <div class="question-text">
+                    下列属于新型网络安全技术/模型的是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 零信任</div>
+                    <div class="option-item">B. 防火墙</div>
+                    <div class="option-item">C. 数据加密</div>
+                    <div class="option-item">D. 病毒查杀</div>
+                </div>
+                <div class="analysis-block">
+                    新型网络安全技术指近年兴起、突破传统理念的技术：<br>
+                    - A（零信任）：打破“内部网络可信、外部不可信”的传统认知，是新型安全模型；<br>
+                    - B/C/D（防火墙、加密、病毒查杀）：均为传统网络安全技术，应用多年。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">6.</span>
+                    <span class="answer-tag">答案：B</span>
+                </div>
+                <div class="question-text">
+                    关于混合密码体制的工作流程，描述错误的是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 用对称密钥加密明文数据，保证加密效率</div>
+                    <div class="option-item">B. 用接收方的私钥加密对称密钥，保证密钥安全性</div>
+                    <div class="option-item">C. 将加密后的密文和加密后的对称密钥一起发送</div>
+                    <div class="option-item">D. 接收方用自身私钥解密对称密钥，再解密密文</div>
+                </div>
+                <div class="analysis-block">
+                    混合密码体制=对称密码+非对称密码，工作流程：<br>
+                    ① 用对称密钥加密明文（速度快，适合大数据）；<br>
+                    ② 用接收方公钥加密对称密钥（公钥公开，发送方可获取；私钥仅接收方持有，发送方无法获取）；<br>
+                    ③ 发送加密密文+加密后的对称密钥；<br>
+                    ④ 接收方用私钥解密对称密钥，再用对称密钥解密密文。<br>
+                    - B错误：若用接收方私钥加密，发送方无法获取接收方私钥，无法完成加密。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">7.</span>
+                    <span class="answer-tag">答案：A</span>
+                </div>
+                <div class="question-text">
+                    下列攻击方式中，属于拒绝服务攻击的是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. DDoS</div>
+                    <div class="option-item">B. 中间人攻击</div>
+                    <div class="option-item">C. XSS跨站脚本攻击</div>
+                    <div class="option-item">D. 口令暴力破解</div>
+                </div>
+                <div class="analysis-block">
+                    拒绝服务攻击（DoS）的核心是“耗尽目标资源，使其无法提供正常服务”：<br>
+                    - A（DDoS）：分布式拒绝服务攻击，是DoS的分布式形式，属于拒绝服务攻击；<br>
+                    - B（中间人）：拦截/篡改通信数据，属于数据窃取/篡改类攻击；<br>
+                    - C（跨站脚本）：注入恶意脚本，窃取用户Cookie等信息，属于Web应用攻击；<br>
+                    - D（口令破解）：获取账号密码，属于身份冒充类攻击。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">8.</span>
+                    <span class="answer-tag">答案：A</span>
+                </div>
+                <div class="question-text">
+                    下列无线局域网安全标准中，存在严重安全漏洞、已被淘汰的是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. WEP</div>
+                    <div class="option-item">B. WPA</div>
+                    <div class="option-item">C. CCMP</div>
+                    <div class="option-item">D. TKIP</div>
+                </div>
+                <div class="analysis-block">
+                    无线局域网安全标准对比：<br>
+                    - A（WEP）：早期标准，采用RC4加密算法，IV（初始化向量）长度仅24位，易被破解，存在严重安全漏洞，已淘汰；<br>
+                    - B（WPA）：替代WEP的过渡标准，安全性提升；<br>
+                    - C（CCMP）：WPA2/WPA3的核心加密算法，安全性高；<br>
+                    - D（TKIP）：WPA的加密算法，修复WEP漏洞。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">9.</span>
+                    <span class="answer-tag">答案：C</span>
+                </div>
+                <div class="question-text">
+                    下列密码中，符合强密码要求的是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 123456</div>
+                    <div class="option-item">B. password</div>
+                    <div class="option-item">C. 2024Company!</div>
+                    <div class="option-item">D. ZhangSan19990101</div>
+                </div>
+                <div class="analysis-block">
+                    强密码的核心是“难猜测、抗破解”：<br>
+                    - A（123456）、B（password）：属于常见弱密码，暴力破解可瞬间破解；<br>
+                    - C（2024Company!）：长度≥10位，包含数字、大小写字母、特殊字符，无易猜信息，符合强密码要求；<br>
+                    - D（姓名+生日）：易被社工库破解（通过公开信息猜测）。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">10.</span>
+                    <span class="answer-tag">答案：B</span>
+                </div>
+                <div class="question-text">
+                    防火墙的核心作用是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 提升网络数据的传输速度</div>
+                    <div class="option-item">B. 实现网络隔离与访问控制</div>
+                    <div class="option-item">C. 增加网络带宽，提高并发访问量</div>
+                    <div class="option-item">D. 管理网络设备，实现设备统一管控</div>
+                </div>
+                <div class="analysis-block">
+                    防火墙的核心作用是“网络隔离与访问控制”：<br>
+                    - A/C错误：防火墙不提升传输速度、不增加带宽（带宽由硬件设备决定）；<br>
+                    - D错误：管理网络设备是路由器、交换机的辅助功能，非防火墙核心。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">11.</span>
+                    <span class="answer-tag">答案：C</span>
+                </div>
+                <div class="question-text">
+                    计算机病毒的本质是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 计算机硬件出现的故障</div>
+                    <div class="option-item">B. 程序编写过程中出现的错误代码</div>
+                    <div class="option-item">C. 人为编写的具有破坏性、传染性的可执行程序</div>
+                    <div class="option-item">D. 计算机系统中存在的安全漏洞</div>
+                </div>
+                <div class="analysis-block">
+                    计算机病毒的本质是“具有破坏性、传染性的可执行程序”：<br>
+                    - A错误：与硬件故障无关；<br>
+                    - B错误：“错误代码”是无意的程序漏洞，病毒是人为编写的恶意程序；<br>
+                    - D错误：系统漏洞是病毒入侵的入口，而非病毒本身。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">12.</span>
+                    <span class="answer-tag">答案：B</span>
+                </div>
+                <div class="question-text">
+                    某用户的银行转账记录被非法修改，导致转账金额异常，该行为破坏了数据的（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 保密性</div>
+                    <div class="option-item">B. 完整性</div>
+                    <div class="option-item">C. 可用性</div>
+                    <div class="option-item">D. 传输性</div>
+                </div>
+                <div class="analysis-block">
+                    网络安全三大核心属性区分：<br>
+                    - A（保密性）：数据不泄露给未授权用户；<br>
+                    - B（完整性）：数据不被未授权篡改（如修改文件内容、转账金额）；<br>
+                    - C（可用性）：授权用户可正常访问数据；<br>
+                    - D错误：与传输速度无关。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">13.</span>
+                    <span class="answer-tag">答案：A</span>
+                </div>
+                <div class="question-text">
+                    下列行为中，属于网络安全中的信息收集型攻击的是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. Whois域名信息查询</div>
+                    <div class="option-item">B. 对目标服务器发起DDoS攻击</div>
+                    <div class="option-item">C. 利用缓冲区溢出漏洞入侵服务器</div>
+                    <div class="option-item">D. 发起XSS跨站脚本攻击</div>
+                </div>
+                <div class="analysis-block">
+                    信息收集型攻击的核心是“获取目标网络/系统的公开或半公开信息”：<br>
+                    - A（Whois查询）：查询域名注册信息（如所有者、服务器IP），属于信息收集；<br>
+                    - B（DDoS）：拒绝服务攻击，属于资源耗尽类；<br>
+                    - C（缓冲区溢出）：利用程序漏洞执行恶意代码，属于入侵类；<br>
+                    - D（跨站脚本）：Web应用攻击，属于信息窃取类。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">14.</span>
+                    <span class="answer-tag">答案：B</span>
+                </div>
+                <div class="question-text">
+                    零信任安全理念的核心是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 信任内部网络，防范外部网络攻击</div>
+                    <div class="option-item">B. 永不信任，始终验证，无默认信任边界</div>
+                    <div class="option-item">C. 仅信任经过认证的设备，无需验证用户身份</div>
+                    <div class="option-item">D. 信任所有授权用户，无需重复验证权限</div>
+                </div>
+                <div class="analysis-block">
+                    零信任安全理念的核心是“永不信任，始终验证”：<br>
+                    打破传统“内部网络可信、外部网络不可信”的边界认知，无论内外网络、设备、用户，都需验证身份和权限后才能访问资源；<br>
+                    - A/C/D错误：均违背零信任“无默认信任”的核心。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">15.</span>
+                    <span class="answer-tag">答案：C</span>
+                </div>
+                <div class="question-text">
+                    连接公共免费Wi-Fi时，下列操作风险最低的是（）
+                </div>
+                <div class="mb-2">
+                    <div class="option-item">A. 登录网上银行，进行转账操作</div>
+                    <div class="option-item">B. 打开购物APP，输入银行卡信息支付</div>
+                    <div class="option-item">C. 浏览新闻网站，无任何敏感信息输入</div>
+                    <div class="option-item">D. 登录社交软件，输入验证码修改密码</div>
+                </div>
+                <div class="analysis-block">
+                    公共免费Wi-Fi的安全风险是“数据易被监听、窃取”：<br>
+                    - A/B/D错误：登录网银、购物支付、输入验证码等操作，会泄露账号密码、验证码等敏感信息，易被攻击者截取；<br>
+                    - C正确：仅浏览无敏感操作的新闻网站，风险最低。
+                </div>
+            </div>
+        </section>
+
+        <!-- 二、判断题 -->
+        <section id="judge" class="mb-8">
+            <div class="title-section">
+                <h2 class="text-xl font-bold text-blue-700 flex items-center">
+                    <i class="fas fa-check-to-slot mr-2"></i>二、判断题（共10小题，每小题2分，共20分，对打√，错打×）
+                </h2>
+            </div>
+            <!-- 判断题16-25 -->
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">16.</span>
+                    <span class="answer-tag">答案：√</span>
+                </div>
+                <div class="question-text">
+                    对称密码体制的核心特征是加密密钥与解密密钥相同，加密和解密效率较高。
+                </div>
+                <div class="analysis-block">
+                    对称密码体制的核心特征：加密密钥=解密密钥（如AES、DES算法），加密解密速度快，适合大数据加密。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">17.</span>
+                    <span class="answer-tag">答案：×</span>
+                </div>
+                <div class="question-text">
+                    WEP是目前企业无线局域网广泛使用的安全标准，安全性高，无明显安全漏洞。
+                </div>
+                <div class="analysis-block">
+                    WEP因加密机制缺陷（RC4算法漏洞、IV长度不足），易被破解，已被淘汰，企业无线网络均使用WPA2/WPA3标准，安全性更高。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">18.</span>
+                    <span class="answer-tag">答案：√</span>
+                </div>
+                <div class="question-text">
+                    零信任安全模型要求对所有访问请求进行身份验证和权限校验，不默认信任任何主体。
+                </div>
+                <div class="analysis-block">
+                    零信任理念的核心定义：不默认信任任何主体（用户、设备、网络），所有访问请求都需通过身份验证、权限校验等流程，确保安全后再授权访问。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">19.</span>
+                    <span class="answer-tag">答案：×</span>
+                </div>
+                <div class="question-text">
+                    网络安全的核心是保障网络设备的安全，数据安全只是网络安全的次要组成部分。
+                </div>
+                <div class="analysis-block">
+                    网络安全是“全方位安全”，包括网络设备安全（如路由器、防火墙）、数据安全（如存储、传输）、系统安全（如操作系统）、用户安全（如身份认证）等，**数据安全是核心组成部分**。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">20.</span>
+                    <span class="answer-tag">答案：×</span>
+                </div>
+                <div class="question-text">
+                    非官方应用商店的破解版软件无需付费，功能与正版一致，可放心下载使用。
+                </div>
+                <div class="analysis-block">
+                    非官方应用商店的“破解版”软件，往往被植入恶意代码（病毒、木马），可能窃取用户信息、篡改系统设置，存在极大安全风险，且侵犯软件版权，**绝对不可使用**。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">21.</span>
+                    <span class="answer-tag">答案：×</span>
+                </div>
+                <div class="question-text">
+                    恶意代码仅包括计算机病毒和蠕虫，其他恶意程序不属于恶意代码范畴。
+                </div>
+                <div class="analysis-block">
+                    恶意代码的范围包括：计算机病毒、蠕虫、木马、勒索软件、间谍软件、广告软件等，并非仅病毒和蠕虫。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">22.</span>
+                    <span class="answer-tag">答案：×</span>
+                </div>
+                <div class="question-text">
+                    收到“刷单兼职赚佣金”“中奖需先交手续费”的信息，可按照提示操作，获取收益/奖金。
+                </div>
+                <div class="analysis-block">
+                    “中奖”“刷单兼职”“高收益理财”等要求“先交手续费/垫付资金”的信息，均为诈骗套路：<br>
+                    刷单本身违法，高收益理财多为非法集资，中奖无需提前缴费，本质是骗取用户资金。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">23.</span>
+                    <span class="answer-tag">答案：√</span>
+                </div>
+                <div class="question-text">
+                    指纹、人脸、虹膜等生物特征身份认证技术，安全性高于传统的密码认证技术。
+                </div>
+                <div class="analysis-block">
+                    生物特征身份认证技术的核心是“利用人体唯一且稳定的特征验证身份”，包括生理特征（指纹、人脸、虹膜）和行为特征（笔迹、步态），**无法伪造，安全性远高于密码认证**。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">24.</span>
+                    <span class="answer-tag">答案：×</span>
+                </div>
+                <div class="question-text">
+                    部署防火墙后，网络系统即可实现全面安全，无需搭配其他安全技术/设备。
+                </div>
+                <div class="analysis-block">
+                    防火墙的防护范围有限：<br>
+                    无法防范内部攻击（如内部员工泄露数据）、加密流量攻击（如HTTPS加密的恶意代码）、零日漏洞攻击（未被发现的漏洞）等，需结合IDS、杀毒软件、漏洞扫描等技术形成**综合防护体系**。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">25.</span>
+                    <span class="answer-tag">答案：×</span>
+                </div>
+                <div class="question-text">
+                    计算机管理员账户的密码应设置为简单易记的内容，方便日常登录使用。
+                </div>
+                <div class="analysis-block">
+                    管理员账户拥有系统最高权限，密码若简单易记（如123456、admin），易被破解，导致系统被入侵、数据泄露，**必须设置强密码**（长度≥8位、含多字符组合、无易猜信息）。
+                </div>
+            </div>
+        </section>
+
+        <!-- 三、填空题 -->
+        <section id="fill" class="mb-8">
+            <div class="title-section">
+                <h2 class="text-xl font-bold text-blue-700 flex items-center">
+                    <i class="fas fa-pen-to-square mr-2"></i>三、填空题（共10小题，每小题2分，共20分）
+                </h2>
+            </div>
+            <!-- 填空题1-10 -->
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">1.</span>
+                    <span class="answer-tag">答案：拒绝服务攻击（或DDoS攻击）</span>
+                </div>
+                <div class="question-text">
+                    攻击者通过向目标服务器发送大量无效请求，耗尽服务器资源使其无法为合法用户提供服务，该攻击方式称为__________。
+                </div>
+                <div class="analysis-block">
+                    攻击原理：通过向目标服务器发送大量无效请求（伪造IP、重复连接），耗尽服务器CPU、内存、带宽等资源，导致合法用户无法访问服务（如网站打不开、APP无法登录）。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">2.</span>
+                    <span class="answer-tag">答案：零信任</span>
+                </div>
+                <div class="question-text">
+                    “永不信任，始终验证”是__________安全模型的核心理念，该模型打破了传统的网络边界信任认知。
+                </div>
+                <div class="analysis-block">
+                    安全模型特征：无默认信任边界，无论内外网络、设备、用户，都需通过身份验证、权限校验等流程，确保安全后再授权访问资源。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">3.</span>
+                    <span class="answer-tag">答案：非对称</span>
+                </div>
+                <div class="question-text">
+                    __________密码体制使用公钥和私钥两组不同的密钥，公钥公开用于加密，私钥保密用于解密，如RSA算法。
+                </div>
+                <div class="analysis-block">
+                    现代密码体制的两大分类：<br>
+                    - 对称密码（加密=解密密钥）；<br>
+                    - 非对称密码（公钥加密、私钥解密，如RSA算法），安全性高，适合密钥交换、数字签名。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">4.</span>
+                    <span class="answer-tag">答案：病毒</span>
+                </div>
+                <div class="question-text">
+                    __________是一种能够自我复制、具有传染性和破坏性的计算机程序，可通过U盘、网络等渠道传播。
+                </div>
+                <div class="analysis-block">
+                    计算机病毒的核心特征：具有破坏性、传染性、潜伏性，能自我复制到其他程序或文件中，传播后破坏系统功能、窃取数据。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">5.</span>
+                    <span class="answer-tag">答案：生物特征</span>
+                </div>
+                <div class="question-text">
+                    指纹、人脸、虹膜等利用人体自身唯一特征进行身份验证的技术，称为__________身份认证技术。
+                </div>
+                <div class="analysis-block">
+                    技术核心：利用人体唯一且稳定的特征（指纹、人脸、虹膜等）验证身份，无法伪造，安全性高于传统密码认证。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">6.</span>
+                    <span class="answer-tag">答案：验证码（或图形验证码）</span>
+                </div>
+                <div class="question-text">
+                    网站注册/登录时出现的图形、短信验证信息，其核心作用是区分人类用户和自动化程序，该信息称为__________。
+                </div>
+                <div class="analysis-block">
+                    核心作用：区分人类用户和自动化程序（爬虫、恶意脚本），防止程序批量注册账号、暴力破解密码等恶意行为。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">7.</span>
+                    <span class="answer-tag">答案：钓鱼</span>
+                </div>
+                <div class="question-text">
+                    攻击者假冒银行、社保、警察等权威身份，诱导用户泄露身份证号、银行卡密码等敏感信息的诈骗方式，称为__________诈骗。
+                </div>
+                <div class="analysis-block">
+                    诈骗特征：假冒权威身份（警察、银行工作人员、IT支持），通过电话、邮件、短信等渠道，诱导受害者泄露敏感信息（身份证号、银行卡密码）或进行转账。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">8.</span>
+                    <span class="answer-tag">答案：拒绝</span>
+                </div>
+                <div class="question-text">
+                    防火墙根据预设的安全规则，对网络中的非法数据包进行拦截并__________其通过，实现网络访问控制。
+                </div>
+                <div class="analysis-block">
+                    防火墙的核心操作逻辑：依据预设规则（如IP地址、端口号），对网络数据包进行“二选一”处理——允许合法数据包通过，拒绝非法数据包（如攻击流量），实现访问控制。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">9.</span>
+                    <span class="answer-tag">答案：最小</span>
+                </div>
+                <div class="question-text">
+                    为降低网络安全风险，企业应遵循__________权限原则，仅授予员工完成工作必需的权限。
+                </div>
+                <div class="analysis-block">
+                    权限分配原则：仅授予用户完成工作必需的最小权限，避免权限过大导致的安全风险（如普通员工无需管理员权限，防止误操作或恶意操作）。
+                </div>
+            </div>
+            <div class="question-card">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="font-medium">10.</span>
+                    <span class="answer-tag">答案：完整</span>
+                </div>
+                <div class="question-text">
+                    数据__________性是指数据在存储和传输过程中，未被未授权主体篡改、破坏，保持原始状态的属性。
+                </div>
+                <div class="analysis-block">
+                    数据完整性的定义：确保数据在存储（如文件不被篡改）或传输（如邮件不被修改）过程中，未被未授权主体篡改、破坏，保持原始状态。
+                </div>
+            </div>
+        </section>
+
+        <!-- 四、简答题 -->
+        <section id="answer" class="mb-4">
+            <div class="title-section">
+                <h2 class="text-xl font-bold text-blue-700 flex items-center">
+                    <i class="fas fa-comment-dots mr-2"></i>四、简答题（共3小题，每小题5分，共15分）
+                </h2>
+            </div>
+            <!-- 简答题1 -->
+            <div class="question-card mb-3">
+                <h3 class="font-medium mb-3">1. 简述强密码的三个基本要求</h3>
+                <div class="mb-2">
+                    <span class="font-bold text-blue-600">答案：</span>
+                    <p>（1）长度足够：通常不少于8位字符（越长越难破解）；</p>
+                    <p>（2）复杂度高：包含大小写字母、数字、特殊字符（如!、@、#）中的至少两种组合；</p>
+                    <p>（3）无易猜性：不使用姓名、生日、手机号、常见单词（如password）、连续数字（如123456）等易被猜测的信息。</p>
+                </div>
+                <div class="analysis-block">
+                    <span class="font-bold text-blue-600">解析：</span><br>
+                    - 长度足够：暴力破解（逐一尝试密码）的难度随长度增加呈指数级上升，8位以上密码破解成本极高；<br>
+                    - 复杂度高：单一字符类型（如纯数字）易被暴力破解，多类型组合可大幅提升安全性；<br>
+                    - 无易猜性：避免攻击者通过公开信息（如社交平台泄露的生日、姓名）猜测密码。
+                </div>
+            </div>
+            <!-- 简答题2 -->
+            <div class="question-card mb-3">
+                <h3 class="font-medium mb-3">2. 简述防火墙的三种基本类型及各自的核心特点</h3>
+                <div class="mb-2">
+                    <span class="font-bold text-blue-600">答案：</span>
+                    <p>（1）包过滤防火墙（网络层防火墙）：<br>
+                    核心特点：基于数据包的源IP、目的IP、端口号等基础信息过滤，速度快、开销小，适合大规模网络；但防护粒度粗，无法检测应用层数据（如HTTP协议中的恶意脚本）。</p>
+                    <p class="mt-2">（2）应用代理防火墙（应用层防火墙）：<br>
+                    核心特点：通过代理服务器转发应用层请求（如HTTP、FTP），能深入检查数据内容（如检测恶意代码、违规操作），安全性高；但速度较慢，仅支持常见应用协议（如无法适配小众应用）。</p>
+                    <p class="mt-2">（3）状态检测防火墙（混合层防火墙）：<br>
+                    核心特点：结合包过滤和应用代理的优势，跟踪网络连接状态（如TCP三次握手），动态调整过滤规则，既能快速处理数据包，又能检测应用层风险，兼顾安全性和效率，是目前主流防火墙类型。</p>
+                </div>
+                <div class="analysis-block">
+                    <span class="font-bold text-blue-600">解析：</span><br>
+                    - 三种类型的核心差异在于“工作层面”：包过滤（网络层）、应用代理（应用层）、状态检测（网络层+应用层）；<br>
+                    - 选择依据：小规模网络可选包过滤（成本低），高安全需求网络可选应用代理（如金融行业），通用场景选状态检测（平衡安全与效率）。
+                </div>
+            </div>
+            <!-- 简答题3 -->
+            <div class="question-card">
+                <h3 class="font-medium mb-3">3. 简述收到“社保账户异常，点击链接办理激活”的短信时，判断其为诈骗短信的关键依据</h3>
+                <div class="mb-2">
+                    <span class="font-bold text-blue-600">答案：</span>
+                    <p>（1）官方流程不符：社保机构不会通过短信链接要求“在线办理停用/激活业务”，正规业务需通过社保官方APP、官网或线下网点办理，无“短信链接办理”渠道；</p>
+                    <p class="mt-2">（2）风险链接特征：短信中的陌生链接可能指向钓鱼网站，点击后会诱导输入身份证号、银行卡密码、验证码等敏感信息，导致信息被盗；</p>
+                    <p class="mt-2">（3）号码可伪造：“95”开头号码可通过改号软件伪造，不能仅凭号码判断为官方渠道（需核实号码是否为社保官方公布的服务号）；</p>
+                    <p class="mt-2">（4）紧急诱导话术：用“即将停用/冻结”制造焦虑，诱导用户仓促操作，符合诈骗信息“催单式”套路，官方通知会明确说明处理期限和正规流程，不会强制“立即办理”。</p>
+                </div>
+                <div class="analysis-block">
+                    <span class="font-bold text-blue-600">解析：</span><br>
+                    诈骗短信的核心套路：“制造紧急场景+诱导敏感操作”，判断时需围绕“官方流程是否合理”“是否要求泄露敏感信息”“是否存在强制操作”三个核心点，避免被焦虑情绪误导。
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="text-center mt-6 text-gray-500 text-sm pb-6">
+        <p>© 2026 计算机应用专业 | 计算机安全技术基础 | 期末（含完整题目+答案解析）</p>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <a href="#" class="back-to-top" id="backToTop" style="display: none;">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    
+    <!-- JavaScript 功能 -->
+    <script>
+        // 导航栏激活状态切换
+        const sections = document.querySelectorAll('section');
+        const navItems = document.querySelectorAll('.nav-item');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').substring(1) === current) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // 回到顶部按钮显示/隐藏
+            const backToTopButton = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+        
+        // 回到顶部按钮点击事件
+        document.getElementById('backToTop').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
