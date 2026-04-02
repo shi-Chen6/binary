@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>东山岛一日自驾游精准攻略 - 揭阳出发专用版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #fdfdfd;
+            color: #1e293b;
+            scroll-behavior: smooth;
+        }
+
+        /* 交互式时间轴样式 */
+        .step-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e2e8f0;
+        }
+        .step-card.active {
+            border-color: #0ea5e9;
+            box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.1);
+            transform: translateX(8px);
+        }
+
+        /* 图片占位符风格 */
+        .img-placeholder {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 0.875rem;
+            text-align: center;
+            padding: 20px;
+            border-radius: 0.5rem;
+            border: 1px dashed #cbd5e1;
+        }
+
+        /* 警示框样式 */
+        .warning-box {
+            background-color: #fff7ed;
+            border-left: 4px solid #f97316;
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 2s infinite;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+<!-- Chosen Palette: Ocean Serenity (Slate 900 for headers, Sky 500 for actions, Orange 500 for alerts) -->
+<!-- Application Structure Plan: 
+    1. Header: Quick summary & Destination focus.
+    2. Route Overview: Large map placeholder & logistics summary.
+    3. Interactive Journey: A step-by-step navigator combining Navigation, Parking, and Gameplay.
+    4. Data & Logistics: Dynamic budget and a tabbed "Knowledge Base" for tide info, packing, and driving tips.
+    Chosen for utility: Drivers need "Nav -> Park -> Do" in that order for every stop.
+-->
+<!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Top Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="bg-sky-600 text-white p-1 rounded">🚗</span>
+                <span class="font-bold text-lg tracking-tight">东山岛自驾专家</span>
+            </div>
+            <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
+                <a href="#route" class="hover:text-sky-600">行程地图</a>
+                <a href="#journey" class="hover:text-sky-600">六大站点</a>
+                <a href="#logistics" class="hover:text-sky-600">行前准备</a>
+                <a href="#return" class="hover:text-sky-600">返程安排</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="bg-gradient-to-b from-sky-50 to-white pt-16 pb-10">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4 leading-tight">
+                福建东山岛：<span class="text-sky-600">一日自驾精品路线</span>
+            </h1>
+            <p class="text-slate-500 text-lg">揭阳出发 | 顺向行驶 | 绝无回头路 | 精准避堵指南</p>
+            
+            <div class="mt-8 flex flex-wrap justify-center gap-4 text-xs font-bold uppercase tracking-widest">
+                <span class="bg-white border border-slate-200 px-3 py-1 rounded shadow-sm">⏱ 建议出发 05:30</span>
+                <span class="bg-white border border-slate-200 px-3 py-1 rounded shadow-sm">🛣 车程 2h</span>
+                <span class="bg-white border border-slate-200 px-3 py-1 rounded shadow-sm">🌊 核心：潮汐控制</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pb-20 space-y-20">
+
+        <!-- Section: Overview Map -->
+        <section id="route" class="scroll-mt-24">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">总行程概况图</h2>
+                        <p class="text-slate-500">东山收费站 ➔ 铜陵地标 ➔ 经典天台 ➔ 滨海海堤 ➔ 秘境双面海 ➔ 休闲浴场 ➔ 网红火车</p>
+                    </div>
+                    <div class="text-sm font-medium bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full">
+                        ✓ 全程顺向行驶，避开老城区拥堵
+                    </div>
+                </div>
+                
+                <div class="w-full bg-slate-50 border border-slate-100 rounded-xl overflow-hidden mb-4">
+                    <img src="https://img.meituan.net/content/f914a70f2ad2d2fd1c0b44a701888490870828.jpg" alt="行程概况地图" class="w-full h-auto object-contain" />
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="w-full bg-slate-50 border border-slate-100 rounded-xl overflow-hidden">
+                        <img src="https://img.meituan.net/content/5e421419ce048df4e8c01a181467cf53503298.jpg" alt="实景图1" class="w-full h-auto object-contain" />
+                    </div>
+                    <div class="w-full bg-slate-50 border border-slate-100 rounded-xl overflow-hidden">
+                        <img src="https://img.meituan.net/content/d5a99ec66e6b86d25beb8281824b28be1108104.jpg" alt="实景图2" class="w-full h-auto object-contain" />
+                    </div>
+                </div>
+                <p class="text-xs text-center text-slate-400 italic">注：从朝圣楼入，彩蝶湾出，返程高速入口仅需15分钟，最大化利用游玩时间。</p>
+            </div>
+        </section>
+
+        <!-- Section: Interactive Journey -->
+        <section id="journey" class="scroll-mt-24">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                
+                <!-- Left: Station List -->
+                <div class="lg:col-span-5 space-y-4">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-6">站点导航流</h2>
+                    <div id="station-list" class="space-y-3">
+                        <!-- JS Generated List -->
+                    </div>
+                </div>
+
+                <!-- Right: Station Detail Explorer -->
+                <div class="lg:col-span-7">
+                    <div id="station-detail" class="bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden sticky top-24">
+                        <!-- JS Dynamic Content -->
+                        <div class="p-20 text-center text-slate-400">点击左侧站点开启探索</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section: Logistics & Rules -->
+        <section id="logistics" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-900">实用攻略库</h2>
+                <p class="text-slate-500 mt-2">行前阅读，规避 90% 的旅途麻烦</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Card 1: Driving -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <span class="mr-2">🕒</span> 行前与车辆准备
+                    </h3>
+                    <ul class="text-sm text-slate-600 space-y-3">
+                        <li><strong>出发建议：</strong> 潮汕/汕头出发约2h。工作日6:00前，节假日5:30前启程。</li>
+                        <li><strong>车辆检查：</strong> 检查轮胎、刹车、空调及胎压。</li>
+                        <li><strong>潮汐查询：</strong> 提前查「潮汐表精灵」，潮位低于120cm才可登南屿。</li>
+                    </ul>
+                </div>
+
+                <!-- Card 2: Packing -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <span class="mr-2">🎒</span> 必备物品清单
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm text-slate-600">
+                        <div>
+                            <p class="font-bold text-slate-800">防晒穿搭</p>
+                            <p>防晒霜、遮阳帽、防滑拖鞋、墨镜</p>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800">实用证件</p>
+                            <p>驾驶证、身份证、手机防水袋</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Global Avoidance Guide -->
+            <div class="mt-8 bg-slate-900 text-white rounded-3xl p-8">
+                <h3 class="text-xl font-bold mb-6 flex items-center">
+                    <span class="mr-2">🚫</span> 自驾专属避坑指南 (核心摘要)
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-sm">
+                    <div class="space-y-2">
+                        <p class="font-bold text-sky-400">停车禁区</p>
+                        <p class="text-slate-400">顶街、南门湾海堤、南屿主干道全线禁停，违停必罚。</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="font-bold text-sky-400">潮汐法则</p>
+                        <p class="text-slate-400">南屿是核心，若退潮时间不匹配，优先调整南屿时段。</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="font-bold text-sky-400">美食红线</p>
+                        <p class="text-slate-400">南门湾/南屿海边大排档溢价超3倍，去铜陵老店或市场加工。</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p class="font-bold text-sky-400">路线红线</p>
+                        <p class="text-slate-400">严禁开进铜陵老城窄路；苏峰山不在本次路线，切勿加塞。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Return -->
+        <section id="return" class="scroll-mt-24 bg-sky-50 rounded-3xl p-8 border border-sky-100">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="flex-1">
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4">完美的谢幕：返程安排</h2>
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        从最后一站彩蝶湾出发，仅需 15 分钟即可上高速。建议 18:30 前出发，避开夜间大货车高峰。
+                        <span class="block mt-2 font-bold text-sky-700">预计 21:00 前即可平安回到揭阳，不耽误第二天工作休息。</span>
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-white px-4 py-2 rounded-lg shadow-sm">
+                            <span class="block text-xs text-slate-400 uppercase font-bold">离岛车程</span>
+                            <span class="font-bold text-slate-800">15 min</span>
+                        </div>
+                        <div class="bg-white px-4 py-2 rounded-lg shadow-sm">
+                            <span class="block text-xs text-slate-400 uppercase font-bold">返程距离</span>
+                            <span class="font-bold text-slate-800">揭阳 180km</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-64 h-40 img-placeholder">
+                    
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-100 py-10 text-center">
+        <p class="text-slate-400 text-sm">© 2024 东山岛自驾旅行实验室 - 揭阳车主专属交互手册</p>
+    </footer>
+
+    <script>
+        const stations = [
+            {
+                id: 1,
+                name: "朝圣楼",
+                nav: "东山朝圣楼 - 正门停车场",
+                transit: "下高速自驾 10 分钟抵达，铜陵镇入口地标。",
+                parking: "景区专属免费停车场，车位充足，无需违停。",
+                time: "30 分钟",
+                play: [
+                    "仿唐风格地标，登楼俯瞰铜陵全景及南门湾海域。",
+                    "远眺苏峰山与风车群，摸清海湾布局，全景大片机位。",
+                    "简单休整补充饮水，避开老城区拥堵开篇。"
+                ],
+                tip: "此处为入口，不要开进老城区窄路。",
+                img: "<img src=\"https://img.meituan.net/content/db2bee0f1bc10d3ea1bd06f7b1f5f8111441356.jpg\" class=\"w-full h-full object-cover\" alt=\"朝圣楼\" />"
+            },
+            {
+                id: 2,
+                name: "左耳天台",
+                nav: "顶街左耳取景天台（南门湾店）",
+                transit: "朝圣楼自驾 3 分钟，全程 1.2 公里。",
+                parking: "停【南门湾公共停车场】，顶街为步行巷，车无法驶入。",
+                time: "40 分钟",
+                play: [
+                    "《左耳》经典场景还原，直面蓝白渔村与碧海同框。",
+                    "文公祠免费天台视野更开阔，按需选择私营天台(5-10元)。",
+                    "漫步600年历史顶街古巷，感受原生烟火气。"
+                ],
+                tip: "拒接路边“带路找天台”招揽，自行导航即可。",
+                img: "<img src=\"https://img.meituan.net/content/4ece4b9b13073f57ec6d55a56ffb59cd959230.jpg\" class=\"w-full h-full object-cover\" alt=\"左耳天台\" />"
+            },
+            {
+                id: 3,
+                name: "南门湾",
+                nav: "南门湾海堤（南门湾景区）",
+                transit: "步行 5 分钟直达，无需挪车。",
+                parking: "沿用第二站停车场，无需重复停车。",
+                time: "1.5 小时",
+                play: [
+                    "《你的婚礼》同款海堤，打卡日系滨海大片机位。",
+                    "上午顺光拍摄，打卡彩色台阶、涂鸦墙与海边咖啡屋。",
+                    "看渔船归港，体验渔村生活，不建议坐无证游船。"
+                ],
+                tip: "海堤全线禁停；海边大排档溢价严重，不建议在此用餐。",
+                img: "<img src=\"https://img.meituan.net/content/2a7867caabbfb7262aa95761b9c255cc2358906.jpg\" class=\"w-full h-full object-cover\" alt=\"南门湾\" />"
+            },
+            {
+                id: 4,
+                name: "南屿双面海",
+                nav: "南屿双面海景区",
+                transit: "自驾 5 分钟，全程 2.5 公里，顺向无回头路。",
+                parking: "入口路边免费位或民宿停车场(10元/次)。",
+                time: "1 小时（受潮汐限制）",
+                play: [
+                    "退潮时通过沙滩步道登岛，“一步跨两海”独特体验。",
+                    "打卡网红绿色灯塔，拍摄礁石情绪大片。",
+                    "仅在步道游玩，务必穿防滑鞋，看好老人小孩。"
+                ],
+                tip: "必须查潮位！涨潮前1小时撤离。生死级提示：切勿逗留！",
+                img: "<img src=\"https://img.meituan.net/content/408b4d7a1af322364a6dd025766722611443666.jpg\" class=\"w-full h-full object-cover\" alt=\"南屿双面海\" />"
+            },
+            {
+                id: 5,
+                name: "马銮湾",
+                nav: "马銮湾景区停车场",
+                transit: "自驾 10 分钟，全程 7 公里，顺向沿海。",
+                parking: "专属正规停车场(10元/次)，车位充足。",
+                time: "1.5 小时",
+                play: [
+                    "正规天然海滨浴场，沙细水清，有专业救生员值守。",
+                    "体验沙滩摩托、帆船等明码标价水上项目。",
+                    "配套完善（遮阳/冲洗），适合亲子休整与踏浪。"
+                ],
+                tip: "仅在游泳区下水，切勿去防鲨网外。",
+                img: "<img src=\"https://img.meituan.net/content/a77d35417d0962d3831a4516d23821381605195.jpg\" class=\"w-full h-full object-cover\" alt=\"马銮湾\" />"
+            },
+            {
+                id: 6,
+                name: "彩蝶湾",
+                nav: "彩蝶湾景区停车场",
+                transit: "自驾 3 分钟，顺向行驶，两景区紧邻。",
+                parking: "专属免费停车场，步行 1 分钟入园。",
+                time: "1.5 小时",
+                play: [
+                    "漫步超长沿海木栈道，看花海与玻璃屋，节奏轻松。",
+                    "可坐网红海上小火车(20元)，海岸线出片率极高。",
+                    "日落视野极佳，拍夕阳剪影，完美收尾行程。"
+                ],
+                tip: "全天免费，无强制消费。结束后直接返程揭阳。",
+                img: "<img src=\"https://img.meituan.net/content/c173af68c19df64e5304d927a90ee0a31276039.jpg\" class=\"w-full h-full object-cover\" alt=\"彩蝶湾\" />"
+            }
+        ];
+
+        let activeId = 1;
+
+        function renderStations() {
+            const list = document.getElementById('station-list');
+            list.innerHTML = stations.map(s => `
+                <div onclick="setActive(${s.id})" class="step-card group p-4 rounded-xl cursor-pointer bg-white ${activeId === s.id ? 'active' : ''}">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-8 h-8 flex items-center justify-center rounded-full ${activeId === s.id ? 'bg-sky-600 text-white' : 'bg-slate-100 text-slate-500'} font-bold text-sm">
+                                ${s.id}
+                            </span>
+                            <span class="font-bold ${activeId === s.id ? 'text-sky-700' : 'text-slate-700'}">${s.name}</span>
+                        </div>
+                        <span class="text-xs font-medium px-2 py-1 bg-slate-50 text-slate-400 rounded">约${s.time}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            const detail = document.getElementById('station-detail');
+            const data = stations.find(s => s.id === activeId);
+            
+            detail.innerHTML = `
+                <div class="h-56 md:h-64 overflow-hidden border-0 border-b border-slate-100 bg-slate-50 relative">
+                    ${data.img}
+                </div>
+                <div class="p-6 space-y-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-sky-600 font-bold text-sm tracking-widest uppercase">📍 精准导航</span>
+                            <h3 class="text-xl font-bold text-slate-900">${data.nav}</h3>
+                        </div>
+                        <div class="bg-sky-50 p-2 rounded-lg text-center min-w-[80px]">
+                            <span class="block text-[10px] text-sky-400 uppercase font-bold">建议时长</span>
+                            <span class="font-bold text-sky-700">${data.time}</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-bold text-slate-800 mb-1">🚗 车程衔接</p>
+                                <p class="text-slate-600 leading-relaxed">${data.transit}</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800 mb-1">🅿️ 停车攻略</p>
+                                <p class="text-slate-600 leading-relaxed">${data.parking}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="font-bold text-slate-800 mb-1">✨ 核心玩法</p>
+                            <ul class="text-slate-600 space-y-2">
+                                ${data.play.map(p => `<li class="flex items-start"><span class="text-sky-500 mr-2">•</span>${p}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="warning-box p-4 rounded-xl text-sm flex items-start">
+                        <span class="mr-3 text-lg">⚠️</span>
+                        <div>
+                            <p class="font-bold text-orange-800 mb-1">特别提示</p>
+                            <p class="text-orange-700">${data.tip}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setActive(id) {
+            activeId = id;
+            renderStations();
+        }
+
+        // Init
+        renderStations();
+    </script>
+</body>
+</html>
