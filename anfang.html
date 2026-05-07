@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>安防选择题教学系统 | 希沃白板适配</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none; /* 避免希沃上长菜单选干扰，但不影响文本复制 */
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f1f5f9 0%, #e6edf4 100%);
+            font-family: 'Segoe UI', 'Roboto', 'Noto Sans', system-ui, -apple-system, '微软雅黑', sans-serif;
+            padding: 20px;
+            overflow-y: auto;
+            touch-action: pan-y;
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 主卡片容器 — 触屏大间距 */
+        .main-card {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255,255,255,0.96);
+            border-radius: 64px;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.5);
+            overflow: hidden;
+            backdrop-filter: blur(2px);
+            transition: all 0.2s;
+        }
+
+        /* 顶部工具栏 */
+        .top-bar {
+            background: #1e2a3e;
+            color: white;
+            padding: 20px 32px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            border-bottom: 4px solid #ffb347;
+        }
+
+        .progress-area {
+            background: #0f1720;
+            border-radius: 60px;
+            padding: 10px 28px;
+            font-weight: bold;
+            font-size: 28px;
+            letter-spacing: 2px;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .progress-area span {
+            color: #ffb347;
+            font-size: 32px;
+            margin: 0 4px;
+        }
+
+        .stat-area {
+            background: #2a3a4a;
+            border-radius: 48px;
+            padding: 8px 28px;
+            font-size: 26px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .jump-area {
+            display: flex;
+            gap: 12px;
+            background: #0f1720;
+            padding: 8px 20px;
+            border-radius: 60px;
+            align-items: center;
+        }
+
+        .jump-area label {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .jump-input {
+            font-size: 28px;
+            width: 100px;
+            text-align: center;
+            background: white;
+            border: none;
+            border-radius: 48px;
+            padding: 12px 8px;
+            font-weight: bold;
+            font-family: monospace;
+            outline: none;
+        }
+
+        .jump-btn, .nav-btn, .action-btn {
+            background: #ffb347;
+            border: none;
+            color: #1e2a3e;
+            font-weight: bold;
+            font-size: 24px;
+            padding: 12px 28px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.1s linear;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .jump-btn:active, .nav-btn:active, .action-btn:active {
+            transform: scale(0.96);
+            background: #ff9f1c;
+        }
+
+        .nav-btn {
+            background: #2c5f8a;
+            color: white;
+            padding: 12px 32px;
+        }
+
+        .action-btn {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .submit-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .show-answer-btn {
+            background: #8b5cf6;
+        }
+
+        /* 简易进度条 (格子导航条) */
+        .grid-progress {
+            background: #e2e8f0;
+            padding: 16px 32px;
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .progress-track {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-dot {
+            width: 48px;
+            height: 48px;
+            border-radius: 30px;
+            background: #cbd5e1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e293b;
+            transition: 0.1s;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        .grid-dot.current {
+            background: #ffb347;
+            color: #1e2a3e;
+            transform: scale(1.08);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .grid-dot.answered {
+            background: #10b981;
+            color: white;
+        }
+
+        /* 题目卡片区域 */
+        .question-container {
+            padding: 40px 48px 32px;
+            background: #ffffff;
+        }
+
+        .question-text {
+            font-size: 36px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 48px;
+            background: #f8fafc;
+            padding: 28px 32px;
+            border-radius: 48px;
+            border-left: 14px solid #ffb347;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+            color: #0f1720;
+        }
+
+        .options-area {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .option-item {
+            background: #f1f5f9;
+            border-radius: 60px;
+            padding: 18px 28px;
+            font-size: 28px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: 0.1s;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .option-item:hover {
+            background: #e6edf4;
+            transform: scale(1.01);
+        }
+
+        /* 高亮样式 */
+        .option-correct {
+            background: #86efac !important;
+            border: 3px solid #15803d !important;
+            color: #14532d;
+            box-shadow: 0 6px 12px rgba(34,197,94,0.3);
+        }
+
+        .option-wrong {
+            background: #fecaca !important;
+            border: 3px solid #dc2626 !important;
+            color: #7f1d1d;
+            text-decoration: line-through;
+        }
+
+        input[type="radio"] {
+            width: 36px;
+            height: 36px;
+            transform: scale(1.2);
+            margin-right: 12px;
+            accent-color: #ffb347;
+            cursor: pointer;
+        }
+
+        .option-text {
+            flex: 1;
+            letter-spacing: 1px;
+        }
+
+        /* 按钮区域 */
+        .action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+            margin: 20px 0 30px;
+        }
+
+        /* 解析区域 */
+        .explanation-area {
+            background: #fefce8;
+            border-top: 4px solid #ffb347;
+            padding: 32px 44px;
+            font-size: 26px;
+            line-height: 1.5;
+            color: #2d3e4f;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Segoe UI', system-ui;
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 0 0 48px 48px;
+            box-shadow: inset 0 8px 12px -8px rgba(0,0,0,0.05);
+        }
+
+        .empty-explanation {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        button {
+            touch-action: manipulation;
+            min-height: 72px;
+        }
+
+        @media (max-width: 800px) {
+            .question-text { font-size: 24px; padding: 16px; }
+            .option-item { font-size: 18px; padding: 12px 16px; }
+            .top-bar { flex-direction: column; align-items: stretch; padding: 12px 16px; }
+            .progress-area { font-size: 20px; padding: 8px 16px; }
+            .progress-area span { font-size: 24px; }
+            .stat-area { font-size: 18px; padding: 6px 16px; }
+            .jump-area { justify-content: center; flex-wrap: wrap; }
+            .jump-area label { font-size: 18px; }
+            .jump-input { font-size: 20px; width: 70px; padding: 8px 4px; }
+            .action-bar { flex-direction: column; gap: 10px; }
+            .action-bar button { width: 100%; font-size: 18px; min-height: 56px; padding: 10px 20px; }
+            .grid-dot { width: 32px; height: 32px; font-size: 14px; }
+            .explanation-area { font-size: 18px; padding: 20px 24px; }
+            .question-container { padding: 20px 16px 16px; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .main-card { border-radius: 24px; }
+            .question-text { font-size: 20px; padding: 14px; border-left-width: 8px; }
+            .option-item { font-size: 16px; padding: 10px 14px; border-radius: 30px; gap: 10px; }
+            input[type="radio"] { width: 24px; height: 24px; transform: scale(1); margin-right: 8px; }
+            .grid-dot { width: 28px; height: 28px; font-size: 12px; }
+            .progress-track { gap: 4px; }
+            .grid-progress { padding: 10px 16px; }
+        }
+
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+        }
+
+        .practice-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #f1f5f9 0%, #e6edf4 100%);
+            z-index: 999;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .practice-panel.active {
+            display: block;
+        }
+
+        .practice-header {
+            background: #1e2a3e;
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .practice-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .practice-close {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .practice-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background: white;
+            gap: 10px;
+        }
+
+        .stat-card {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            background: #f8fafc;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1e2a3e;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .stat-card.correct .number { color: #10b981; }
+        .stat-card.wrong .number { color: #dc2626; }
+        .stat-card.score .number { color: #ffb347; }
+
+        .practice-options {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .practice-option-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 14px 20px;
+            border-radius: 20px;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .practice-option-btn.correct {
+            background: #dcfce7;
+            border-color: #10b981;
+        }
+
+        .practice-option-btn.wrong {
+            background: #fee2e2;
+            border-color: #dc2626;
+        }
+
+        .practice-option-btn .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .practice-option-btn.correct .option-letter {
+            background: #10b981;
+            color: white;
+        }
+
+        .practice-option-btn.wrong .option-letter {
+            background: #dc2626;
+            color: white;
+        }
+
+        .practice-question {
+            background: white;
+            margin: 16px;
+            padding: 20px;
+            border-radius: 24px;
+            font-size: 18px;
+            line-height: 1.5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .practice-explanation {
+            background: #fefce8;
+            margin: 0 16px 16px;
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #2d3e4f;
+            border-top: 4px solid #ffb347;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .practice-action-bar {
+            padding: 16px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .practice-action-bar button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .practice-next-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .practice-restart-btn {
+            background: #ffb347;
+            color: #1e2a3e;
+        }
+
+        .practice-result {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .practice-result .big-score {
+            font-size: 72px;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .practice-result .score-text {
+            font-size: 24px;
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .mode-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 8px 14px;
+                font-size: 14px;
+            }
+            .practice-question { font-size: 16px; padding: 16px; margin: 10px; }
+            .practice-option-btn { font-size: 14px; padding: 12px 14px; }
+            .stat-card .number { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+<button class="mode-toggle" id="modeToggle">📝 做题模式</button>
+<div class="practice-panel" id="practicePanel">
+    <div class="practice-header">
+        <div class="practice-title">📝 做题练习</div>
+        <button class="practice-close" id="practiceClose">关闭</button>
+    </div>
+    <div id="practiceContent"></div>
+</div>
+<div class="main-card">
+    <!-- 顶部：进度、统计、跳转 -->
+    <div class="top-bar">
+        <div class="progress-area">
+            📍 当前格子 <span id="currentGridSpan">1</span> / 60
+        </div>
+        <div class="stat-area">
+            ✅ 已答题目 <span id="answeredCount">0</span> / 60
+        </div>
+        <div class="jump-area">
+            <label>🔢 跳转至格子</label>
+            <input type="number" id="jumpInput" min="1" max="60" value="1" class="jump-input">
+            <button id="jumpBtn" class="jump-btn">跳转</button>
+        </div>
+    </div>
+    <!-- 简易格子进度条（显示当前格和已答标记） -->
+    <div class="grid-progress">
+        <div class="progress-track" id="progressTrack">
+            <!-- 动态生成60个小点，JS填充 -->
+        </div>
+    </div>
+
+    <!-- 题目主体 -->
+    <div class="question-container">
+        <div class="question-text" id="questionText">加载中...</div>
+        <div class="options-area" id="optionsArea"></div>
+        <div class="action-bar">
+            <button id="prevBtn" class="nav-btn">◀ 上一题</button>
+            <button id="submitBtn" class="action-btn submit-btn">✅ 提交答案</button>
+            <button id="showAnswerBtn" class="action-btn show-answer-btn">💡 显示答案</button>
+            <button id="nextBtn" class="nav-btn">下一题 ▶</button>
+        </div>
+    </div>
+
+    <!-- 解析区域 -->
+    <div class="explanation-area" id="explanationArea">
+        ✨ 选择选项后点击「提交答案」，将显示详细解析并高亮正确答案。
+    </div>
+</div>
+
+<script>
+    // ----------------------------- 60道题目数据（完整嵌入，含题干，选项，答案，解析）--------------------------------
+    const questions = [
+        { id:0, question:"【格子1】安全防范的核心要素中，用于拖延入侵时间的是（）", options:{ A:"探测", B:"延迟", C:"响应", D:"存储" }, answer:"B", explanation:"正确答案是B.延迟。安全防范三要素为探测、延迟、响应。延迟通过物理障碍（如坚固门窗、防爆玻璃）或技术手段（如电子锁延时）阻碍入侵进程，为响应争取宝贵时间。\n- A.探测：负责感知并发现入侵行为，属于前端预警，不具拖延作用。\n- C.响应：指安保人员或系统接警后采取的制止、抓捕等行动，发生在延迟之后。\n- D.存储：用于保存视频、日志等数据，与拖延入侵无直接关系。" },
+        { id:1, question:"【格子2】下列属于综合安防系统核心子系统的是（）", options:{ A:"办公自动化系统", B:"财务管理系统", C:"门禁管理系统", D:"人事管理系统" }, answer:"C", explanation:"正确答案是C.门禁管理系统。综合安防系统的核心子系统通常包括视频监控、门禁管理、入侵报警、巡更管理等，门禁管理负责人员出入授权与控制，是安防体系的基石。\n- A.办公自动化：属于行政办公范畴，非安防专用。\n- B.财务管理系统：业务管理类软件，与安防无关。\n- D.人事管理系统：人力资源模块，不承担安防职能。" },
+        { id:2, question:"【格子3】以下哪项是安防系统的核心技术基础（）", options:{ A:"汽车维修技术", B:"网络技术", C:"烹饪技术", D:"绘画技术" }, answer:"B", explanation:"正确答案是B.网络技术。现代安防系统高度依赖网络实现设备互联、数据远程传输与集中管理，网络技术是视频监控、门禁联动、云存储等功能的支撑。\n- A.汽车维修：与安防系统无技术关联。\n- C.烹饪技术：生活技能，无关。\n- D.绘画技术：艺术领域，非安防基础。" },
+        { id:3, question:"【格子4】对视/音频数据进行压缩编码的主要目的是（）", options:{ A:"扩大文件体积", B:"节省存储与传输资源", C:"延长播放时长", D:"改变文件格式" }, answer:"B", explanation:"正确答案是B.节省存储与传输资源。压缩编码（如H.264、H.265）能在保证一定画质的前提下大幅减小文件体积，从而降低硬盘占用和网络带宽需求。\n- A.扩大文件体积：恰恰相反，压缩是减小体积。\n- C.延长播放时长：编码不影响原始时长。\n- D.改变文件格式：格式转换仅是手段，非主要目的。" },
+        { id:4, question:"【格子5】安防系统里，探测技术的核心应用场景是（）", options:{ A:"画面显示", B:"入侵行为检测", C:"数据备份", D:"信号转换" }, answer:"B", explanation:"正确答案是B.入侵行为检测。探测技术通过红外、微波、震动、视频分析等手段感知非法闯入、破坏等行为，是报警系统的前端核心。\n- A.画面显示：属于视频监控输出环节，非探测。\n- C.数据备份：属于存储技术范畴。\n- D.信号转换：属于接口与传输技术。" },
+        { id:5, question:"【格子6】网络技术在安防中最典型的应用是（）", options:{ A:"摄像头拍摄画面", B:"远程传输监控视频", C:"硬盘录制视频", D:"屏幕展示画面" }, answer:"B", explanation:"正确答案是B.远程传输监控视频。网络技术使视频流可通过局域网、互联网实时传送，实现远程查看、云存储、跨地域联动等。\n- A.摄像头拍摄：由光学和传感器完成，不依赖网络。\n- C.硬盘录制：本地存储操作，网络非必需。\n- D.屏幕展示：由显示器完成，不需网络。" },
+        { id:6, question:"【格子7】下列不属于安防主流存储方式的是（）", options:{ A:"云存储", B:"硬盘存储", C:"临时内存存储", D:"光盘存储" }, answer:"C", explanation:"正确答案是C.临时内存存储。内存（RAM）用于临时数据缓冲，断电即失，不符合安防长期保存录像、日志的需求。主流存储包括硬盘、云存储、磁带库等。\n- A.云存储：广泛用于远程备份。\n- B.硬盘存储：最常见本地存储。\n- D.光盘存储：曾用于归档，但已非主流。" },
+        { id:7, question:"【格子8】视频监控系统中，承担画面展示功能的设备是（）", options:{ A:"交换机", B:"显示器", C:"摄像头", D:"读卡器" }, answer:"B", explanation:"正确答案是B.显示器。监控系统的显示终端（LCD/LED屏、监视器）用于呈现实时或回放画面，供人员观察。\n- A.交换机：网络传输设备。\n- C.摄像头：图像采集前端。\n- D.读卡器：门禁系统识别设备。" },
+        { id:8, question:"【格子9】信号与接口技术的核心价值是（）", options:{ A:"压缩视频", B:"实现设备间信号互通", C:"探测报警", D:"存储数据" }, answer:"B", explanation:"正确答案是B.实现设备间信号互通。不同类型安防设备（摄像机、门禁控制器、报警主机）需通过标准接口（RS485、以太网等）和信号格式交换数据，才能协同工作。\n- A.压缩视频：编码技术作用。\n- C.探测报警：探测模块功能。\n- D.存储数据：存储系统功能。" },
+        { id:9, question:"【格子10】安防设备间的通信协议主要用于（）", options:{ A:"设备供电", B:"数据交互", C:"画面调节", D:"报警触发" }, answer:"B", explanation:"正确答案是B.数据交互。通信协议（如ONVIF、Modbus、TCP/IP）定义了设备间消息格式和传输规则，确保指令、状态、视频流等数据准确交换。\n- A.设备供电：由电源系统负责。\n- C.画面调节：本地操作或云台指令也是数据交互的子集，但协议核心是通用数据交换。\n- D.报警触发：属于应用层功能，依赖底层协议。" },
+        { id:10, question:"【格子11】对指定区域进行视频采集、传输、存储的系统是（）", options:{ A:"门禁系统", B:"视频监控系统", C:"考勤系统", D:"报警系统" }, answer:"B", explanation:"正确答案是B.视频监控系统。视频监控系统专门完成图像采集、编码传输、录像存储和显示回放，实现对区域的视觉监视。\n- A.门禁系统：控制人员出入。\n- C.考勤系统：记录出勤。\n- D.报警系统：探测入侵并发出警报。" },
+        { id:11, question:"【格子12】下列不属于视频监控核心组成的是（）", options:{ A:"前端采集", B:"传输链路", C:"门禁控制器", D:"后端存储" }, answer:"C", explanation:"正确答案是C.门禁控制器。门禁控制器属于门禁管理系统，虽然常与监控系统联动，但并非视频监控本身的组成部分。视频监控核心包括前端（摄像机）、传输（网线/光端机）、后端（NVR/服务器/显示器）。\n- A.前端采集：核心。\n- B.传输链路：核心。\n- D.后端存储：核心。" },
+        { id:12, question:"【格子13】门禁管理系统的核心目标是（）", options:{ A:"管理区域人员出入", B:"录制监控视频", C:"探测火灾", D:"压缩音频" }, answer:"A", explanation:"正确答案是A.管理区域人员出入。门禁系统通过身份识别（卡、指纹、人脸）控制门锁开启，记录进出日志，确保授权人员通行，阻止非法进入。\n- B.录制视频：监控系统功能。\n- C.探测火灾：消防系统功能。\n- D.压缩音频：编解码技术应用。" },
+        { id:13, question:"【格子14】门禁系统的前端识别核心设备是（）", options:{ A:"摄像头", B:"读卡器", C:"显示器", D:"录像机" }, answer:"B", explanation:"正确答案是B.读卡器。读卡器（或生物识别终端）采集用户凭证（IC卡、指纹、人脸），并将信息发送至控制器进行比对。它是门禁系统感知身份的前端设备。\n- A.摄像头：监控前端，但也可集成人脸识别，传统门禁仍以读卡器为主。\n- C.显示器：输出设备。\n- D.录像机：监控存储设备。" },
+        { id:14, question:"【格子15】视频监控工程施工的首要步骤是（）", options:{ A:"设备调试", B:"方案规划设计", C:"安装摄像头", D:"布线联网" }, answer:"B", explanation:"正确答案是B.方案规划设计。任何工程必须先从需求分析、点位设计、设备选型、施工图纸等规划开始，避免返工和资源浪费。\n- A.设备调试：应在安装后进行。\n- C.安装摄像头：应在规划设计、布线完成后进行。\n- D.布线联网：属于具体施工环节，应在规划设计之后。" },
+        { id:15, question:"【格子16】视频监控系统三大组成不包含（）", options:{ A:"办公电脑", B:"前端采集", C:"传输设备", D:"后端存储" }, answer:"A", explanation:"正确答案是A.办公电脑。办公电脑并非视频监控系统的必备组成部分，监控系统核心三大块为前端采集（摄像头）、传输（网络/光纤）、后端管理（NVR/服务器/显示）。办公电脑可用于查看，但不算系统组成。\n- B.前端采集：属于三大组成。\n- C.传输设备：属于三大组成。\n- D.后端存储：属于三大组成。" },
+        { id:16, question:"【格子17】门禁系统中，衔接识别设备与管理电脑的核心部件是（）", options:{ A:"控制器", B:"显示器", C:"硬盘", D:"摄像头" }, answer:"A", explanation:"正确答案是A.控制器。门禁控制器接收读卡器传来的身份信息，进行权限判断，控制电锁开关，同时与上位管理电脑通信上传记录、下载权限。它是门禁系统的逻辑中枢。\n- B.显示器：显示界面，非必需核心。\n- C.硬盘：存储日志，非衔接部件。\n- D.摄像头：监控设备，不属于门禁核心衔接部件。" },
+        { id:17, question:"【格子18】探测技术的两大分类是物理探测和（）", options:{ A:"电子探测", B:"化学探测", C:"生物探测", D:"人工探测" }, answer:"A", explanation:"正确答案是A.电子探测。安防探测通常分为物理探测（如磁开关、压力开关）和电子探测（红外、微波、超声波、视频移动探测等）。电子探测主动或被动感应环境变化。\n- B.化学探测：用于气体检测，非主流安防入侵分类。\n- C.生物探测：属于电子探测的一种。\n- D.人工探测：非技术分类。" },
+        { id:18, question:"【格子19】安防系统中负责长期留存数据的技术是（）", options:{ A:"显示技术", B:"存储技术", C:"探测技术", D:"传输技术" }, answer:"B", explanation:"正确答案是B.存储技术。存储技术（硬盘录像、云存储、磁盘阵列等）将视频录像、门禁记录、报警日志等数据持久化保存，以备事后查询取证。\n- A.显示技术：临时呈现画面，不保存。\n- C.探测技术：感知事件，不存储。\n- D.传输技术：移动数据，不长期保留。" },
+        { id:19, question:"【格子20】门禁系统稳定运行的核心是保证（）精准安全", options:{ A:"身份识别", B:"视频存储", C:"画面采集", D:"信号转换" }, answer:"A", explanation:"正确答案是A.身份识别。门禁的根本是判断“谁”可以“进哪里”，如果身份识别出错（误识、拒识或被盗用），整个系统失去意义。因此准确安全的身份认证是核心。\n- B.视频存储：监控系统关注点。\n- C.画面采集：监控功能。\n- D.信号转换：底层技术，非核心目标。" }
+    ];
+
+    // 快速补全剩余从20到59（第21题~60题）根据题目内容填充，确保完整
+    const extraQuestions = [
+        { id:20, question:"【格子21】安全防范的三大基本要素是（ ）", options:{ A:"监视、报警、记录", B:"探测、延迟、响应", C:"采集、传输、显示", D:"门禁、监控、报警" }, answer:"B", explanation:"正确答案是B.探测、延迟、响应。这是安防工程学经典模型：探测发现风险，延迟阻碍入侵，响应处置事件。三者循环构成有效防护。\n- A.监视、报警、记录：功能描述。\n- C.视频监控流程。\n- D.子系统列举。" },
+        { id:21, question:"【格子22】以下哪个系统通常不属于综合安防系统的组成部分？（ ）", options:{ A:"视频监控系统", B:"入侵探测系统", C:"楼宇自控系统", D:"门禁管理系统" }, answer:"C", explanation:"正确答案是C.楼宇自控系统（BAS）。BAS管理HVAC、照明等，虽可联动但不属安防子系统。安防核心包括视频监控、入侵报警、门禁管理。\n- A/B/D均属安防。" },
+        { id:22, question:"【格子23】现代安防系统中广泛使用的视/音频压缩编码技术，其目的是（ ）", options:{ A:"提升图像分辨率", B:"降低存储和带宽占用", C:"增加画面帧率", D:"转换信号制式" }, answer:"B", explanation:"正确答案是B.降低存储和带宽占用。H.264/H.265大幅减少数据量。\n- A/C/D无关。" },
+        { id:23, question:"【格子24】下列哪项技术是实现安防设备互联互通的基础？（ ）", options:{ A:"多媒体技术", B:"探测技术", C:"网络技术", D:"显示技术" }, answer:"C", explanation:"正确答案是C.网络技术。IP网络是设备互联的核心。\n- 其他选项不解决互通。" },
+        { id:24, question:"【格子25】在安防系统中，用于发现非法侵入行为的技术是（ ）", options:{ A:"存储技术", B:"显示技术", C:"探测技术", D:"压缩技术" }, answer:"C", explanation:"正确答案是C.探测技术。探测技术感知入侵事件。\n- 存储、显示、压缩都不用于感知入侵。" },
+        { id:25, question:"【格子26】视频监控画面能够通过互联网远程查看，主要依赖（ ）", options:{ A:"光盘存储", B:"网络传输", C:"硬盘备份", D:"同轴电缆" }, answer:"B", explanation:"正确答案是B.网络传输。互联网依靠网络协议传输视频流。" },
+        { id:26, question:"【格子27】以下选项中，属于安防系统常用存储方式的是（ ）", options:{ A:"U盘存储", B:"内存暂存", C:"硬盘存储", D:"纸质记录" }, answer:"C", explanation:"正确答案是C.硬盘存储。NVR/DVR用硬盘长期保存。" },
+        { id:27, question:"【格子28】视频监控系统中，承担图像采集任务的核心设备是（ ）", options:{ A:"交换机", B:"显示器", C:"摄像头", D:"门禁控制器" }, answer:"C", explanation:"正确答案是C.摄像头。采集图像的核心前端。" },
+        { id:28, question:"【格子29】安防系统中，信号与接口技术解决的主要问题是（ ）", options:{ A:"视频压缩", B:"设备间连接与通信", C:"入侵探测", D:"数据存档" }, answer:"B", explanation:"正确答案是B.设备间连接与通信。接口确保互连互通。" },
+        { id:29, question:"【格子30】安防系统各设备间要实现数据传输，通常需要遵循统一的（ ）", options:{ A:"供电标准", B:"通信协议", C:"安装高度", D:"显示分辨率" }, answer:"B", explanation:"正确答案是B.通信协议。统一协议才能解析数据。" },
+        { id:30, question:"【格子31】视频监控系统的基本功能可概括为（ ）", options:{ A:"身份验证与出入控制", B:"视频采集、传输、显示与存储", C:"火灾检测与报警", D:"温湿度监测与控制" }, answer:"B", explanation:"视频监控核心流程采集→传输→显示→存储。" },
+        { id:31, question:"【格子32】下列设备中，不属于视频监控系统后端设备的是（ ）", options:{ A:"硬盘录像机", B:"显示器", C:"读卡器", D:"视频解码器" }, answer:"C", explanation:"读卡器是门禁前端，不属于视频监控后端。" },
+        { id:32, question:"【格子33】门禁管理系统的主要作用是（ ）", options:{ A:"记录巡更路线", B:"控制人员出入权限", C:"探测周界入侵", D:"压缩视频文件" }, answer:"B", explanation:"门禁核心是对出入授权控制。" },
+        { id:33, question:"【格子34】门禁系统中，用于识别持卡人身份的前端设备是（ ）", options:{ A:"显示器", B:"摄像头", C:"读卡器", D:"交换机" }, answer:"C", explanation:"读卡器读取凭证。" },
+        { id:34, question:"【格子35】视频监控系统施工时，正确的第一步通常是（ ）", options:{ A:"调试焦距", B:"制订施工方案", C:"固定摄像头支架", D:"布置网线" }, answer:"B", explanation:"先规划设计再施工。" },
+        { id:35, question:"【格子36】一套完整的视频监控系统，一般不包括（ ）", options:{ A:"前端采集设备", B:"传输链路", C:"办公自动化设备", D:"后端存储与显示设备" }, answer:"C", explanation:"OA设备不是监控必需组件。" },
+        { id:36, question:"【格子37】在门禁系统中，负责接收读卡器信息并控制电锁开关的设备是（ ）", options:{ A:"门禁控制器", B:"显示器", C:"网络交换机", D:"存储服务器" }, answer:"A", explanation:"控制器逻辑中枢。" },
+        { id:37, question:"【格子38】根据技术手段，探测技术常分为物理探测和（ ）", options:{ A:"生物探测", B:"电子探测", C:"化学探测", D:"机械探测" }, answer:"B", explanation:"电子探测主流分类。" },
+        { id:38, question:"【格子39】安防系统中，保证监控录像能够长期保存的关键技术是（ ）", options:{ A:"视频压缩技术", B:"存储技术", C:"显示技术", D:"光电转换技术" }, answer:"B", explanation:"存储技术实现长期留存。" },
+        { id:39, question:"【格子40】门禁管理系统实施过程中，最关键的是确保（ ）", options:{ A:"视频高清不卡顿", B:"身份识别的准确与安全", C:"存储容量足够大", D:"网络带宽充足" }, answer:"B", explanation:"身份识别是整个门禁安全基石。" },
+        { id:40, question:"【格子41】安全防范的三要素是探测、延迟和（　）。", options:{ A:"识别", B:"响应", C:"存储", D:"报警" }, answer:"B", explanation:"响应是第三要素，采取行动。" },
+        { id:41, question:"【格子42】综合安防系统是将多个安防子系统进行（　）管理，实现协同工作。", options:{ A:"分散", B:"独立", C:"统一", D:"人工" }, answer:"C", explanation:"统一平台集中管控联动。" },
+        { id:42, question:"【格子43】多媒体技术处理的信息包括文本、图像、音频和（　）等类型。", options:{ A:"动画", B:"视频", C:"图表", D:"程序" }, answer:"B", explanation:"视频是多媒体重要类型。" },
+        { id:43, question:"【格子44】视频压缩编码能够在保证一定画质的前提下，显著（　）文件体积。", options:{ A:"增加", B:"减少", C:"保持", D:"随机改变" }, answer:"B", explanation:"压缩算法减少体积。" },
+        { id:44, question:"【格子45】网络技术为安防系统提供了高速可靠的（　）传输通道。", options:{ A:"电力", B:"数据", C:"音频", D:"模拟信号" }, answer:"B", explanation:"网络传输数字数据。" },
+        { id:45, question:"【格子46】安全防范的三大核心要素分别是（　）、延迟和响应。", options:{ A:"探测", B:"识别", C:"记录", D:"报警" }, answer:"A", explanation:"探测是第一步。" },
+        { id:46, question:"【格子47】关于综合安防系统的组成，下列说法正确的是（　）。", options:{ A:"只能由视频监控和门禁两个子系统组成", B:"可以集成视频监控、门禁、入侵报警等多个子系统", C:"仅指视频监控系统", D:"不包含门禁管理" }, answer:"B", explanation:"综合安防集成多子系统。" },
+        { id:47, question:"【格子48】关于视/音频压缩编码技术的必要性，下列说法正确的是（　）。", options:{ A:"完全没有必要", B:"会严重降低画质，没有实际作用", C:"可以有效减少存储空间和传输带宽，很有必要", D:"仅适用于音频压缩" }, answer:"C", explanation:"压缩技术非常必要。" },
+        { id:48, question:"【格子49】关于探测技术在安全防范中的作用，下列说法正确的是（　）。", options:{ A:"主要用于视频存储", B:"是感知入侵的核心技术", C:"仅用于门禁系统", D:"可有可无" }, answer:"B", explanation:"探测是入侵感知核心。" },
+        { id:49, question:"【格子50】关于网络传输技术在安防系统中的应用，下列说法正确的是（　）。", options:{ A:"只能用于本地监控", B:"使安防系统可以支持远程管理", C:"安防系统不需要网络传输", D:"会降低监控画质" }, answer:"B", explanation:"网络赋能远程管理。" },
+        { id:50, question:"【格子51】关于安防系统存储技术的适用范围，下列说法正确的是（　）。", options:{ A:"只能用于存储视频数据", B:"只能用于存储门禁记录", C:"可用于存储视频、门禁记录、报警日志等多种数据", D:"不需要存储技术" }, answer:"C", explanation:"统一存储多种安防数据。" },
+        { id:51, question:"【格子52】关于视频监控系统的前端采集设备，下列说法正确的是（　）。", options:{ A:"主要指显示器", B:"主要指各类摄像机", C:"只有读卡器", D:"是交换机" }, answer:"B", explanation:"前端摄像机采集图像。" },
+        { id:52, question:"【格子53】关于门禁管理系统对网络环境的需求，下列说法正确的是（　）。", options:{ A:"任何情况都不需要网络", B:"网络环境可有可无", C:"通常需要网络以实现远程管理和数据上传", D:"只需要电源，完全独立" }, answer:"C", explanation:"现代门禁依赖网络管理。" },
+        { id:53, question:"【格子54】关于信号与接口技术在安防系统中的作用，下列说法正确的是（　）。", options:{ A:"确保各类安防设备能够正确连接和通信", B:"接口技术可有可无", C:"只用于视频传输", D:"现代安防已不需要" }, answer:"A", explanation:"标准接口是设备互连基础。" },
+        { id:54, question:"【格子55】关于通信协议在安防系统集成中的重要性，下列说法正确的是（　）。", options:{ A:"可有可无", B:"设备间数据交换的基础，必不可少", C:"只有视频监控需要协议", D:"仅用于供电管理" }, answer:"B", explanation:"协议必不可少。" },
+        { id:55, question:"【格子56】关于视频监控与门禁管理的实施步骤，下列说法正确的是（　）。", options:{ A:"完全一致", B:"完全不同，毫无相似", C:"有相似之处，但不完全相同", D:"门禁不需要施工规划" }, answer:"C", explanation:"流程相似但细节不同。" },
+        { id:56, question:"【格子57】综合安防系统通过集成多个安防子系统，实现（　）管理和联动。", options:{ A:"分散", B:"统一", C:"分级", D:"人工" }, answer:"B", explanation:"统一管理联动。" },
+        { id:57, question:"【格子58】多媒体技术主要处理文本、图形、（　）和视频等多种媒体信息。", options:{ A:"音频", B:"图像", C:"动画", D:"表格" }, answer:"A", explanation:"包含音频媒体。" },
+        { id:58, question:"【格子59】采用视/音频压缩编码技术可以有效（　）所需存储空间。", options:{ A:"增加", B:"减少", C:"维持", D:"忽略" }, answer:"B", explanation:"减少存储占用。" },
+        { id:59, question:"【格子60】门禁实施的核心是保障（）准确安全", options:{ A:"身份识别", B:"视频存储", C:"图像采集", D:"网络传输" }, answer:"A", explanation:"身份识别是门禁核心。" }
+    ];
+    // 合并数组
+    const fullQuestions = [...questions, ...extraQuestions];
+    // 确保60题
+    console.assert(fullQuestions.length === 60, "题目数量不为60");
+    
+    // ---------- 全局变量 ----------
+    let currentGrid = 1;          // 1~60
+    let answeredSet = new Set();   // 存储已提交过的格子编号 (1-60)
+    let currentQuestionObj = null;
+
+    // DOM 元素
+    const currentGridSpan = document.getElementById('currentGridSpan');
+    const answeredCountSpan = document.getElementById('answeredCount');
+    const jumpInput = document.getElementById('jumpInput');
+    const jumpBtn = document.getElementById('jumpBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const showAnswerBtn = document.getElementById('showAnswerBtn');
+    const questionTextDiv = document.getElementById('questionText');
+    const optionsArea = document.getElementById('optionsArea');
+    const explanationDiv = document.getElementById('explanationArea');
+    const progressTrack = document.getElementById('progressTrack');
+
+    // 辅助函数：更新统计显示
+    function updateStatsUI() {
+        answeredCountSpan.innerText = answeredSet.size;
+    }
+
+    // 生成进度条 (60个小点)
+    function renderProgressDots() {
+        progressTrack.innerHTML = '';
+        for (let i = 1; i <= 60; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('grid-dot');
+            dot.innerText = i;
+            if (i === currentGrid) dot.classList.add('current');
+            if (answeredSet.has(i)) dot.classList.add('answered');
+            dot.addEventListener('click', () => changeGrid(i));
+            dot.style.cursor = 'pointer';
+            progressTrack.appendChild(dot);
+        }
+    }
+
+    // 清除选项高亮类
+    function clearHighlights() {
+        const items = document.querySelectorAll('.option-item');
+        items.forEach(item => {
+            item.classList.remove('option-correct', 'option-wrong');
+        });
+    }
+
+    // 高亮正确与错误 (根据用户选择的选项值，userVal可为null)
+    function highlightOptions(userSelectedVal) {
+        clearHighlights();
+        const correctVal = currentQuestionObj.answer;
+        const allOptionsDiv = document.querySelectorAll('.option-item');
+        allOptionsDiv.forEach(div => {
+            const optionVal = div.getAttribute('data-value');
+            if (optionVal === correctVal) {
+                div.classList.add('option-correct');
+            }
+            if (userSelectedVal && userSelectedVal === optionVal && optionVal !== correctVal) {
+                div.classList.add('option-wrong');
+            }
+        });
+    }
+
+    // 显示当前题目的解析
+    function showExplanation() {
+        if (currentQuestionObj && currentQuestionObj.explanation) {
+            explanationDiv.innerText = currentQuestionObj.explanation;
+        } else {
+            explanationDiv.innerText = '暂无解析';
+        }
+    }
+
+    // 重置当前题目显示 (清除选项选择、高亮、解析)
+    function resetUIForNewQuestion() {
+        // 清空radio选中
+        const radios = document.querySelectorAll('input[name="answer"]');
+        radios.forEach(radio => radio.checked = false);
+        clearHighlights();
+        explanationDiv.innerText = '✨ 选择选项后点击「提交答案」，将显示详细解析并高亮正确答案。';
+    }
+
+    // 加载指定格子的题目
+    function loadGrid(gridNumber) {
+        if (gridNumber < 1) gridNumber = 1;
+        if (gridNumber > 60) gridNumber = 60;
+        currentGrid = gridNumber;
+        const qIndex = currentGrid - 1;
+        currentQuestionObj = fullQuestions[qIndex];
+        // 更新题干
+        questionTextDiv.innerText = currentQuestionObj.question;
+        // 动态生成选项
+        const opts = currentQuestionObj.options;
+        let optsHtml = '';
+        for (let [key, text] of Object.entries(opts)) {
+            optsHtml += `
+                <div class="option-item" data-value="${key}">
+                    <input type="radio" name="answer" value="${key}" id="opt_${key}">
+                    <label for="opt_${key}" class="option-text" style="flex:1; cursor:pointer;">${key}. ${text}</label>
+                </div>
+            `;
+        }
+        optionsArea.innerHTML = optsHtml;
+        // 绑定点击事件使得整个div也可以选中radio
+        document.querySelectorAll('.option-item').forEach(div => {
+            const radio = div.querySelector('input[type="radio"]');
+            div.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'INPUT') {
+                    radio.checked = true;
+                }
+            });
+        });
+        // 重置UI (清除高亮和选中及解析)
+        resetUIForNewQuestion();
+        // 更新顶部显示和进度条
+        currentGridSpan.innerText = currentGrid;
+        renderProgressDots();
+        updateStatsUI();
+    }
+
+    // 提交逻辑
+    function handleSubmit() {
+        const selectedRadio = document.querySelector('input[name="answer"]:checked');
+        if (!selectedRadio) {
+            alert("请先选择一个选项！");
+            return;
+        }
+        const selectedVal = selectedRadio.value;
+        const isCorrect = (selectedVal === currentQuestionObj.answer);
+        // 记录已答（首次提交本格子）
+        if (!answeredSet.has(currentGrid)) {
+            answeredSet.add(currentGrid);
+            updateStatsUI();
+            renderProgressDots();   // 更新进度条答题标记
+        }
+        // 高亮正确和用户可能错误
+        highlightOptions(selectedVal);
+        // 显示解析
+        showExplanation();
+    }
+
+    // 显示答案(仅显示正确高亮 + 解析，不改变已答集合)
+    function handleShowAnswer() {
+        // 高亮正确选项，不清空用户选项，不加入统计
+        highlightOptions(null);
+        showExplanation();
+    }
+
+    // 跳转（上一题/下一题/指定格子）
+    function changeGrid(newGrid) {
+        if (newGrid === currentGrid) return;
+        if (newGrid < 1) newGrid = 1;
+        if (newGrid > 60) newGrid = 60;
+        loadGrid(newGrid);
+    }
+
+    // 事件绑定
+    jumpBtn.addEventListener('click', () => {
+        let val = parseInt(jumpInput.value, 10);
+        if (isNaN(val) || val < 1) val = 1;
+        if (val > 60) val = 60;
+        jumpInput.value = val;
+        changeGrid(val);
+    });
+    prevBtn.addEventListener('click', () => changeGrid(currentGrid - 1));
+    nextBtn.addEventListener('click', () => changeGrid(currentGrid + 1));
+    submitBtn.addEventListener('click', handleSubmit);
+    showAnswerBtn.addEventListener('click', handleShowAnswer);
+
+    // 希沃白板触屏滑动支持
+    let touchStartY = 0;
+    let touchStartX = 0;
+    let scrollStartY = 0;
+    let isScrolling = false;
+    let isVerticalScroll = false;
+    let lastTouchTime = 0;
+
+    function handleTouchStart(e) {
+        if (e.touches && e.touches.length > 0) {
+            touchStartY = e.touches[0].clientY;
+            touchStartX = e.touches[0].clientX;
+            scrollStartY = window.scrollY;
+            isScrolling = true;
+            isVerticalScroll = false;
+        }
+    }
+
+    function handleTouchMove(e) {
+        if (!isScrolling || !e.touches || e.touches.length === 0) return;
+        
+        const currentY = e.touches[0].clientY;
+        const currentX = e.touches[0].clientX;
+        const diffY = touchStartY - currentY;
+        const diffX = touchStartX - currentX;
+        
+        if (!isVerticalScroll) {
+            isVerticalScroll = Math.abs(diffY) > Math.abs(diffX);
+        }
+        
+        if (isVerticalScroll) {
+            window.scrollTo({
+                top: scrollStartY + diffY,
+                behavior: 'instant'
+            });
+        }
+    }
+
+    function handleTouchEnd() {
+        isScrolling = false;
+        isVerticalScroll = false;
+    }
+
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchmove', handleTouchMove, { passive: true });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
+    document.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+
+    // 做题模式功能
+    const modeToggle = document.getElementById('modeToggle');
+    const practicePanel = document.getElementById('practicePanel');
+    const practiceClose = document.getElementById('practiceClose');
+    const practiceContent = document.getElementById('practiceContent');
+
+    let practiceState = {
+        questions: [],
+        currentIndex: 0,
+        correctCount: 0,
+        wrongCount: 0,
+        answered: false,
+        selectedAnswer: null
+    };
+
+    function shuffleArray(arr) {
+        const shuffled = [...arr];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+
+    function startPractice(mode) {
+        practiceState = {
+            questions: mode === 'random' ? shuffleArray(fullQuestions) : [...fullQuestions],
+            currentIndex: 0,
+            correctCount: 0,
+            wrongCount: 0,
+            answered: false,
+            selectedAnswer: null
+        };
+        renderPracticeQuestion();
+        practicePanel.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function renderPracticeQuestion() {
+        const q = practiceState.questions[practiceState.currentIndex];
+        const progress = practiceState.currentIndex + 1;
+        const total = practiceState.questions.length;
+        const scorePercent = total > 0 ? Math.round((practiceState.correctCount / progress) * 100) : 0;
+
+        let html = `
+            <div class="practice-stats">
+                <div class="stat-card">
+                    <div class="number">${progress}/${total}</div>
+                    <div class="label">当前进度</div>
+                </div>
+                <div class="stat-card correct">
+                    <div class="number">${practiceState.correctCount}</div>
+                    <div class="label">答对</div>
+                </div>
+                <div class="stat-card wrong">
+                    <div class="number">${practiceState.wrongCount}</div>
+                    <div class="label">答错</div>
+                </div>
+                <div class="stat-card score">
+                    <div class="number">${scorePercent}%</div>
+                    <div class="label">正确率</div>
+                </div>
+            </div>
+            <div class="practice-question">${q.question}</div>
+            <div class="practice-options">
+        `;
+
+        for (const [key, text] of Object.entries(q.options)) {
+            const letterClass = practiceState.answered && key === q.answer ? 'correct' :
+                               practiceState.answered && key === practiceState.selectedAnswer && key !== q.answer ? 'wrong' : '';
+            html += `
+                <div class="practice-option-btn ${letterClass}" data-value="${key}">
+                    <span class="option-letter">${key}</span>
+                    <span>${text}</span>
+                </div>
+            `;
+        }
+
+        html += `</div>`;
+
+        if (practiceState.answered) {
+            html += `
+                <div class="practice-explanation">${q.explanation}</div>
+                <div class="practice-action-bar">
+                    <button class="practice-restart-btn" onclick="startPractice('${Math.random() > 0.5 ? 'random' : 'order'}')">重新开始</button>
+                    <button class="practice-next-btn" onclick="nextPracticeQuestion()">${practiceState.currentIndex < practiceState.questions.length - 1 ? '下一题' : '查看结果'}</button>
+                </div>
+            `;
+        } else {
+            html += `<div class="practice-action-bar">
+                <button class="practice-next-btn" onclick="submitPracticeAnswer()" style="background:#10b981;">提交答案</button>
+            </div>`;
+        }
+
+        practiceContent.innerHTML = html;
+
+        if (!practiceState.answered) {
+            document.querySelectorAll('.practice-option-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.practice-option-btn').forEach(b => b.style.borderColor = '#e2e8f0');
+                    btn.style.borderColor = '#3b82f6';
+                    practiceState.selectedAnswer = btn.dataset.value;
+                });
+            });
+        }
+    }
+
+    function submitPracticeAnswer() {
+        if (!practiceState.selectedAnswer) {
+            alert('请选择一个选项');
+            return;
+        }
+        practiceState.answered = true;
+        const q = practiceState.questions[practiceState.currentIndex];
+        if (practiceState.selectedAnswer === q.answer) {
+            practiceState.correctCount++;
+        } else {
+            practiceState.wrongCount++;
+        }
+        renderPracticeQuestion();
+    }
+
+    function nextPracticeQuestion() {
+        if (practiceState.currentIndex < practiceState.questions.length - 1) {
+            practiceState.currentIndex++;
+            practiceState.answered = false;
+            practiceState.selectedAnswer = null;
+            renderPracticeQuestion();
+        } else {
+            showPracticeResult();
+        }
+    }
+
+    function showPracticeResult() {
+        const total = practiceState.questions.length;
+        const scorePercent = total > 0 ? Math.round((practiceState.correctCount / total) * 100) : 0;
+        practiceContent.innerHTML = `
+            <div class="practice-result">
+                <div class="big-score">${scorePercent}%</div>
+                <div class="score-text">正确 ${practiceState.correctCount} / 错误 ${practiceState.wrongCount} / 总计 ${total}</div>
+                <div class="practice-action-bar" style="margin-top:30px;">
+                    <button class="practice-restart-btn" onclick="startPractice('order')">顺序练习</button>
+                    <button class="practice-next-btn" onclick="startPractice('random')">随机练习</button>
+                </div>
+            </div>
+        `;
+    }
+
+    modeToggle.addEventListener('click', () => {
+        if (practicePanel.classList.contains('active')) {
+            practicePanel.classList.remove('active');
+            document.body.style.overflow = '';
+        } else {
+            startPractice('order');
+        }
+    });
+
+    practiceClose.addEventListener('click', () => {
+        practicePanel.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+
+    // 初始化第一格
+    loadGrid(1);
+</script>
+</body>
+</html>
