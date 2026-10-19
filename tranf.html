@@ -38,11 +38,16 @@
     button.secondary{background:var(--muted)}
     .steps{margin-top:28px;text-align:center;font-size:18px}
 
-    /* 对齐用表格，保证指数和位值竖直对齐 */
-    .num-table{display:inline-table;border-collapse:collapse;margin:0 auto}
-    .num-table td{padding:2px 10px;text-align:center;vertical-align:bottom}
-    .num-table .exp{color:#ef4444;font-size:14px}
-    .num-table .digit{font-size:36px;letter-spacing:6px}
+    /* 对齐用表格：指数行在上、数字行在下，数字行末尾单独一格放底数标注 */
+    .num-table{display:inline-table;border-collapse:collapse;margin:0 auto;vertical-align:bottom}
+    .num-table td{padding:0 8px;text-align:center}
+    .num-table tr.exp-row td{vertical-align:bottom;padding-bottom:4px}
+    .num-table tr.digit-row td{vertical-align:bottom;padding-top:2px}
+    .num-table .exp{color:#ef4444;font-size:14px;line-height:1.3;white-space:nowrap}
+    .num-table .digit{font-size:var(--digit-size,34px);line-height:1.1;letter-spacing:0}
+    /* 底数脚标：跟数字行同一个行高基线，落在最后一位数字的右下角 */
+    .num-table .base-mark{font-size:15px;color:#475569;text-align:left;padding-left:2px;line-height:1.1}
+    .base-sub{font-size:0.62em;color:#64748b;vertical-align:-0.14em;margin-left:3px;font-weight:600}
 
     .formula{margin-top:18px;font-size:20px}
     .formula .line{margin-top:10px}
@@ -365,21 +370,23 @@
       const base = currentBase;
 
       // 1) 用表格生成：第一行显示 base^n 指数，第二行显示每一位的数字
-      let tableHtml = `<table class="num-table"><tr>`;
+      //    数字行末尾多出一格，专门放底数标注 (base)，让它贴住数字的右下角
+      const digitSize = n <= 8 ? 34 : n <= 12 ? 27 : n <= 16 ? 22 : 18;
+      let tableHtml = `<table class="num-table" style="--digit-size:${digitSize}px"><tr class="exp-row">`;
       for(let i = 0; i < n; i++){
         const exp = n - 1 - i;
         tableHtml += `<td class="exp">${base}<sup>${exp}</sup></td>`;
       }
-      tableHtml += `</tr><tr>`;
+      tableHtml += `<td class="exp"></td></tr><tr class="digit-row">`;
       for(let i = 0; i < n; i++){
-        tableHtml += `<td class="digit color-${i}">${digits[i]}</td>`;
+        tableHtml += `<td class="digit"${colorAttr(i)}>${digits[i]}</td>`;
       }
-      tableHtml += `</tr></table> <span style="font-size:18px">(${base})</span>`;
+      tableHtml += `<td class="base-mark">(${base})</td></tr></table>`;
 
       // 2) 按权展开式（展示为 base^n × digit）
       const expandedParts = digits.map((d, i) => {
         const exp = n - 1 - i;
-        return `<span class="color-${i}">${base}<sup>${exp}</sup>×${d}</span>`;
+        return `<span${colorAttr(i)}>${base}<sup>${exp}</sup>×${d}</span>`;
       });
       const expandedLine = expandedParts.join(' + ');
 
@@ -394,7 +401,7 @@
         }
         
         const value = digitValue * Math.pow(base, n - 1 - i);
-        return `<span class="color-${i}">${value}</span>`; 
+        return `<span${colorAttr(i)}>${value}</span>`; 
       });
       const productLine = productParts.join(' + ');
 
@@ -414,9 +421,15 @@
       html += `<div>${tableHtml}</div>`;
       html += `<div class="formula"><div class="line">= ${expandedLine}</div>`;
       html += `<div class="line">= ${productLine}</div>`;
-      html += `<div class="line result">= ${sum} (₁₀)</div></div>`;
+      html += `<div class="line result">= ${sum}<span class="base-sub">(10)</span></div></div>`;
 
       out.innerHTML = html;
+    }
+
+    // 颜色分配：前 16 位沿用固定色板，超出部分按色相自动生成，避免颜色断档
+    function colorAttr(i){
+      if (i < 16) return ` class="color-${i}"`;
+      return ` style="color:hsl(${(i * 47) % 360},65%,45%)"`;
     }
 
     // 回车触发
